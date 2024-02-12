@@ -1,0 +1,259 @@
+scn P04CompanionFireQuestSCRIPT
+
+
+; Fires all companions.
+; JSH 05/19/11
+;
+
+
+Short bFireCompanions;				; 1 = Go ahead and fire all companions.
+
+
+BEGIN GameMode
+		; Fire humanoid follower.
+		If (VNPCFollowers.bBooneHired == 1)
+	
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			CraigBooneREF.SetPlayerTeammate 0;
+			CraigBooneREF.RemoveFromFaction FollowerFaction;
+			CraigBooneREF.SetActorValue Assistance 0;
+			CraigBooneREF.RemovePerk CompanionSuite;
+	
+			Set CraigBooneREF.Waiting to 0;
+			Set VNPCFollowers.bBooneHired to 0;
+			Set VNPCFollowers.bBooneFired to 1;
+			Set VNPCFollowers.bBooneL38 to 0;
+
+			set RASMControllerQuest.booneAtFreeside to 0
+			set RASMControllerQuest.booneAtNewVegas to 0
+			set RASMControllerQuest.booneAtWestSide to 0
+			set RASMControllerQuest.booneAtLong15 to 0
+			set RASMControllerQuest.booneAtNovac to 0
+	
+			CraigBooneREF.MoveTo BooneHomeMarkerREF;
+	
+			; Remove Player from Boone's faction so Legion isn't automatically hostile.
+			Player.RemoveFromFaction VBooneFaction;
+	
+			Player.RemovePerk Spotting;
+			ShowMessage FollowerMessagePerkBooneRemove;
+			ShowMessage FollowerMessageLeaveBoone;
+			
+		ElseIf (VNPCFollowers.ArcadeHired == 1)
+			
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			ArcadeREF.SetPlayerTeammate 0;
+			ArcadeREF.RemoveFromFaction FollowerFaction;
+			ArcadeREF.SetActorValue Assistance 0;
+			ArcadeREF.RemovePerk CompanionSuite;
+	
+			Set ArcadeREF.Waiting to 0;
+			Set VNPCFollowers.ArcadeHired to 0;
+			Set VNPCFollowers.ArcadeFired to 1;
+			Set VNPCFollowers.bArcadeL38 to 0;
+
+			set RASMControllerQuest.arcadeAtFreeside to 0
+			set RASMControllerQuest.arcadeAtNewVegas to 0
+			set RASMControllerQuest.arcadeAtWestSide to 0
+			set RASMControllerQuest.arcadeAtLong15 to 0
+			set RASMControllerQuest.arcadeAtNovac to 0
+	
+			Player.RemovePerk BetterHealing;
+			ShowMessage FollowerMessagePerkArcadeRemove;
+			ShowMessage FollowerMessageLeaveArcade;
+	
+			ArcadeREF.MoveTo ArcadeHomeMarker;
+	
+		ElseIf (VNPCFollowers.bCassHired == 1)
+	
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			RoseofSharonCassidyREF.SetPlayerTeammate 0;
+			RoseofSharonCassidyREF.RemoveFromFaction FollowerFaction;
+			RoseofSharonCassidyREF.SetActorValue Assistance 0;
+			RoseofSharonCassidyREF.RemovePerk CompanionSuite;
+	
+			Set RoseofSharonCassidyREF.Waiting to 0;
+			Set VNPCFollowers.bCassHired to 0;
+			Set VNPCFollowers.bCassFired to 1;
+			Set VNPCFollowers.bCassL38 to 0;
+	
+			set RASMControllerQuest.cassAtFreeside to 0
+			set RASMControllerQuest.cassAtNewVegas to 0
+			set RASMControllerQuest.cassAtWestSide to 0
+			set RASMControllerQuest.cassAtLong15 to 0
+			set RASMControllerQuest.cassAtNovac to 0
+
+			Player.RemovePerk WhiskeyRose;
+			ShowMessage FollowerMessagePerkCassRemove;
+			ShowMessage FollowerMessageLeaveCass;
+	
+			RoseofSharonCassidyREF.MoveTo CassHomeMarkerREF;
+	
+			StopQuest vCassTimer;
+	
+		ElseIf (VNPCFollowers.bLilyHired == 1)
+	
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			LilyREF.SetPlayerTeammate 0;
+			LilyREF.RemoveFromFaction FollowerFaction;
+			LilyREF.SetActorValue Assistance 0;
+			LilyREF.RemovePerk CompanionSuite;
+		
+			Set LilyREF.Waiting to 0;
+			Set VNPCFollowers.bLilyHired to 0;
+			Set VNPCFollowers.bLilyFired to 1;
+			Set VNPCFollowers.bLilyL38 to 0;
+	
+			set RASMControllerQuest.lilyAtFreeside to 0
+			set RASMControllerQuest.lilyAtNewVegas to 0
+			set RASMControllerQuest.lilyAtWestSide to 0
+			set RASMControllerQuest.lilyAtLong15 to 0
+			set RASMControllerQuest.lilyAtNovac to 0
+
+			LilyREF.MoveTo LilyJacobstownMarker;	
+	
+			Player.RemovePerk StealthGirl;
+			ShowMessage FollowerMessagePerkLilyRemove;
+			ShowMessage FollowerMessageLeaveLily;
+	
+			StopQuest LilysMedicineTimer;
+	
+		ElseIf (VNPCFollowers.bVeronicaHired == 1)
+	
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			VeronicaREF.SetPlayerTeammate 0;
+			VeronicaREF.RemoveFromFaction FollowerFaction;
+			VeronicaREF.SetActorValue Assistance 0;
+			VeronicaREF.RemovePerk CompanionSuite;
+	
+			Set VeronicaREF.Waiting to 0;
+			Set VNPCFollowers.bVeronicaHired to 0;
+			Set VNPCFollowers.bVeronicaFired to 1;
+			Set VNPCFollowers.bVeronicaL38 to 0;
+	
+			set RASMControllerQuest.veronicaAtFreeside to 0
+			set RASMControllerQuest.veronicaAtNewVegas to 0
+			set RASMControllerQuest.veronicaAtWestSide to 0
+			set RASMControllerQuest.veronicaAtLong15 to 0
+			set RASMControllerQuest.veronicaAtNovac to 0
+
+			Player.RemovePerk ScribeAssistant;
+			ShowMessage FollowerMessagePerkVeronicaRemove;
+			ShowMessage FollowerMessageLeaveVeronica;
+	
+			VeronicaREF.MoveTo VeronicaHomeMarkerREF;
+		
+		ElseIf (VNPCFollowers.RaulHired == 1)
+	
+			Set VNPCFollowers.bHumanoidInParty to 0;
+	
+			RaulREF.SetPlayerTeammate 0;
+			RaulREF.RemoveFromFaction FollowerFaction;
+			RaulREF.SetActorValue Assistance 0;
+			RaulREF.RemovePerk CompanionSuite;
+	
+			Set RaulREF.Waiting to 0;
+			Set VNPCFollowers.RaulHired to 0;
+			Set VNPCFollowers.RaulFired to 1;
+			Set VNPCFollowers.bRaulL38 to 0;
+
+			set RASMControllerQuest.raulAtFreeside to 0
+			set RASMControllerQuest.raulAtNewVegas to 0
+			set RASMControllerQuest.raulAtWestSide to 0
+			set RASMControllerQuest.raulAtLong15 to 0
+			set RASMControllerQuest.raulAtNovac to 0
+
+			Player.RemovePerk RegularMaintenance;
+			ShowMessage FollowerMessagePerkRaulRemove;
+			ShowMessage FollowerMessageLeaveRaul;
+	
+			ShowMap RaulsShackMarkerREF 1;
+			RaulREF.MoveTo RaulHomeMarker;
+	
+		EndIf
+	
+		; Fire Rex or ED-E
+		If (VNPCFollowers.RexHired == 1)
+	
+			Set VNPCFollowers.bCritterInParty to 0;
+	
+			RexREF.SetPlayerTeammate 0;
+			RexREF.RemoveFromFaction FollowerFaction;
+			RexREF.SetActorValue Assistance 0;
+			RexREF.RemovePerk CompanionSuite;
+	
+			Set RexREF.Waiting to 0;
+			Set VNPCFollowers.RexHired to 0;
+			Set VNPCFollowers.RexFired to 1;
+			Set VNPCFollowers.bRexL38 to 0;
+	
+			set RASMControllerQuest.rexAtFreeside to 0
+			set RASMControllerQuest.rexAtNewVegas to 0
+			set RASMControllerQuest.rexAtWestSide to 0
+			set RASMControllerQuest.rexAtLong15 to 0
+			set RASMControllerQuest.rexAtNovac to 0
+
+			Player.RemovePerk SearchAndMark;
+			ShowMessage FollowerMessagePerkRexRemove;
+			ShowMessage FollowerMessageLeaveRex;
+	
+			RexREF.MoveTo RexHomeMarker;
+	
+		ElseIf (VNPCFollowers.bEDEHired == 1)
+	
+			Set VNPCFollowers.bCritterInParty to 0;
+	
+			EDE1REF.SetPlayerTeammate 0;
+			EDE1REF.RemoveFromFaction FollowerFaction;
+			EDE1REF.SetActorValue Assistance 0;
+			EDE1REF.RemovePerk CompanionSuite;
+	
+			EDE2REF.SetPlayerTeammate 0;
+			EDE2REF.RemoveFromFaction FollowerFaction;
+			EDE2REF.SetActorValue Assistance 0;
+			EDE2REF.RemovePerk CompanionSuite;
+	
+			EDE3REF.SetPlayerTeammate 0;
+			EDE3REF.RemoveFromFaction FollowerFaction;
+			EDE3REF.SetActorValue Assistance 0;
+			EDE3REF.RemovePerk CompanionSuite;
+	
+			Set EDE1REF.Waiting to 0;
+			Set EDE2REF.Waiting to 0;
+			Set EDE3REF.Waiting to 0;
+			Set VNPCFollowers.bEDEHired to 0;
+			Set VNPCFollowers.bEDEFired to 1;
+			Set VNPCFollowers.bEDEL38 to 0;
+
+			set RASMControllerQuest.edeAtFreeside to 0
+			set RASMControllerQuest.edeAtNewVegas to 0
+			set RASMControllerQuest.edeAtWestSide to 0
+			set RASMControllerQuest.edeAtLong15 to 0
+			set RASMControllerQuest.edeAtNovac to 0
+	
+			; Reset ED-E's aggresion in case he got frenzied.
+			EDE1REF.SetActorValue Aggression 0;
+			EDE2REF.SetActorValue Aggression 0;
+			EDE3REF.SetActorValue Aggression 0;
+		
+			Player.RemovePerk EnhancedSensors;
+			ShowMessage FollowerMessagePerkEDERemove;
+			ShowMessage FollowerMessageLeaveEDE;
+
+			EDE1REF.MoveTo EDEHomeMarker;
+			EDE2Ref.MoveTo EDEHomeMarker;
+			EDE3Ref.MoveTo EDEHomeMarker;
+
+		EndIf
+
+		Set VNPCFollowers.bPlayerHasFollower to 0;
+		Set VNPCFollowers.nCurrentFollowers to 0;
+
+		StopQuest P04CompanionFireQuest;
+
+END

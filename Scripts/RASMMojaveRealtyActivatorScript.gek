@@ -1,0 +1,35 @@
+scn RASMMojaveRealtyActivatorScript
+
+begin OnTriggerEnter player
+	if GetIsReference RASMMojaveRealtyActivatorFreesideREF == 1
+		if GetQuestRunning RASMFreesideApartmentQuest == 1
+			SetObjectiveCompleted RASMFreesideApartmentQuest 10 1
+			CompleteQuest RASMFreesideApartmentQuest
+			RASMMojaveRealtyActivatorFreesideREF.disable
+		endif
+	elseif GetIsReference RASMMojaveRealtyActivatorNewVegasREFb == 1
+		if GetQuestRunning RASMNewVegasHomeQuest == 1
+			SetObjectiveCompleted RASMNewVegasHomeQuest 10 1
+			CompleteQuest RASMNewVegasHomeQuest
+			RASMMojaveRealtyActivatorNewVegasREFb.disable
+		endif
+	elseif GetIsReference RASMMojaveRealtyActivatorWestSideREF == 1
+		if GetQuestRunning RASMWestSideHomeQuest == 1
+			SetObjectiveCompleted RASMWestSideHomeQuest 10 1
+			CompleteQuest RASMWestSideHomeQuest
+			RASMMojaveRealtyActivatorWestSideREF.disable
+		endif
+	elseif GetIsReference RASMMojaveRealtyActivatorNovacREF == 1
+		if GetQuestRunning RASMNovacShackQuest == 1
+			SetObjectiveCompleted RASMNovacShackQuest 10 1
+			CompleteQuest RASMNovacShackQuest
+			RASMMojaveRealtyActivatorNovacREF.disable
+		endif
+	elseif GetIsReference RASMMojaveRealtyActivatorLong15REF == 1
+		if GetQuestRunning RASMLong15TrailerQuest == 1
+			SetObjectiveCompleted RASMLong15TrailerQuest 10 1
+			CompleteQuest RASMLong15TrailerQuest
+			RASMMojaveRealtyActivatorLong15REF.disable
+		endif
+	endif
+end

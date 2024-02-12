@@ -1,0 +1,28 @@
+scn RASMNellisExplodingAntScript
+; just a version of the exploding ant script that doesn't factor the "quest" ants
+
+ref ant
+int doonce
+int antcounter
+int iLightmyfire
+
+begin OnHitWith ExplodesGasTrapsOnHit
+
+	if GetHealthPercentage <= .5
+		set iLightmyfire to 1
+	endif
+
+	if doonce == 0 && getdead == 0
+		if GetHealthPercentage <= .1
+			placeatme NellisAntExplosion
+			set doonce to 1
+		endif
+	endif
+end
+
+begin OnDeath
+	if doonce == 0 && iLightmyfire == 1
+		placeatme NellisAntExplosion
+		set doonce to 1
+	endif
+end

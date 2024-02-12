@@ -1,0 +1,9 @@
+scn RASMFoodHitChanceEffect
+
+begin ScriptEffectStart
+	player.addPerk RASMFoodHitChancePerk
+end
+
+begin ScriptEffectFinish
+	player.removePerk RASMFoodHitChancePerk
+end

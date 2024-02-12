@@ -1,0 +1,20 @@
+scn RASMCropBananaYuccaScript
+
+int State
+
+begin onActivate
+	if State == 0 && GetActionRef == player
+		player.additem NVFreshBananaYuccaFruit 1
+		set State to 1
+		playGroup Forward 1
+		setdestroyed 1
+	endif
+end
+
+begin onLoad
+	if State == 0
+		playGroup Backward 1
+	elseif State == 1
+		playGroup Forward 1		
+	endif
+end

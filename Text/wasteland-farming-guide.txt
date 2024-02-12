@@ -1,0 +1,27 @@
+The Wasteland Guide to Farming in the Mojave
+
+by Bishop Johnson
+
+Growing crops requires three main components that we'll discuss in more detail below:
+
+1) Personal property with a farm or planter.
+2) Sufficient water.
+3) Fertilizer.
+
+As a most respected property dealer in the Mojave, I am happy to assist in finding a home that meets your budget and personal needs. Visit Mojave Realty in Freeside to learn more about our current offerings.
+
+Once you've settled in to your property, find the planter or farm. Activate a crop region and choose the crop you want to plant. Only plants you have on-hand will be available.
+
+Locate the water reservoir near the area, as well as the fertilizer feed. Activate the water reservoir and transfer sufficient water. You can use purified or dirty water, but the dirty water will deplete twice as fast.
+
+Fertilizer is a precious resource in the Mojave. It can be crafted at a standard cooking station with sufficient Survival skills (50). You can use spoiled meat or Brahmin dung to make fertilizer in this manner.
+
+Those more scientifically inclined (Science skill of 35) can also make fertilizer at a chem lab using Brahmin Dung. I recommend reading the Wasteland Guide to Crafting in the Mojave for more information on crafting.
+
+I hear there's a Brahmin trader just south of the 188 that breeds good stock. If a man's real serious about farming, he'd probably want to get a herd of Brahmin or two to have a reliable source of fertilizer.
+
+Roughly once every 24 hours your plants will attempt a growth check based on your survival skill and luck. The more adept your Survival skills, the more likely your plant is to produce a crop.
+
+If a crop succeeds in a growth check, it checks to make sure your property's water reservoir has water. It also checks your fertilizer feed.
+
+If the crop finds water AND fertilizer, it will produce a crop. It has at 75% chance of consuming a water, and a 50% chance of consuming a fertilizer, but it MUST have fertilizer or water available to grow. Keep your reservoir and fertilizer feed well stocked to ensure your crops will grow.

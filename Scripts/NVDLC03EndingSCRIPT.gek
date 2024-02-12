@@ -1,0 +1,237 @@
+ScriptName NVDLC03EndingSCRIPT
+
+
+; Ending slide dialogue.
+; JSH 12/10/10
+; OMP 01/07/2011 - Apply NVDLC03RestUp to player.
+; OMP 01/18/2011 - Added a call to set the nRunScript variable in NVDLC03SlideShowTriggerREF to run the Ending Slide sequence.
+; OMP 02/24/2011 - Added code to handle switching slides.
+; OMP 03/04/2011 - Added code to track player progress on discovering secondary locations and Sink module installations.
+; OMP 03/30/2011 - Set the Stealth Suit bOverride var to prevent it from talking during the movie.
+; OMP 04/28/2011 - Removed the Set bOverride call since we're now using the new function to prevent suit barks.
+
+
+Short	bEndingStarted;																	; Make sure the script runs once only
+Short	bCheckSinkBuddies;																; Used to loop through the Sink Buddy topics, if any
+Int		nLastBuddyShown;																; Holds the last Sink Buddy topic shown
+Short	nBuddiesUnlockedCount;														; Used to determine how many Sink Buddies the player unlocked
+Short	nLocationsFoundCount;															; Used to determine how many secondary locations the player has discovered
+
+
+BEGIN GameMode
+
+	If (bEndingStarted == 0)
+
+		Set bEndingStarted to 1;
+
+		; RASM clearing flag now that player is not stuck in DLC
+		set RASMPlayerControllerQuest.playerStuckInDLC to 0
+
+		; Check all the Sink Buddies to see how many were installed
+		If ( NVDLC03DialogueHQBuddies.bAutodocUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bBiologyUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bBookChuteUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bJukeboxUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bLightSwitch01Unlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bLightSwitch02Unlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bMuggyUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bSinkBuddyUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+		If ( NVDLC03DialogueHQBuddies.bToasterUnlocked == 1 )
+			Set nBuddiesUnlockedCount To ( nBuddiesUnlockedCount + 1 );
+		EndIf
+
+		; Check all the secondary locations the player discovered
+		If ( NVDLC03SLArtilleryLandingMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLArtilleryLaunchMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLBotanicalMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLCazadorMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLChemicalMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03CommMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLConstructionMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLCuckoosNestMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLDisintegrationMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03ElijahsWatchMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLHazmatMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLHexMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLHologramMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03LittleYangtzeMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLLoadingMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03MedCenterMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03MagnetohydraulicsMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLNightstalkerMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLRuinsMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLSaturniteMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLSecuritronMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLTunnelEastMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03NorthTunnelMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLTunnelWestMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLUlyssesPointMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLVillageMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03SLWeatherStationMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+		If ( NVDLC03X12MapMarker.GetMapMarkerVisible == 2 )
+			Set nLocationsFoundCount To ( nLocationsFoundCount + 1 );
+		EndIf
+
+		RemoveImageSpaceModifier FriendOfTheNightInteriorISFX;
+		RemoveImageSpaceModifier FriendOfTheNightISFX;
+		StopQuest DisguiseFactionPulseQuest;										; Turn off disguise notifications
+
+		Player.DispelAllSpells;															; Removes all chem effects
+		Player.CastImmediateOnSelf NVDLC03RestUp;							; Restore the player's Dehydration, Sleep Deprivation, and Starvation
+		;PipBoyRadioOff;																	; Turn off PipBoy radio
+		Player.ResetHealth;																; Heal the player
+
+		PlayMusic EndSlideShow;
+
+		SetInCharGen 1;																	; Prevent level up screen from firing
+		Player.AddScriptPackage NVDLC03PlayerNoSavePackage;				; Prevent player from saving the game
+		DisablePlayerControls 1 1 1 1 1 1 1;											; Prevent player from doing anything
+
+		Set NVDLC03SlideShowTriggerREF.nRunScript To 1;						; Set up the slide show trigger to run the ending
+		Player.MoveTo NVDLC03SlideShowMarkerREF;							; Send the player to the "theatre" to start the slide show
+
+	EndIf
+
+	If ( bCheckSinkBuddies == 1 )
+
+		Set bCheckSinkBuddies To 0;
+
+		PlaySound OBJProjectorGOATNext;
+		ApplyImageSpaceModifier FadeToBlackAndBackQuickHalfsISFX;
+
+		; Biological Research Station
+		If ( nLastBuddyShown < 1 && NVDLC03SinkBioResearchStationREF.bBiologyUnlocked == 1 )
+
+			Set nLastBuddyShown To 1;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipBioResearch;
+
+		; Book Chute
+		ElseIf ( nLastBuddyShown < 2 && NVDLC03SinkBookChuteREF.bBookChuteUnlocked == 1 )
+
+			Set nLastBuddyShown To 2;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipBookChute;
+
+		; Light Switches
+		ElseIf ( nLastBuddyShown < 3 && NVDLC03SinkLightSwitch01REF.bLightSwitch01Unlocked == 1 && NVDLC03SinkLightSwitch02REF.bLightSwitch02Unlocked == 1 )
+
+			Set nLastBuddyShown To 3;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipLightSwitches;
+
+		; Sink
+		ElseIf ( nLastBuddyShown < 4 && NVDLC03DialogueHQBuddies.bSinkBuddyUnlocked == 1 )
+
+			Set nLastBuddyShown To 4;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipSink;
+
+		; Toaster
+		ElseIf ( nLastBuddyShown < 5 && NVDLC03SinkToasterOfDoomREF.bToasterUnlocked == 1 )
+
+			Set nLastBuddyShown To 5;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipToaster;
+
+		; Muggy
+		ElseIf ( nLastBuddyShown < 6 && NVDLC03MuggyREF.bMuggyUnlocked == 1 )
+
+			Set nLastBuddyShown To 6;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipMuggy;
+
+		; Jukebox
+		ElseIf ( nLastBuddyShown < 7 && NVDLC03DialogueHQBuddies.bJukeboxUnlocked == 1)
+
+			Set nLastBuddyShown To 7;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipJukebox;
+
+		; Auto-Doc
+		ElseIf ( nLastBuddyShown < 8 && NVDLC03SinkAutoDocREF.bAutoDocUnlocked == 1 )
+
+			Set nLastBuddyShown To 8;
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideChipAutoDoc;
+
+		; Done with buddies or none to display, move on to X-8
+		Else
+
+			NVDLC03NarratorREF.SayTo Player NVDLC03EndingSlideX8;
+
+		EndIf
+
+	EndIf
+
+END

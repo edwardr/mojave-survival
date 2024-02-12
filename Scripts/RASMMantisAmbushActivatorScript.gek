@@ -1,0 +1,33 @@
+scn RASMMantisAmbushActivatorScript
+
+begin OnTriggerEnter player
+	print "player enter"
+	if GetIsReference RASMMantisAmbushActivatorREF1 == 1
+		RASMMantisAmbushREF1.enable
+		RASMMantisAmbushREF2.enable
+		RASMMantisAmbushREF3.enable
+		RASMMantisAmbushREF4.enable
+		RASMMantisAmbushREF5.enable
+		RASMMantisAmbushREF6.enable
+		RASMMantisAmbushREF7.enable
+		RASMMantisAmbushREF8.enable
+
+		RASMMantisAmbushREF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF6.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF7.AddPackageAt RASMGenericAttackPlayerPackage 0
+		RASMMantisAmbushREF8.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+		RASMMantisAmbushREF1.evp
+		RASMMantisAmbushREF2.evp
+		RASMMantisAmbushREF3.evp
+		RASMMantisAmbushREF4.evp
+		RASMMantisAmbushREF5.evp
+		RASMMantisAmbushREF6.evp
+		RASMMantisAmbushREF7.evp
+		RASMMantisAmbushREF8.evp
+	endif
+end

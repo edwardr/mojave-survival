@@ -1,0 +1,8 @@
+scn RASMGojiraBattleActivatorScript
+
+begin OnTriggerEnter player
+	setStage RASMGojiraQuest 50
+	RASMGojiraBattleActivatorREF.disable
+	RASMGojiraInteriorEntranceDoorREF.disable
+	RASMGojiraInteriorExitDoorREF.enable
+end

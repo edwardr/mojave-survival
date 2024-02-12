@@ -1,0 +1,8 @@
+scn RASMWeapMineFragScript
+; unused tests
+ref self
+begin OnLoad
+	Set self to GetSelf
+	Self.PMS AlienCritGlowFXShader
+	ShowWarning "Effect Started."
+end

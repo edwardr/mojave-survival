@@ -1,0 +1,117 @@
+scn NVDLC03ThinkTankDoorSCRIPT
+
+
+; Re-enables all player control when he leaves the Think Tank. Normally, he can't draw weapons while within the Think Tank until the end of the game.
+; JSH 01/12/11
+; JSH 02/07/11 - Time set to 7 AM the first time the player goes into the floor of the Big Empty if it's not already 7 AM or later.
+; JSH 03/03/11 - Added ridiculous workaround for image space persisting through load.
+; OMP 03/07/2011 - Changed the code to start the Ending Slide sequence to use the proper method.
+; OMP 03/08/2011 - Moved the MQ05 SetStage call to NVDLC03TransitionToTheSinkSCRIPT.
+; JSH 04/06/11 - Reset the AI of the brain bots if they hate the player and player flees the area.
+
+
+BEGIN OnActivate
+
+	If ( IsActionRef Player == 1 )
+
+		If ( NVDLC03DoctorKleinREF.GetFactionRelation Player == 1 )			; Enemy of Player.
+
+			NVDLC03DoctorKleinREF.ResetAI;
+			NVDLC03DoctorDalaREF.ResetAI;
+			NVDLC03DoctorBorousREF.ResetAI;
+			NVDLC03DoctorOREF.ResetAI;
+			NVDLC03Doctor8REF.ResetAI;
+
+		EndIf
+
+		; Reset the Docs' health, if not dead.
+		If ( NVDLC03DoctorKleinREF.GetDead == 0 ) && ( NVDLC03DoctorKleinREF.GetHealthPercentage < 1.0 )
+			NVDLC03DoctorKleinREF.ResetHealth;
+		EndIf
+		
+		If ( NVDLC03DoctorDalaREF.GetDead == 0 ) && ( NVDLC03DoctorDalaREF.GetHealthPercentage < 1.0 )
+			NVDLC03DoctorDalaREF.ResetHealth;
+		EndIf
+
+		If ( NVDLC03DoctorBorousREF.GetDead == 0 ) && ( NVDLC03DoctorBorousREF.GetHealthPercentage < 1.0 )
+			NVDLC03DoctorBorousREF.ResetHealth;
+		EndIf
+
+		If ( NVDLC03DoctorOREF.GetDead == 0 ) && ( NVDLC03DoctorOREF.GetHealthPercentage < 1.0 )
+			NVDLC03DoctorOREF.ResetHealth;
+		EndIf
+
+		If ( NVDLC03Doctor8REF.GetDead == 0 ) && ( NVDLC03Doctor8REF.GetHealthPercentage < 1.0 )
+			NVDLC03Doctor8REF.ResetHealth;
+		EndIf
+
+		; Restore blue image space if not at proper quest stage - red image space was persisting through load.
+		If ( GetStageDone NVDLC03MQ05 50 == 0 ) || ( GetStageDone NVDLC03MQ05 100 == 1 )
+
+			SetCellImageSpace NVDLC03ThinkTank NVDLC03ThinkTankImageSpace;
+
+		EndIf
+
+		If ( GetStageDone NVDLC03MQ05 70 == 1 ) && ( NVDLC03MQ05.bEndingStarted == 0 )
+
+			If ( IsPlayerActionActive 9 == 1 ) || ( Player.IsSneaking == 1 )				; Iron Sights mode or crouched.
+				ShowMessage MQ05CantUseNowMessage;
+				Return;
+			EndIf
+		
+			Set NVDLC03MQ05.bEndingStarted to 1;
+
+			PipBoyRadioOff;
+			; RASM vanilla hardcore mode crash here if fod > 0
+			player.forceActorValue hunger 0
+			Set NVDLC03SlideShowTriggerREF.nRunScript To 1;							; Set the trigger to start the Ending Slide sequence
+			StartQuest NVDLC03Ending;														; Initialize The Show
+
+			Return;
+
+		EndIf		
+
+		If ( NVDLC03MQ01.bTimeSet == 0 )
+
+			Set NVDLC03MQ01.bTimeSet to 1;
+
+			If ( GameHour <= 7 )
+				Set GameHour to 7;
+			Else
+				Set GameHour to 7;
+				Set GameDay to ( GameDay + 1 );
+
+				; Adjust date to correct calendar date if necessary.
+				If ( GameMonth == 4 ) || ( GameMonth == 6 ) || ( GameMonth == 9 ) || ( GameMonth == 11 )
+
+    					If ( GameDay > 30 )
+          				Set GameMonth to (GameMonth + 1);
+         					Set GameDay to ( GameDay - 30 );
+     				ElseIf ( GameMonth == 12 )
+						If ( GameDay > 31 )
+							Set GameYear to ( GameYear + 1 );
+							Set GameMonth to 1;
+							Set GameDay to ( GameDay - 31 );
+						EndIf
+					ElseIf ( GameMonth == 2 )
+						If ( GameDay > 28 )
+	     					Set GameYear to ( GameYear + 1 );
+	      					Set GameMonth to 1;
+	     					Set GameDay to ( GameDay - 28 );
+						EndIf
+					Else
+      					If ( GameDay > 31 )
+          					Set GameMonth to ( GameMonth + 1 );
+          					Set GameDay to ( GameDay - 31 );
+     					EndIf
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+
+		EnablePlayerControls;
+		Activate;
+	
+	EndIf
+
+END

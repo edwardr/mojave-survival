@@ -1,0 +1,159 @@
+scn RoseofSharonCassidyScript
+
+int Waiting			
+
+int CombatStyleMelee
+int CombatStyleRanged
+int IsFollowingDefault
+int IsFollowingLong
+int FollowerSwitchAggressive
+
+; RASM - some setup to use antivenom and stimpaks
+short healCheckTimerStart
+float healCheckTimer
+short iteration
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin GameMode
+	if GetPlayerTeammate == 1
+		if RoseofSharonCassidyREF.isInCombat == 1
+			if healCheckTimerStart == 0 
+				set healCheckTimer to 10
+				set healCheckTimerStart to 1
+			else
+				if healCheckTimer >= 0
+					set healCheckTimer to healCheckTimer - getSecondsPassed
+				else
+					if RoseofSharonCassidyREF.GetHealthPercentage <= 0.50
+						if RoseofSharonCassidyREF.getItemCount stimpak >= 1
+							RoseofSharonCassidyREF.equipItem stimpak
+						endif
+					endif
+					if RoseofSharonCassidyREF.getIsPoisoned == 1
+						if RoseofSharonCassidyREF.getItemCount NVAntivenom >= 1
+							RoseofSharonCassidyREF.equipItem NVAntivenom
+						endif
+					endif
+
+					set healCheckTimerStart to 0
+				endif
+			endif
+		endif
+	endif
+end
+
+begin OnDeath
+
+	if VNPCFollowers.bCassHired == 1
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.bCassHired to 0
+		set VNPCFollowers.bHumanoidInParty to 0
+		ShowMessage FollowerMessageDeadCass
+		player.RemovePerk WhiskeyRose
+		ShowMessage FollowerMessagePerkCassRemove
+	endif
+
+	; If you're on Cass' companion quest, update the quest to fail
+	If getstage vCassCompanion >= 0
+		SetStage VCassCompanion 110
+	endif
+
+	; If you've been tasked with killing Cass, update the quest
+	if GetObjectiveDisplayed VMS29a 40 == 1 && GetObjectiveCompleted VMS29a 40 == 0
+		SetObjectiveCompleted VMS29a 40 1
+		SetObjectiveDisplayed VMS29a 46 1
+	endif
+
+	; If the player has not gone to see Alice McLafferty and asked where Cass is,
+	; hide that objective
+	if GetObjectiveDisplayed VMS29a 41 == 1 && GetObjectiveCompleted VMS29a 41 == 0
+		SetObjectiveDisplayed VMS29a 41 0
+	endif
+
+	; VMS05 - player was sent by Alice McLafferty to negotation with Cass
+	if (GetObjectiveDisplayed VMS05 30) && (GetObjectiveCompleted VMS05 30 == 0)
+		SetObjectiveDisplayed VMS05 30 0
+		SetObjectiveDisplayed VMS05 36 1
+	endif
+
+	set VNPCFollowers.bCassDead to 1
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnCombatEND
+
+	if GetPlayerTeammate == 1
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+		if RoseofSharonCassidyREF.getIsPoisoned == 1
+			if RoseofSharonCassidyREF.getItemCount NVAntivenom >= 1
+				RoseofSharonCassidyREF.equipItem NVAntivenom
+			endif
+		endif
+
+		if GetRandomPercent >= 75
+			if RoseofSharonCassidyREF.getItemCount Whiskey >= 1
+				RoseofSharonCassidyREF.equipItem Whiskey
+			endif
+		endif
+	endif
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnHit VFSJeanBaptisteCuttingREF
+
+	; If the player has the objective to bring Cass back to Jean-Baptiste, when he shoots
+	; her she disintegrates
+	if GetObjectiveDisplayed VMS29a 45 == 1 || GetObjectiveDisplayed VMS29a 36 == 1 && VFSJeanBaptisteCuttingREF.IsInCombat == 0
+
+		; Removing Cass from factions so she actually dies in non-hardcore mode
+		RoseOfSharonCassidyREF.RemoveFromAllFactions
+		RoseOfSharonCassidyREF.SetPlayerTeammate 0
+
+		; Kill Cass, and disintegrate her
+		kill
+		CIOS LaserDisintegrationFXSpell
+
+		; Update quest
+		SetObjectiveCompleted VMS29a 36 1	; In case player had Cass already
+		SetObjectiveCompleted VMS29a 45 1
+
+		; If the player tried to defend Cass, Jean-Baptiste attacks after killing Cass
+		if VMS29a.JeanBaptistePissed == 1
+			SetEnemy VanGraffFaction PlayerFaction
+			EnablePlayerControls
+		else
+			; Need to pause to let Cass disintegrate before JB talks to the player
+			set VFSSilverRushCassKillingTriggerREF.CassKilled to 1
+			;VFSJeanBaptisteCuttingREF.StartConversation player
+		endif
+		
+	endif
+
+end
+
+
+
+
+BEGIN OnLoad
+
+	;Script to make sure we set the right combat style on loading.
+	If (CombatStyleMelee == 1)
+		RoseofSharonCassidyREF.SetCombatStyle FollowersCombatStyleMelee;
+	Else
+		RoseofSharonCassidyREF.SetCombatStyle FollowersCombatStyleRanged;
+	EndIf
+
+END

@@ -1,0 +1,5 @@
+scn RASMCookStoveScript
+
+begin OnActivate
+	PlayerREF.ShowRecipeMenu
+end

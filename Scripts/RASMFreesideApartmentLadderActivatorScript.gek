@@ -1,0 +1,5 @@
+scn RASMFreesideApartmentLadderActivatorScript
+
+begin OnActivate
+	;RASMFreesideApartmentLadderREF.activate
+end

@@ -1,0 +1,13 @@
+scn RASMMojaveRealtyCrierTriggerScript
+
+begin OnTriggerEnter player
+
+	if RASMMojaveRealtyCrierREF.GetDead == 0
+		if RASMMojaveRealtyCrierREF.IsTalking == 0
+			if RASMMojaveRealtyCrierREF.IsInCombat == 0
+				RASMMojaveRealtyCrierREF.Say RASMMojaveRealtyCrierBarks
+			endif
+		endif
+	endif
+
+end

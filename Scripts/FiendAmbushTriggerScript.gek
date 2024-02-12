@@ -1,0 +1,17 @@
+scn FiendAmbushTriggerScript
+
+short bDoOnce
+
+begin OnTriggerEnter player
+
+	if bDoOnce == 0
+		FiendAmbusher01Ref.enable
+		FiendAmbusher02Ref.enable
+		FiendAmbusher03Ref.enable
+		; RASM enable additional fiend
+		FiendAmbusher04Ref.enable
+		FiendMineRef.enable
+		set bDoOnce to 1
+	endif
+		
+end

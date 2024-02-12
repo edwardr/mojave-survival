@@ -1,0 +1,55 @@
+ScriptName NVDLC02IntroSlidesSCRIPT
+
+
+; Sets up the player for the Intro Slide sequence
+; OMP 01/03/2011
+; OMP 01/06/2011 - Added code to be able to bypass the Intro Slide sequence.
+; OMP 01/31/2011 - Renamed the script to follow the new quest it's attached to; changed the StopQuest call to the new intro quest.
+; OMP 02/21/2011 - Added radio disabling code from NVDLC02MojaveDoorSCRIPT.
+
+
+Short	bSlideShowStarted;																; Used to run this script only once.
+Short	bSkipIntro;																			; Variable added to bypass the Intro Slide sequence (for quicker testing).
+Ref	rVCountryRadio;																	; Variable to hold ref of NV's country radio.
+
+
+BEGIN GameMode
+
+	If ( bSlideShowStarted == 0 )														; Has the initialization run yet?
+
+		If ( bSkipIntro == 1 )																; Do we want to skip the Intro Slide sequence?
+
+			SetStage NVDLC02MQ00 100;												; Complete the Caravan Master quest
+
+			StopQuest NVDLC02IntroSlides;											; Stop the NVDLC02Intro quest since we're done
+
+		Else
+			Set bSlideShowStarted To 1;												; Prevent the script from running again.
+
+			Player.DispelAllSpells;														; Removes all chem effects.
+			Player.CastImmediateOnSelf NVDLC02RestUp;						; Restore the player's Dehydration, Sleep Deprivation, and Starvation
+			Player.ResetHealth;															; Heal the player.
+			PipBoyRadioOff;																; Turn off PipBoy radio.
+
+			; Turn off NV radios
+			RNVTARef.Disable;
+			RadioBlackMountainTAREF.Disable;
+			Set rVCountryRadio To NVDLC02CountryRadioMarkerREF.GetLinkedREF;
+			rVCountryRadio.Disable;
+			Set NVDLC02ZionToMojaveDoorREF.bNVRadiosOff To 1;
+
+			PlayMusic NVDLC02SlideShowMusicIntro;								; Play music during Intro slides.
+
+			SetInCharGen 1;																; Keep the player from leveling during the show
+			Player.AddScriptPackage NVDLC02PlayerNoSavePackage;			; Prevent the player from saving the game
+			DisablePlayerControls 1 1 1 1 1 1 1;										; Prevent the player from doing anything.
+
+			Player.MoveTo NVDLC02SlideShowMarkerREF;						; Send the player to the "Theatre" AKA NVDLC02SlideShow interior.
+
+			; RASM player is stuck in DLC until finished.
+			set RASMPlayerControllerQuest.playerStuckInDLC to 1
+		EndIf
+
+	EndIf
+
+END

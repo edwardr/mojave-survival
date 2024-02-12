@@ -1,0 +1,147 @@
+scn VeronicaSCRIPT
+
+short 	HasBeenHired
+short	WeaponOut
+short	CombatStyleRanged
+short	CombatStyleMelee
+short	IsFollowingDefault
+short	IsFollowingShort
+short	IsFollowingLong
+short FollowerSwitchAggressive			; 0 = Passive (wait for player), 1 = Aggressive (attack when see enemy)
+short	Waiting
+short	DoOnce
+short bLoadedOnce;
+short bTalking;
+short bIntercomConversationActive;
+
+; RASM - some setup to use antivenom and stimpaks
+short healCheckTimerStart
+float healCheckTimer
+short iteration
+
+; DRESS TRACKING!!!
+short bCheckedOnce;
+float fLastCheckHour;
+short nLastCheckDay;
+short nLastDressCount;
+short nDressCount;
+short bGottenULDress;
+
+Begin OnLoad
+;	set up base stats
+	if (bLoadedOnce == 0)
+		SetActorValue sneak 100;
+		set bLoadedOnce to 1;
+		evp
+		EquipItem WeapPowerFistVeronica
+	endif
+
+	;Script to make sure we set the right combat style on loading.
+	If (CombatStyleRanged == 1)
+		VeronicaREF.SetCombatStyle FollowersCombatStyleRanged;
+	Else
+		VeronicaREF.SetCombatStyle FollowersCombatStyleMelee;
+	EndIf
+
+
+End
+
+begin GameMode
+	if GetPlayerTeammate == 1
+	if VeronicaREF.isInCombat == 1
+		if healCheckTimerStart == 0 
+			set healCheckTimer to 10
+			set healCheckTimerStart to 1
+		else
+			if healCheckTimer >= 0
+				set healCheckTimer to healCheckTimer - getSecondsPassed
+			else
+				if VeronicaREF.GetHealthPercentage <= 0.50
+					if VeronicaREF.getItemCount stimpak >= 1
+						VeronicaREF.equipItem stimpak
+					endif
+				endif
+				if VeronicaREF.getIsPoisoned == 1
+					if VeronicaREF.getItemCount NVAntivenom >= 1
+						VeronicaREF.equipItem NVAntivenom
+					endif
+				endif
+
+				set healCheckTimerStart to 0
+			endif
+		endif
+	endif
+	endif
+end
+
+; moved to OnLoad. - EPF 6/24/10
+;BEGIN GameMode
+;
+;	if ( DoOnce == 0 )
+;		if ( GetDistance Player <= 1400 )
+;			set DoOnce to 1
+;			
+;		endif
+;	endif
+;
+;END
+
+BEGIN OnActivate player
+	if (bTalking == 0)
+		Activate;
+	endif
+END
+
+BEGIN OnCombatEND
+	if ( GetPlayerTeammate == 1 )
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+		if VeronicaREF.getIsPoisoned == 1
+			if VeronicaREF.getItemCount NVAntivenom >= 1
+				VeronicaREF.equipItem NVAntivenom
+			endif
+		endif
+	endif
+END
+
+BEGIN OnDeath
+	if ( VNPCFollowers.bVeronicaHired == 1  )
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		set VNPCFollowers.bHumanoidInParty to 0;
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.bVeronicaHired to 0
+		ShowMessage FollowerMessageDeadVeronica
+		player.RemovePerk ScribeAssistant
+		ShowMessage FollowerMessagePerkVeronicaRemove
+	endif
+	
+	set VNPCFollowers.bVeronicaDead to 1
+END
+
+
+
+; track in here to see if the player gives Veronica a dress.
+BEGIN MenuMode 1008; container
+	if (GameHour > fLastCheckHour || GameDaysPassed > nLastCheckDay)
+		set fLastCheckHour to GameHour;
+		set nLastCheckDay to GameDaysPassed;
+
+		Set nDressCount to GetItemCount SkirtOutfits;
+		if (nLastDressCount < nDressCount)
+			if (bGottenULDress == 0 && (GetItemCount OutfitFormalWear > 0 || GetItemCount ArmorWhiteGloveSociety > 0))
+				set VMS49.bDressReactionPending to 1;
+				EVP;
+			else
+				SayTo player VDialogueVeronicaDressAcquire;
+			endif
+		endif
+		set nLastDressCount to nDressCount;
+	endif
+END

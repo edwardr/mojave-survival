@@ -1,0 +1,62 @@
+scn RASMWantedManScript
+
+int cycles
+int testddd
+
+begin GameMode
+	; 1 cycle = 120sec
+	set cycles to cycles + 1
+
+	print "cycles"
+	print $cycles
+
+	if cycles == 5
+		RASMMojaveRealtyDoorREF.SetOwnership RASMRealtor
+		RASMMojaveRealtyDoorREF.Lock 100
+		RASMMojaveRealtyCrierREF.disable
+		RASMMojaveRealtyClosedSignREF.enable
+
+		RASMMercenaryGroupAREF1.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupAREF2.moveTo RASMMercenarySpawnPointREF
+
+		RASMMercenaryGroupAREF1.AddPackageAt RASMercenaryChasePackage 0
+		RASMMercenaryGroupAREF2.AddPackageAt RASMercenaryChasePackage 0
+
+		RASMMercenaryGroupAREF1.evp
+		RASMMercenaryGroupAREF2.evp
+	elseif cycles == 20
+		RASMMercenaryGroupBREF1.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupBREF2.moveTo RASMMercenarySpawnPointREF
+
+		RASMMercenaryGroupBREF1.AddPackageAt RASMercenaryChasePackage 0
+		RASMMercenaryGroupBREF2.AddPackageAt RASMercenaryChasePackage 0
+
+		RASMMercenaryGroupBREF1.evp
+		RASMMercenaryGroupBREF2.evp
+	elseif cycles == 40
+		RASMMercenaryGroupCREF1.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupCREF2.moveTo RASMMercenarySpawnPointREF
+
+		RASMMercenaryGroupCREF1.AddPackageAt RASMercenaryChasePackage 0
+		RASMMercenaryGroupCREF2.AddPackageAt RASMercenaryChasePackage 0
+
+		RASMMercenaryGroupCREF1.evp
+		RASMMercenaryGroupCREF2.evp
+	elseif cycles == 55
+		RASMMercenaryGroupDREF1.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupDREF2.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupDREF3.moveTo RASMMercenarySpawnPointREF
+
+		RASMMercenaryGroupDREF1.AddPackageAt RASMercenaryChasePackage 0
+		RASMMercenaryGroupDREF2.AddPackageAt RASMercenaryChasePackage 0
+		RASMMercenaryGroupDREF3.moveTo RASMMercenarySpawnPointREF
+
+		RASMMercenaryGroupDREF1.evp
+		RASMMercenaryGroupDREF2.evp
+	elseif cycles == 75
+		RASMMercenaryGroupLeaderREF.moveTo RASMMercenarySpawnPointREF
+		RASMMercenaryGroupLeaderREF.AddPackageAt RASMercenaryLeaderPackage 0
+		RASMMercenaryGroupLeaderREF.evp
+	endif
+
+end

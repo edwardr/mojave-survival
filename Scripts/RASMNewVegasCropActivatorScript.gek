@@ -1,0 +1,253 @@
+scn RASMNewVegasCropActivatorScript
+
+short button
+ref activeMenu
+ref cropActivator
+ref selectedPlant
+ref seedItem
+ref activeCrop
+
+string_var slotIndex
+array_var cropSlotsA
+array_var cropSlotsB
+array_var entry
+ref loopSlot
+
+int foundActivatorCrop
+
+begin OnActivate
+	if RASMControllerQuest.playerBoughtNewVegasHome == 0
+		ShowMessage RASMPurchaseProperty
+		return
+	endif
+
+	set cropActivator to GetSelfAlt
+
+	ShowMessage RASMCropInterface
+	set activeMenu to RASMCropInterface
+
+	let cropSlotsA := Ar_Map "slot0"::RASMCropActNVREF1, "slot1"::RASMCropActNVREF2, "slot2"::RASMCropActNVREF3, "slot3"::RASMCropActNVREF4, "slot4"::RASMCropActNVREF5, "slot5"::RASMCropActNVREF6, "slot6"::RASMCropActNVREF7, "slot7"::RASMCropActNVREF8, "slot8"::RASMCropActNVREF9, "slot9"::RASMCropActNVREF10, "slot10"::RASMCropActNVREF11,"slot11"::RASMCropActNVREF12
+
+	let cropSlotsB := Ar_Map "slot12"::RASMCropActNVREF13, "slot13"::RASMCropActNVREF14, "slot14"::RASMCropActNVREF15, "slot15"::RASMCropActNVREF16, "slot16"::RASMCropActNVREF17, "slot17"::RASMCropActNVREF18, "slot18"::RASMCropActNVREF19, "slot19"::RASMCropActNVREF20, "slot20"::RASMCropActNVREF21, "slot21"::RASMCropActNVREF22, "slot22"::RASMCropActNVREF23,"slot23"::RASMCropActNVREF24
+end
+
+begin GameMode
+	set button to GetButtonPressed
+
+	; Menu 1
+	if activeMenu == RASMCropInterface
+		if button == 0
+			set selectedPlant to 0
+			set seedItem to 0
+		elseif button == 1
+			; remove plant
+			set selectedPlant to 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			;if eval (Ar_Find cropActivator, cropSlots) != Ar_BadStringIndex
+				;print cropActivator
+			;endif
+
+			foreach entry <- cropSlotsA
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					set foundActivatorCrop to 1
+					SetVariable $slotIndex, 0, RASMNewVegasFarming
+				endif
+			loop
+
+			if foundActivatorCrop == 0
+				set slotIndex to 0
+				set loopSlot to 0
+
+				foreach entry <- cropSlotsB
+					let slotIndex := entry["key"]
+					let loopSlot := entry["value"]
+					if loopSlot == cropActivator
+						SetVariable $slotIndex, 0, RASMNewVegasFarming
+					endif
+				loop
+			endif
+
+			set foundActivatorCrop to 0
+			set slotIndex to 0
+			set loopSlot to 0
+		elseif button == 2
+			; maize
+			set selectedPlant to RASMCropMaize
+			set seedItem to NVFreshMaize
+		elseif button == 3
+			; mutfruit
+			set selectedPlant to RASMCropMutfruit
+			set seedItem to Mutfruit2
+		elseif button == 4
+			; banana yucca
+			set selectedPlant to RASMCropBananaYucca
+			set seedItem to NVFreshBananaYuccaFruit
+		elseif button == 5
+			; barrel cactus
+			set selectedPlant to RASMCropBarrelCactus
+			set seedItem to NVFreshBarrelCactusFruit
+		elseif button == 6
+			; potato
+			set selectedPlant to RASMCropPotato
+			set seedItem to Potato
+		elseif button == 7
+			; buffalo gourd
+			set selectedPlant to RASMCropBuffaloGourd
+			set seedItem to BuffaloGourdSeed
+		elseif button == 8
+			; broc flower
+			set selectedPlant to RASMCropBrocFlower
+			set seedItem to BrocFlower
+		elseif button == 9
+			ShowMessage RASMCropInterface2
+			set activeMenu to RASMCropInterface2
+			set selectedPlant to 0
+			set seedItem to 0
+		endif
+
+		if selectedPlant != 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			set activeCrop to cropActivator.PlaceAtMe selectedPlant 1
+
+			foreach entry <- cropSlotsA
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					set foundActivatorCrop to 1
+					SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
+					Print $slotIndex + " is " + $activeCrop
+				endif
+			loop
+
+			if foundActivatorCrop == 0
+				set slotIndex to 0
+				set loopSlot to 0
+
+				foreach entry <- cropSlotsB
+				print "B: " + $slotIndex
+				print "B: " + $loopSlot
+					let slotIndex := entry["key"]
+					let loopSlot := entry["value"]
+					if loopSlot == cropActivator
+						SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
+						Print $slotIndex + " is " + $activeCrop
+					endif
+				loop
+			endif
+
+			activeCrop.ModScale -0.5
+			activeCrop.setdestroyed 1
+			activeCrop.disable
+			player.removeItem seedItem 1
+
+			set seedItem to 0
+			set selectedPlant to 0
+			set foundActivatorCrop to 0
+			set slotIndex to 0
+			set loopSlot to 0
+
+			CallAfterSeconds 1 ({} => activeCrop.enable)
+		endif
+
+	; Menu 2
+	; user selects more to go to menu 2. Max list of 10 per menu.
+	elseif activeMenu == RASMCropInterface2
+		if button == 0
+			ShowMessage RASMCropInterface
+			set activeMenu to RASMCropInterface
+			set selectedPlant to 0
+			set seedItem to 0
+		elseif button == 1
+			; coyote tobacco
+			set selectedPlant to RASMCropCoyoteTobacco
+			set seedItem to NVCoyoteTobaccoFruit
+		elseif button == 2
+			; honey mesquite
+			set selectedPlant to RASMCropHoneyMesquite
+			set seedItem to NVFreshHoneyMesquiteFruit
+		elseif button == 3
+			; jalapeno
+			set selectedPlant to RASMCropJalapeno
+			set seedItem to JalapenoPepper
+		elseif button == 4 
+			; nevada agave
+			set selectedPlant to RASMCropNevadaAgave
+			set seedItem to NevadaAgaveFruit
+		elseif button == 5
+			; pinto bean
+			set selectedPlant to RASMCropPinto
+			set seedItem to PintoBeanPod
+		elseif button == 6
+			; prickly pear cactus
+			set selectedPlant to RASMCropPricklyPearCactus
+			set seedItem to PricklyPearCactusFruit
+		elseif button == 7
+			; white horsenettle
+			set selectedPlant to RASMCropWhiteHorseNettle
+			set seedItem to WhiteHorsenettleBerry
+		elseif button == 8
+			; xander root
+			set selectedPlant to RASMCropXanderRoot
+			set seedItem to XanderRoot
+		endif
+
+		if selectedPlant != 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			set activeCrop to cropActivator.PlaceAtMe selectedPlant 1
+
+			foreach entry <- cropSlotsA
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					set foundActivatorCrop to 1
+					SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
+					Print $slotIndex + " is " + $activeCrop
+				endif
+			loop
+
+			if foundActivatorCrop == 0
+				set slotIndex to 0
+				set loopSlot to 0
+
+				foreach entry <- cropSlotsB
+					let slotIndex := entry["key"]
+					let loopSlot := entry["value"]
+					if loopSlot == cropActivator
+						SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
+						Print $slotIndex + " is " + $activeCrop
+					endif
+				loop
+			endif
+
+			activeCrop.ModScale -0.5
+			activeCrop.setdestroyed 1
+			activeCrop.disable
+			player.removeItem seedItem 1
+
+			set seedItem to 0
+			set selectedPlant to 0
+			set foundActivatorCrop to 0
+			set slotIndex to 0
+			set loopSlot to 0
+
+			CallAfterSeconds 1 ({} => activeCrop.enable)
+		endif
+	endif
+end

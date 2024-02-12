@@ -1,0 +1,103 @@
+scn RaulScript
+
+int Waiting							; 0 = Not waiting, 1 = Waiting
+int CombatStyleMelee			; 0 = Not melee, 1= Melee
+int CombatStyleRanged			; 0 = Not ranged, 1 = Ranged
+int IsFollowingDefault			; 0 = Not following default, 1 = Is following default range
+int IsFollowingLong				; 0 = Not following long, 1 = Is following long
+int FollowerSwitchAggressive	; 0 = Passive (wait on player), 1 = Aggressive (attack when see enemies)
+
+; RASM - some setup to use antivenom and stimpaks
+short healCheckTimerStart
+float healCheckTimer
+short iteration
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+begin OnDeath
+
+	if VNPCFollowers.RaulHired == 1
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.RaulHired to 0
+		ShowMessage FollowerMessageDeadRaul
+
+		if VDialogueRaul.RaulUpgrade != 1
+			player.RemovePerk RegularMaintenance
+			ShowMessage FollowerMessagePerkRaulRemove
+		elseif VDialogueRaul.RaulUpgrade == 1
+			player.RemovePerk FullMaintenance
+			ShowMessage FollowerMessagePerkRaulRemoveUpgrade
+		endif
+
+		set VNPCFollowers.bHumanoidInParty to 0
+
+	endif
+
+	set VNPCFollowers.bRaulDead to 1
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin GameMode
+	if GetPlayerTeammate == 1
+		if RaulREF.isInCombat == 1
+			if healCheckTimerStart == 0 
+				set healCheckTimer to 10
+				set healCheckTimerStart to 1
+			else
+				if healCheckTimer >= 0
+					set healCheckTimer to healCheckTimer - getSecondsPassed
+				else
+					if RaulREF.GetHealthPercentage <= 0.50
+						if RaulREF.getItemCount stimpak >= 1
+							RaulREF.equipItem stimpak
+						endif
+					endif
+					if RaulREF.getIsPoisoned == 1
+						if RaulREF.getItemCount NVAntivenom >= 1
+							RaulREF.equipItem NVAntivenom
+						endif
+					endif
+
+					set healCheckTimerStart to 0
+				endif
+			endif
+		endif
+	endif
+end
+
+begin OnCombatEND
+
+	if GetPlayerTeammate == 1
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+		if RaulREF.getIsPoisoned == 1
+			if RaulREF.getItemCount NVAntivenom >= 1
+				RaulREF.equipItem NVAntivenom
+			endif
+		endif
+	endif
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+BEGIN OnLoad
+
+	;Script to make sure we set the right combat style on loading.
+	If (CombatStyleMelee == 1)
+		RaulREF.SetCombatStyle FollowersCombatStyleMelee;
+	Else
+		RaulREF.SetCombatStyle FollowersCombatStyleRanged;
+	EndIf
+
+END

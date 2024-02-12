@@ -1,0 +1,40 @@
+scn vMojaveSCRIPT													; Quest "vMojave" - Name "Can You Find it in Your Heart?" (Kill Critters for Ranger Jackson of Mojave Outpost)
+
+
+short bKnightDiscount												; Player used Confirmed Bachelor to get free repairs from Knight.
+short bLaceyCaravan													; Played one game of Caravan with Lacey.
+short bLaceyMet														; Played talked to Lacey at least once, done to make sure the intro neg fame node doesn't repeat.
+short bJacksonMet													; 0 = Player hasn't spoken to Jackson, ever. 1 = Player spoke to Jackson, referenced in Cass' global dialogue (VDialogueCass).
+short bJacksonEvidence												; 0 = Player didn't give Jackson the evidence, 1 = Did (VCassCompanion), prevents loop.
+
+short bCrittersReady													; 1 = Critters have been enabled - script can now check for their deaths.
+
+int jacksonint
+
+; ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+
+begin GameMode
+
+	if ( bCrittersReady == 1 )
+			; Start checking for Critters to be dead.		
+			; RASM - Adds many more creatures.
+			if (CrRadScorpIvanpahREF.GetDead == 1 && CrRadScorpIvanpah02REF.GetDead == 1 && CrRadScorpIvanpah03REF.GetDead == 1 && CrRadScorpIvanpah04REF.GetDead == 1 && CrRadScorpIvanpah05REF.GetDead == 1 && CrRadScorpIvanpah06REF.GetDead == 1 && CrRadScorpIvanpah07REF.GetDead == 1 && CrRadScorpIvanpah08REF.GetDead == 1 && CrRadScorpIvanpah09REF.GetDead == 1 && CrRadScorpIvanpah10REF.GetDead == 1)
+				if (CrBloatIvanpah01REF.GetDead == 1 && CrBloatIvanpah02REF.GetDead == 1 && CrBloatIvanpah03REF.GetDead == 1 && CrBloatIvanpah04REF.GetDead == 1 && CrBloatIvanpah05REF.GetDead == 1 && CrBloatIvanpah06REF.GetDead == 1 && CrBloatIvanpah07REF.GetDead == 1 && CrBloatIvanpah08REF.GetDead == 1 && CrBloatIvanpah09REF.GetDead == 1 && CrBloatIvanpah10REF.GetDead == 1)
+
+				set bCrittersReady to 0				; Stop checking for Critters to be dead (they all are).
+
+				if ( getStage vMojave == 25 )
+					setobjectivecompleted vMojave 25 1
+					setStage vMojave 35
+					set jacksonint to 1
+				endif
+			endif
+		endif
+	endif
+
+end
+
+; ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+
+; ETB- Script added to on 6/25/10 to address bug id 16086.
+; ETB- Creatures moved from Ivanpah Racetrack area to nearby underpass "canyon" at cell (-16, -22) to avoid interaction with random Giant Ants.

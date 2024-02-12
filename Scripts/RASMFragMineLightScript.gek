@@ -1,0 +1,5 @@
+scn RASMFragMineLightScript
+;ref fragLight
+begin onLoad
+	disable 5
+end

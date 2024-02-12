@@ -1,0 +1,60 @@
+scn RASMRawFoodPoisonEffectSCRIPT
+
+float timerEffect
+int activeEffect
+ref effectTarget
+short hasImmunity
+
+short baseModifier
+short infectionRoll
+short effectRoll
+
+begin ScriptEffectStart
+	set activeEffect to 0
+	set timerEffect to 1
+	set effectTarget to GetSelf
+	if effectTarget.hasPerk RASMRawFoodist
+		hasImmunity = 1
+	else
+		hasImmunity = 0
+	endif
+
+	set baseModifier to PlayerREF.getav endurance + PlayerREF.getav luck + (PlayerREF.getav survival / 2)
+	set baseModifier to (PlayerREF.getav endurance * 2) + (PlayerREF.getav luck * 2) + (PlayerREF.getav survival / 2)
+	PrintC "baseModifier: %g" baseModifier
+	set infectionRoll to GetRandomPercent
+	if infectionRoll < baseModifier
+		set hasImmunity to 1
+	endif
+end
+
+begin ScriptEffectFinish
+	if hasImmunity == 0
+		if effectTarget.GetIsReference player
+			ShowMessage RASMRawFoodRecovery
+		endif
+	endif
+end
+
+begin ScriptEffectUpdate
+	if hasImmunity == 0
+		if timerEffect <= 0
+			if activeEffect <= 0
+				if effectTarget.GetIsReference player
+					ShowMessage RASMRawFoodWarning
+					ApplyImageSpaceModifier RASMRawFoodSFX
+					CastImmediateOnSelf RASMRawFoodPoison
+					set activeEffect to 1
+				endif
+			else
+				if effectTarget.GetIsReference player
+					ShowMessage RASMRawFoodWarning
+					ApplyImageSpaceModifier RASMRawFoodSFX
+				endif
+			endif
+			set timerEffect to 5.0 + 20/99.0 *GetRandomPercent
+		else
+			set timerEffect to (timerEffect - GetSecondsPassed)
+		endif
+	endif
+end

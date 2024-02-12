@@ -1,0 +1,94 @@
+Scn	VERT5AlienWWScript
+; - Jorge
+
+Short	bPlayerEnters
+Short	bEventFound
+Short	bEventFinished
+Short	iCount
+
+Float fTimer
+
+
+
+Begin OnLoad
+
+	If bEventFinished != 1
+		Set bPlayerEnters to 1
+	Else
+		Disable
+		MarkForDelete
+	Endif
+
+End
+
+
+Begin GameMode
+
+If bEventFinished != 1
+	If bPlayerEnters == 1
+		If Player.HasPerk WildWasteland == 1
+			If bEventFound != 1
+				; RASM, enable Rick and Morty Wild Wasteland.
+				RASMMortyREF.enable
+				RASMRickREF.enable
+				If GetDistance Player >= 6000 || VERT5AlienShipREF.GetDisabled != 1
+					Set fTimer to ( fTimer + GetSecondsPassed )
+					If iCount < 1
+						VERT5AlienShipREF.Enable
+						Set iCount to 1
+					Elseif iCount == 1 && fTimer >= 0.5
+						VERT5AlienCaptainREF.Enable
+						Set iCount to 2
+						Return
+					Elseif iCount == 2 && fTimer >= 1
+						VERT5Alien01REF.Enable
+						Set iCount to 3
+						Return
+					Elseif iCount == 3 && fTimer >= 1.5
+						VERT5Alien02REF.Enable
+						Set bEventFound to 1
+						Set iCount to 0
+						Return
+					Endif
+				Endif
+			Else
+				If Player.GetItemCount WeapAlienBlaster >= 1
+					Set bEventFinished to 1
+				Endif
+			Endif
+		Elseif Player.HasPerk WildWasteland != 1
+			If bEventFound != 1
+				If GetDistance Player >= 6000 || VERT5MercBossREF.GetDisabled != 1
+					Set fTimer to ( fTimer + GetSecondsPassed )
+					If iCount < 1
+						VERT5MercBossREF.Enable
+						Set iCount to 1
+					Elseif iCount == 1 && fTimer >= 0.5
+						VERT5Merc01REF.Enable
+						Set iCount to 2
+						Return
+					Elseif iCount == 2 && fTimer >= 1
+						VERT5Merc02REF.Enable
+						Set iCount to 3
+						Return
+					Elseif iCount == 3 && fTimer >= 1.5
+						VERT5Merc03REF.Enable
+						Set iCount to 4
+						Return
+					Elseif iCount == 4 && fTimer >= 2
+						VERT5Merc04REF.Enable
+						Set bEventFound to 1
+						Set iCount to 0
+						Return
+					Endif
+				Endif
+			Else
+				If Player.GetItemCount WeapNVGaussRifleUnique >= 1
+					Set bEventFinished to 1
+				Endif
+			Endif
+		Endif
+	Endif
+Endif
+
+End

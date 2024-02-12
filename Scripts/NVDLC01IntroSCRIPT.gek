@@ -1,0 +1,26 @@
+scn NVDLC01IntroSCRIPT
+; JSH 10.05.10
+; Controls player transition to NVDLC01 intro slides.
+
+short bStartSlideShow
+
+BEGIN GameMode
+
+	if bStartSlideShow == 0
+	
+		RemoveImageSpaceModifier FriendOfTheNightInteriorISFX
+		RemoveImageSpaceModifier FriendOfTheNightISFX
+		StopQuest DisguiseFactionPulseQuest ; Turn off disguise notifications.
+		player.DispelAllSpells ; Removes all chem effects.
+		PipBoyRadioOff ; Turn off PipBoy radio.
+		Player.ResetHealth
+		PlayMusic NVDLC01OpeningSlideShow;
+		DisablePlayerControls 1 1 1 1 1 1 1 
+		player.MoveTo NVDLC01SlideshowMarker
+		; RASM set var when player has started DLC. Cleared on completion.
+		set RASMPlayerControllerQuest.playerStuckInDLC to 1
+		set bStartSlideShow to 1
+	endif
+
+END
+

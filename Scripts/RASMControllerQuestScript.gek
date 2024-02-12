@@ -1,0 +1,239 @@
+scn RASMControllerQuestScript
+
+; long-term injury/deformity tracking
+short headCrippledDuration
+short torsoCrippledDuration
+short leftArmCrippledDuration
+short rightArmCrippledDuration
+short leftLegCrippledDuration
+short rightLegCrippledDuration
+short resetHardcoreBug
+int hungerZeroCount
+int triggerBlindedRoll
+
+; player home purchase tracking.
+int playerBoughtNewVegasHome
+int playerBoughtNovacShack
+int playerBoughtWestSideHome
+int playerBoughtFreesideApartment
+int playerBoughtLong15Trailer
+
+int playerReceivedFarmingGuide
+
+; companions at player housing tracker. Here to avoid modifying vanilla Followers script.
+int booneAtFreeside  
+int booneAtNewVegas
+int booneAtWestSide
+int booneAtLong15
+int booneAtNovac
+
+int raulAtFreeside
+int raulAtNewVegas
+int raulAtWestSide
+int raulAtLong15
+int raulAtNovac
+
+int veronicaAtFreeside
+int veronicaAtNewVegas
+int veronicaAtWestSide
+int veronicaAtLong15
+int veronicaAtNovac
+
+int lilyAtFreeside
+int lilyAtNewVegas
+int lilyAtWestSide
+int lilyAtLong15
+int lilyAtNovac
+
+int cassAtFreeside
+int cassAtNewVegas
+int cassAtWestSide
+int cassAtLong15
+int cassAtNovac
+
+int arcadeAtFreeside
+int arcadeAtNewVegas
+int arcadeAtWestSide
+int arcadeAtLong15
+int arcadeAtNovac
+
+int edeAtFreeside
+int edeAtNewVegas
+int edeAtWestSide
+int edeAtLong15
+int edeAtNovac
+
+int rexAtFreeside
+int rexAtNewVegas
+int rexAtWestSide
+int rexAtLong15
+int rexAtNovac
+
+short primmCompleted
+
+Begin GameMode
+	if player.isHardcore == 0
+		playerREF.SetHardcore 1
+	endif
+
+	;if GetPCCanFastTravel == 1
+		;EnableFastTravel 0 1 1
+	;endif
+
+	EnableFastTravel 0 1 1
+
+	; oof, I cannot remember the purpose of this.
+	;print "Hunger Zero Count: " + $hungerZeroCount
+	if hungerZeroCount >= 3
+		playerREF.SetHardcore 1
+		set hungerZeroCount to 0
+	endif
+
+	if playerREF.getAv hunger == 0
+		set hungerZeroCount to hungerZeroCount + 1
+	endif
+
+	; setting it to 0 initially via GS does not allow correct update via script.
+	; amd this manages to get set back to original GS periodically somehow.
+	if playerREF.hasPerk EnhancedSensors == 0 && getGameSetting iHUDMaxCompassNPCTicks > 0
+		con_SetGameSetting iHUDMaxCompassNPCTicks 0
+	endif
+
+	if playerREF.hasPerk RASMBalanceSkillPoints == 0
+		playerREF.addPerk RASMBalanceSkillPoints
+	endif
+
+	; enables the water merchant network in Primm if town has sherrif
+	if primmCompleted == 0
+		if GetQuestCompleted nVPrimmDeputyConv == 1
+			set primmCompleted to 1
+			if GetQuestFailed nVPrimmDeputyConv != 1
+				; RASM enable Primm Water Merchant
+				RASMWaterMerchantAnnabellePrimmREF.enable
+				RASMWaterMerchantAnnabellePrimmREF.enable
+				RASMWaterMerchantPrimmOutpostMapMarker.enable
+				RASMWaterMerchantGuardMeleePrimmREF.enable
+				RASMWaterMerchantPackBrahminPrimmREF.enable
+				RASMWaterMerchantGuardPrimmREF.enable
+			endif
+		endif
+	endif
+
+	if playerREF.hasPerk RASMSpeedDemonTrait == 1
+		if playerREF.IsSpellTargetAlt RASMPermanentJetAddictionEffect == 0
+			player.CastImmediateOnSelf RASMPermanentJetAddictionEffect 
+		endif
+		if playerREF.actorHasEffect ChemIncAPJet == 1
+			if playerREF.IsSpellTargetAlt WithdrawalJet
+				player.dispel WithdrawalJet
+			endif
+		elseif playerREF.IsSpellTargetAlt WithdrawalAlcohol == 0
+			player.CastImmediate WithdrawalJet
+		endif
+	endif
+
+
+	; can't cast withdrawalAlcohol if Cass is companion
+	if playerREF.hasPerk RASMWinoForeverTrait == 1 && playerREF.hasPerk WhiskeyRose == 0
+		if playerREF.IsSpellTargetAlt RASMPerkWinoForeverEffect == 0
+			player.CastImmediateOnSelf RASMPerkWinoForeverEffect
+		endif
+		if playerREF.actorHasEffect ChemRedINAlcohol == 1
+			if playerREF.IsSpellTargetAlt WithdrawalAlcohol
+				player.dispel WithdrawalAlcohol
+			endif
+		elseif playerREF.IsSpellTargetAlt WithdrawalAlcohol == 0
+			player.CastImmediate WithdrawalAlcohol
+		endif
+	endif
+
+	; head injury tracker
+	if playerREF.GetActorValue PerceptionCondition == 0
+		set headCrippledDuration to headCrippledDuration + 1
+
+		if headCrippledDuration == 1
+			; roll against blindness affliction
+			if (getRandomPercent + playerREF.getAv luck) < 50
+				print "failed blind check"
+				player.CastImmediateOnSelf RASMBlind
+			else
+				;print "passed blind check"
+				;player.CastImmediateOnSelf RASMBlind
+			endif
+		endif
+
+		if headCrippledDuration >= 90
+			ShowMessage RASMDeformedHeadMessage
+			playerREF.CastImmediateOnSelf RASMDeformedHead
+			playerREF.RestoreActorValue perceptioncondition 100
+			set headCrippledDuration to 0
+		endif
+	else
+		set headCrippledDuration to 0
+	endif
+
+	; torso injury tracker
+	if playerREF.GetActorValue EnduranceCondition == 0
+		set torsoCrippledDuration to torsoCrippledDuration + 1
+		if torsoCrippledDuration >= 120
+			ShowMessage RASMDeformedTorsoMessage
+			PlayerREF.CastImmediateOnSelf RASMDeformedTorso
+			PlayerREF.RestoreActorValue endurancecondition 100
+			set torsoCrippledDuration to 0
+		endif
+	else
+		set torsoCrippledDuration to 0
+	endif
+
+	; left-arm injury tracker
+	if playerREF.GetActorValue LeftAttackCondition == 0
+		set leftArmCrippledDuration to leftArmCrippledDuration + 1
+		if leftArmCrippledDuration >= 90
+			ShowMessage RASMDeformedLeftArmMessage
+			playerREF.CastImmediateOnSelf RASMDeformedLeftArm
+			playerREF.RestoreActorValue leftattackcondition 100
+			set leftArmCrippledDuration to 0
+		endif
+	else
+		set leftArmCrippledDuration to 0
+	endif
+
+	; right-arm injury tracker
+	if playerREF.GetActorValue RightAttackCondition == 0
+		set rightArmCrippledDuration to rightArmCrippledDuration + 1
+		if rightArmCrippledDuration >= 90
+			ShowMessage RASMDeformedRightArmMessage
+			playerREF.CastImmediateOnSelf RASMDeformedRightArm
+			playerREF.RestoreActorValue rightattackcondition 100
+			set rightArmCrippledDuration to 0
+		endif
+	else
+		set rightArmCrippledDuration to 0
+	endif
+
+	; left-leg injury tracker
+	if PlayerREF.GetActorValue LeftMobilityCondition == 0
+		set leftLegCrippledDuration to leftLegCrippledDuration + 1
+		if leftLegCrippledDuration >= 90
+			ShowMessage RASMDeformedLeftLegMessage
+			playerREF.CastImmediateOnSelf RASMDeformedLeftLeg
+			playerREF.RestoreActorValue leftmobilitycondition 100
+			set leftLegCrippledDuration to 0
+		endif
+	else
+		set leftLegCrippledDuration to 0
+	endif
+
+	; right-leg injury tracker
+	if playerREF.GetActorValue RightMobilityCondition == 0
+		set rightLegCrippledDuration to rightLegCrippledDuration + 1
+		if rightLegCrippledDuration >= 90
+			ShowMessage RASMDeformedRightLegMessage
+			playerREF.CastImmediateOnSelf RASMDeformedRightLeg
+			playerREF.RestoreActorValue rightmobilitycondition 100
+			set rightLegCrippledDuration to 0
+		endif
+	else
+		set rightLegCrippledDuration to 0
+	endif
+End

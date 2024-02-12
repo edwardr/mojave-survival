@@ -1,0 +1,7 @@
+scn RASMInfectionCureScript
+
+begin ScriptEffectStart
+	Dispel RASMParasiticInfection
+	Dispel RASMBacterialInfection
+	ShowMessage RASMInfectionCuredMessage
+end

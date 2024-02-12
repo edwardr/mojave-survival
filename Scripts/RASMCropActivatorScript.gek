@@ -1,0 +1,176 @@
+scn RASMCropActivatorScript
+
+; UNUSED
+
+short button
+ref activeMenu
+ref cropActivator
+ref selectedPlant
+ref activeCrop
+
+short triggerVarUpdate
+;float timer
+
+;short testtt
+
+;CallAfterSeconds 10 ({} => print "run")
+
+ref slot1
+ref slot2
+ref slot3
+ref slot4
+ref slot5
+ref slot6
+ref slot7
+ref slot8
+ref slot9
+ref slot10
+ref slot11
+ref slot12
+array_var cropActivators
+array_var Entry
+ref ttem
+
+short perr
+
+int iPosition
+
+begin OnActivate
+	set cropActivator to GetSelfAlt
+	;print "cropactivator: " + $cropActivator
+	;set testtt to (GetRawFormIDString cropActivator)
+	;print "formidstring: " + $testtt
+	ShowMessage RASMCropInterface
+	set activeMenu to RASMCropInterface
+
+	;set perr to cropActivator.GetRefExtraData 1
+	perr = cropActivator.GetRefExtraData 1
+	print "activate extra data: " + $perr
+
+	let cropActivators := Ar_List RASMCropActivatorFreesideREF1, RASMCropActivatorFreesideREF2, RASMCropActivatorFreesideREF3, RASMCropActivatorFreesideREF4, RASMCropActivatorFreesideREF5, RASMCropActivatorFreesideREF6, RASMCropActivatorFreesideREF7, RASMCropActivatorFreesideREF8, RASMCropActivatorFreesideREF9, RASMCropActivatorFreesideREF10, RASMCropActivatorFreesideREF11, RASMCropActivatorFreesideREF12
+
+	;foreach Entry <- cropActivators
+	    ;let iPosition := Entry["key"]
+	    ;let ttem := Entry["value"]
+	    ;if ttem == cropActivator
+	    	;Print "Entry #" + $iPosition + " is " + $ttem
+	   ; endif
+	;loop
+end
+
+begin OnLoad
+	print "ACTIVATOR OnLoad runs"
+	set cropActivator to GetSelfAlt
+
+	let cropActivators := Ar_List RASMCropActivatorFreesideREF1, RASMCropActivatorFreesideREF2, RASMCropActivatorFreesideREF3, RASMCropActivatorFreesideREF4, RASMCropActivatorFreesideREF5, RASMCropActivatorFreesideREF6, RASMCropActivatorFreesideREF7, RASMCropActivatorFreesideREF8, RASMCropActivatorFreesideREF9, RASMCropActivatorFreesideREF10, RASMCropActivatorFreesideREF11, RASMCropActivatorFreesideREF12
+
+	foreach Entry <- cropActivators
+	    let iPosition := Entry["key"]
+	    let ttem := Entry["value"]
+	    if ttem == cropActivator
+	    	Print "load Entry #" + $iPosition + " is " + $ttem
+	    	cropActivator.SetRefExtraData 1 ttem
+	    endif
+	loop
+
+end
+
+begin GameMode
+	set button to GetButtonPressed
+
+	;if triggerVarUpdate == 1
+		;print "trigger var update"
+		;set timer to timer + getSecondsPassed
+		;print "timer:" + $timer
+
+		;if timer >= 5
+			;set triggerVarUpdate to 0
+			;set timer to 0
+			;activeCrop.SetVariable "poo" 8
+		;endif
+	;endif
+
+	; Menu 1
+	if activeMenu == RASMCropInterface
+		if button == 0
+			set selectedPlant to 0
+		elseif button == 1
+			; remove plant
+			set selectedPlant to 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+		elseif button == 2
+			; maize
+			set selectedPlant to RASMCropMaize
+		elseif button == 3
+			; mutfruit
+			set selectedPlant to RASMCropMutfruit
+		elseif button == 4
+			; banana yucca
+			set selectedPlant to RASMCropBananaYucca
+		elseif button == 5
+			; barrel cactus
+			set selectedPlant to RASMCropBarrelCactus
+		elseif button == 6
+			; potato
+			set selectedPlant to RASMCropPotato
+		elseif button == 7
+			; buffalo gourd
+			set selectedPlant to RASMCropBuffaloGourd
+		elseif button == 8
+			; broc flower
+			set selectedPlant to RASMCropBrocFlower
+		elseif button == 9
+			ShowMessage RASMCropInterface2
+			set activeMenu to RASMCropInterface2
+			set selectedPlant to 0
+		endif
+
+		if selectedPlant != 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			set activeCrop to cropActivator.PlaceAtMe selectedPlant 1
+
+			activeCrop.ModScale -0.5
+			activeCrop.setdestroyed 1
+			activeCrop.disable
+			activeCrop.enable
+			set triggerVarUpdate to 1
+
+			set selectedPlant to 0
+		endif
+
+	; Menu 2
+	;elseif activeMenu == RASMCropInterface2
+		;if button == 1
+			; coyote tobacco
+			;set cropToPlant to RASMCropCoyoteTobacco
+		;elseif button == 2
+			; honey mesquite
+			;set cropToPlant to RASMCropHoneyMesquite
+		;elseif button == 3
+			; jalapeno
+			;set cropToPlant to RASMCropJalapeno
+		;elseif button == 4 
+			; nevada agave
+			;set cropToPlant to RASMCropNevadaAgave
+		;elseif button == 5
+			; pinto bean
+			;set cropToPlant to RASMCropPinto
+		;elseif button == 6
+			; prickly pear cactus
+			;set cropToPlant to RASMCropPricklyPearCactus
+		;elseif button == 7
+			; xander root
+			;set cropToPlant to RASMCropXanderRoot
+		;endif
+
+	endif
+end

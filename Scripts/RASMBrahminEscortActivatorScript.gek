@@ -1,0 +1,41 @@
+scn RASMBrahminEscortActivatorScript
+
+; UNUSED, aborted attempt
+
+; set by RASMSpawnBrahminStockUDF
+ref selfBrahmin
+
+begin OnTriggerEnter player
+	;print "player entered"
+	if GetIsReference RASMWestSideBrahminEscortActivatorREF == 1
+		print "player entered quest completion."
+		SetObjectiveCompleted RASMBrahminEscort 50 1
+		CompleteQuest RASMBrahminEscort
+		StopQuest RASMBrahminEscort
+		CallAfterSeconds 10 (begin function {}
+			; disable these activators. If they run the quest to this location again, they get re-enabled.
+			print "disable runs"
+			RASMWestSideBrahminEscortActivatorREF.disable
+			RASMWestSideBrahminEscortBrahminActivatorREF.disable
+		end)
+	endif
+end
+
+begin OnTriggerEnter
+	; Brahmin get here before player gets to the quest activator.
+	if GetIsReference RASMWestSideBrahminEscortBrahminActivatorREF == 1
+		if GetActionRef != player
+			set selfBrahmin to GetActionRef
+			print "something entered"
+			print $selfBrahmin
+			if selfBrahmin.GetIsCurrentPackage RASMBrahminStockFollowPackage == 1
+				print "following brahmin ednteredf"
+				print $selfBrahmin
+				;selfBrahmin.RemoveScriptPackage
+				selfBrahmin.removeAllPackages
+				selfBrahmin.ResetAI
+				selfBrahmin.addPackageAt RASMBrahminStockWestSideSandboxPackage 0
+			endif
+		endif
+	endif
+end

@@ -1,0 +1,62 @@
+ScriptName NVDLC03IntroSCRIPT
+
+
+; Intro slide dialogue.
+; JSH 12/10/10
+; OMP 01/07/2011 - Added code to allow skipping the Intro Slide sequence.
+; OMP 01/13/2011 - Hooked up the music for the Intro Slide sequence.
+; OMP 02/16/2011 - Removed the calls to DisablePlayerControls and AddScriptPackage, they were moved into NVDLC03SlideShowTriggerSCRIPT.
+; OMP 02/24/2011 - Reworked the logic for skipping the intro and removed some debug stuff.
+; JSH 03/01/2011 - Functionality added to disable Mojave radio stations.
+
+
+Short bIntroStarted;																					; Used to force the script to run once only
+Short bSkipIntro;																						; Used to skip the Intro Slide sequence
+
+Ref rCountryRadio					; Variable holder for vCountryRadio.
+
+
+BEGIN GameMode
+
+	If ( bIntroStarted == 0 )
+
+		; Country Radio TA has no assigned REF name, so do this instead.
+		Set rCountryRadio to NVDLC03CountryRadioMarkerREF.GetLinkedRef;
+
+		; Turn off Mojave radio stations.
+		RNVTARef.Disable;
+		RadioBlackMountainTAREF.Disable;
+		rCountryRadio.Disable;
+
+		Set bIntroStarted To 1;
+
+		RemoveImageSpaceModifier FriendOfTheNightInteriorISFX;
+		RemoveImageSpaceModifier FriendOfTheNightISFX;
+		StopQuest DisguiseFactionPulseQuest;												; Turn off disguise notifications
+
+		Player.DispelAllSpells;																	; Removes all chem effects
+		Player.CastImmediateOnSelf NVDLC03RestUp;									; Restore the player's Dehydration, Sleep Deprivation, and Starvation
+		PipBoyRadioOff;																			; Turn off PipBoy radio
+		Player.ResetHealth;																		; Heal the player
+
+		; RASM player is stuck in DLC
+		set RASMPlayerControllerQuest.playerStuckInDLC to 1
+
+		; RASM - global var to toggle display of OWB cloned recipes
+		set RASMPlayerStartedDLC3 to 1
+
+		If ( bSkipIntro == 1 )
+
+			StopQuest NVDLC03Intro;																; No need to keep running the quest since we're done with it
+			StartQuest NVDLC03TransitionToBigEmpty;										; Start the DLC
+
+		Else
+			PlayMusic EndTransitionStinger;														; Stops Music from the Wasteland
+
+			SetInCharGen 1;																			; Prevent level up screen from firing
+
+		EndIf
+
+	EndIf
+
+END

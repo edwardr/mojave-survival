@@ -1,0 +1,6 @@
+scn RASMBrahminBitsScript
+ref self
+begin onLoad
+	set self to getSelf
+	self.setScale 0.30
+end

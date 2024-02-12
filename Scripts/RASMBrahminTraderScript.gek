@@ -1,0 +1,5 @@
+scn RASMBrahminTraderScript
+
+begin OnDeath
+	ShowMessage RASMBrahminTraderDead
+end

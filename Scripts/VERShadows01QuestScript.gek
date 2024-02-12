@@ -1,0 +1,134 @@
+Scn		VERShadows01QuestScript
+
+; This GameMode script runs with a low frequency update so as to save processing cycles. It's responsible for some encounters in the Mountain Shadows Campground - including a Cazador take-over.
+; Moved this encounter to Bonnie Springs, and reduced the number of spawns, so that we can run shenanigans on adorable consoles.
+; - Jorge
+
+Short		bStartShow
+Short		bEncounterPlayed
+Short		bUpdateSpeed
+Short		bVipersDead
+Short		bCazadoresIn
+Short		bKillCode
+
+Float		fTimePassed
+
+
+Begin GameMode
+
+
+	If bKillCode == 1
+		Return
+	Else
+		If bStartShow == 1
+			If bEncounterPlayed == 0
+				If bVipersDead != 1
+					If VERT3ViperShadowLeaderBREF.GetDead == 1 && VERT3ViperShadowLeaderAREF.GetDead == 1
+						Set fTimePassed to GameDaysPassed
+						Set bEncounterPlayed to 1
+						SetQuestDelay VERShadows01 12
+						Set bVipersDead to 1
+					Endif
+				Endif
+			Else
+				If GameDaysPassed <= (fTimePassed + 4 )
+					Return
+				Else
+					If Player.IsInInterior == 1 || Player.GetInWorldspace WastelandNV != 1 || bUpdateSpeed == 1
+						If bUpdateSpeed != 1
+							SetQuestDelay VERShadows01 0.1
+							Set bUpdateSpeed to 1
+						Else
+							If VERT3ViperShadowPatrolAREF.GetDead != 1
+								VERT3ViperShadowPatrolAREF.Kill
+							Endif
+							If VERT3ViperShadowPatrolBREF.GetDead != 1
+								VERT3ViperShadowPatrolBREF.Kill
+							Endif
+							If VERT3ViperShadowPatrolCREF.GetDead != 1
+								VERT3ViperShadowPatrolCREF.Kill
+							Endif
+							If VERT3ViperShadowPatrolDREF.GetDead != 1
+								VERT3ViperShadowPatrolDREF.Kill
+							Endif
+							If VERT3ViperShadowGuardA01REF.GetDead != 1
+								VERT3ViperShadowGuardA01REF.Kill
+							Endif
+							If VERT3ViperShadowGuardA03REF.GetDead != 1
+								VERT3ViperShadowGuardA03REF.Kill
+							Endif
+							If VERT3ViperShadowGuardB01REF.GetDead != 1
+								;VERT3ViperShadowGuardB1REF.Kill
+							Endif
+							If VERT3ViperShadowGuardB02REF.GetDead != 1
+								;VERT3ViperShadowGuardB2REF.Kill
+							Endif
+							If VERT3ViperShadowGuardC01REF.GetDead != 1
+								;VERT3ViperShadowGuardC1REF.Kill
+							Endif
+							If VERT3ViperShadowGuardC02REF.GetDead != 1
+								;VERT3ViperShadowGuardC2REF.Kill
+							Endif
+							If VERT3ViperShadowGuardD01REF.GetDead != 1
+								;VERT3ViperShadowGuardD1REF.Kill
+							Endif
+							If VERT3ViperShadowGuardE01REF.GetDead != 1
+								;VERT3ViperShadowGuardE1REF.Kill
+							Endif
+							If VERT3ViperShadowGuardE02REF.GetDead != 1
+								;VERT3ViperShadowGuardE2REF.Kill
+							Endif
+
+							If bCazadoresIn != 1
+								VERT3SMCazador01REF.Enable
+								;VERT3SMCazador02REF.Enable
+								;VERT3SMCazador03REF.Enable
+								VERT3SMCazador04REF.Enable
+								;VERT3SMCazador05REF.Enable
+								VERT3SMCazador06REF.Enable
+								VERT3SMCazador07REF.Enable
+								;VERT3SMCazador08REF.Enable
+								VERT3SMCazador09REF.Enable
+								;VERT3SMCazador10REF.Enable
+								;VERT3SMCazador11REF.Enable
+								;VERT3SMCazador12REF.Enable
+								VERT3SMCazador13REF.Enable
+								;VERT3SMCazador14REF.Enable
+
+								; RASM, add back a couple of these 
+								VERT3SMCazador15REF.Enable
+								VERT3SMCazador16REF.Enable
+								
+								VERT3SMSmoke01REF.Disable
+								VERT3SMSmoke02REF.Disable
+								VERT3SMSmoke03REF.Disable
+								VERT3SMFire01REF.Disable
+								VERT3SMFire02REF.Disable
+								VERT3SMFire03REF.Disable
+								VERT3SMFire04REF.Disable
+
+								VERT3SMBarrelOff01REF.Enable
+								VERT3SMBarrelOff02REF.Enable
+
+								VERT3ShadowMCampNest01REF.Enable
+								VERT3ShadowMCampNest02REF.Enable
+								VERT3ShadowMCampNest03REF.Enable
+								VERT3ShadowMCampNest04REF.Enable
+								VERT3ShadowMCampNest05REF.Enable
+								VERT3ShadowMCampNest06REF.Enable
+								VERT3ShadowMCampNest07REF.Enable
+								VERT3ShadowMCampNest08REF.Enable
+
+								Set bCazadoresIn to 1
+								SetQuestDelay VERShadows01 12
+								Set bUpdateSpeed to 0
+								Set bKillCode to 1
+							Endif
+						Endif
+					Endif
+				Endif
+			Endif
+		Endif
+	Endif
+
+End

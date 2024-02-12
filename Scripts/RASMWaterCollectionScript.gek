@@ -1,0 +1,54 @@
+scn RASMWaterCollectionScript
+short messageButton
+int fillBottleCount
+
+int daysPassed
+int lastResetDay
+int availableWater
+
+int tempBottlesFilled
+
+ref activatorType
+
+int tdest 
+
+; todo clean this up.
+
+Begin OnActivate
+	if availableWater >= 1
+		ShowMessage RASMCollectWaterMessage
+	else
+		ShowMessage RASMWaterRationMessage
+	endif
+End
+
+begin onLoad
+	set daysPassed to GetGameDaysPassed
+	if lastResetDay != daysPassed
+		set lastResetDay to daysPassed
+		set availableWater to 20
+	endif
+end
+
+Begin GameMode
+	set messageButton to GetButtonPressed
+	if messageButton == 1
+		Activate
+	elseif messageButton == 2
+		; player collects 1 water.
+		set activatorType to GetActivatorWaterType
+		let tempBottlesFilled := call RASMWaterCollectionUDF 1 activatorType
+		set availableWater to Clamp (availableWater - tempBottlesFilled) 0 20
+		if tempBottlesFilled == 0
+			ShowMessage RASMCollectWaterNoBottle
+		endif
+	elseif messageButton == 3
+		; filling all available bottles in Inventory.
+		set activatorType to GetActivatorWaterType
+		let tempBottlesFilled := call RASMWaterCollectionUDF availableWater activatorType
+		set availableWater to Clamp (availableWater - tempBottlesFilled) 0 20
+		if tempBottlesFilled == 0
+			ShowMessage RASMCollectWaterNoBottle
+		endif
+	endif
+End

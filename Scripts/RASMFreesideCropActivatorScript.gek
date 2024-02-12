@@ -1,0 +1,197 @@
+scn RASMFreesideCropActivatorScript
+
+short button
+ref activeMenu
+ref cropActivator
+ref selectedPlant
+ref seedItem
+ref activeCrop
+
+string_var slotIndex
+array_var cropSlots
+array_var entry
+ref loopSlot
+
+begin OnActivate
+	set cropActivator to GetSelfAlt
+
+	if RASMControllerQuest.playerBoughtFreesideApartment == 0
+		ShowMessage RASMPurchaseProperty
+		return
+	endif
+
+	ShowMessage RASMCropInterface
+	set activeMenu to RASMCropInterface
+
+	let cropSlots := Ar_Map "slot0"::RASMCropActivatorFreesideREF1, "slot1"::RASMCropActivatorFreesideREF2, "slot2"::RASMCropActivatorFreesideREF3, "slot3"::RASMCropActivatorFreesideREF4, "slot4"::RASMCropActivatorFreesideREF5, "slot5"::RASMCropActivatorFreesideREF6, "slot6"::RASMCropActivatorFreesideREF7, "slot7"::RASMCropActivatorFreesideREF8, "slot8"::RASMCropActivatorFreesideREF9, "slot9"::RASMCropActivatorFreesideREF10, "slot10"::RASMCropActivatorFreesideREF11, "slot11"::RASMCropActivatorFreesideREF12
+end
+
+begin GameMode
+	set button to GetButtonPressed
+
+	; Menu 1
+	if activeMenu == RASMCropInterface
+		if button == 0
+			set selectedPlant to 0
+			set seedItem to 0
+		elseif button == 1
+			; remove plant
+			set selectedPlant to 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			foreach entry <- cropSlots
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					SetVariable $slotIndex, 0, RASMFreesideFarming
+				endif
+			loop
+
+			set slotIndex to 0
+			set loopSlot to 0
+		elseif button == 2
+			; maize
+			set selectedPlant to RASMCropMaize
+			set seedItem to NVFreshMaize
+		elseif button == 3
+			; mutfruit
+			set selectedPlant to RASMCropMutfruit
+			set seedItem to Mutfruit2
+		elseif button == 4
+			; banana yucca
+			set selectedPlant to RASMCropBananaYucca
+			set seedItem to NVFreshBananaYuccaFruit
+		elseif button == 5
+			; barrel cactus
+			set selectedPlant to RASMCropBarrelCactus
+			set seedItem to NVFreshBarrelCactusFruit
+		elseif button == 6
+			; potato
+			set selectedPlant to RASMCropPotato
+			set seedItem to Potato
+		elseif button == 7
+			; buffalo gourd
+			set selectedPlant to RASMCropBuffaloGourd
+			set seedItem to BuffaloGourdSeed
+		elseif button == 8
+			; broc flower
+			set selectedPlant to RASMCropBrocFlower
+			set seedItem to BrocFlower
+		elseif button == 9
+			ShowMessage RASMCropInterface2
+			set activeMenu to RASMCropInterface2
+			set selectedPlant to 0
+			set seedItem to 0
+		endif
+
+		if selectedPlant != 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			set activeCrop to cropActivator.PlaceAtMe selectedPlant 1
+
+			foreach entry <- cropSlots
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					SetRefVariable $slotIndex, activeCrop, RASMFreesideFarming
+					Print $slotIndex + " is " + $activeCrop
+				endif
+			loop
+
+			set slotIndex to 0
+			set loopSlot to 0
+
+			activeCrop.ModScale -0.5
+			activeCrop.setdestroyed 1
+			activeCrop.disable
+			player.removeItem seedItem 1
+
+			set seedItem to 0
+			set selectedPlant to 0
+
+			CallAfterSeconds 1 ({} => activeCrop.enable)
+		endif
+
+	; Menu 2
+	; user selects more to go to menu 2. Max list of 10 per menu.
+	elseif activeMenu == RASMCropInterface2
+		if button == 0
+			ShowMessage RASMCropInterface
+			set activeMenu to RASMCropInterface
+			set selectedPlant to 0
+			set seedItem to 0
+		elseif button == 1
+			; coyote tobacco
+			set selectedPlant to RASMCropCoyoteTobacco
+			set seedItem to NVCoyoteTobaccoFruit
+		elseif button == 2
+			; honey mesquite
+			set selectedPlant to RASMCropHoneyMesquite
+			set seedItem to NVFreshHoneyMesquiteFruit
+		elseif button == 3
+			; jalapeno
+			set selectedPlant to RASMCropJalapeno
+			set seedItem to JalapenoPepper
+		elseif button == 4 
+			; nevada agave
+			set selectedPlant to RASMCropNevadaAgave
+			set seedItem to NevadaAgaveFruit
+		elseif button == 5
+			; pinto bean
+			set selectedPlant to RASMCropPinto
+			set seedItem to PintoBeanPod
+		elseif button == 6
+			; prickly pear cactus
+			set selectedPlant to RASMCropPricklyPearCactus
+			set seedItem to PricklyPearCactusFruit
+		elseif button == 7
+			; white horsenettle
+			set selectedPlant to RASMCropWhiteHorseNettle
+			set seedItem to WhiteHorsenettleBerry
+		elseif button == 8
+			; xander root
+			set selectedPlant to RASMCropXanderRoot
+			set seedItem to XanderRoot
+		endif
+
+		if selectedPlant != 0
+			if activeCrop != 0
+				activeCrop.disable
+				activeCrop.MarkForDelete
+				set activeCrop to 0
+			endif
+
+			set activeCrop to cropActivator.PlaceAtMe selectedPlant 1
+
+			foreach entry <- cropSlots
+				let slotIndex := entry["key"]
+				let loopSlot := entry["value"]
+				if loopSlot == cropActivator
+					SetRefVariable $slotIndex, activeCrop, RASMFreesideFarming
+					Print $slotIndex + " is " + $activeCrop
+				endif
+			loop
+
+			set slotIndex to 0
+			set loopSlot to 0
+
+			activeCrop.ModScale -0.5
+			activeCrop.setdestroyed 1
+			activeCrop.disable
+			player.removeItem seedItem 1
+
+			set seedItem to 0
+			set selectedPlant to 0
+
+			CallAfterSeconds 1 ({} => activeCrop.enable)
+		endif
+	endif
+end

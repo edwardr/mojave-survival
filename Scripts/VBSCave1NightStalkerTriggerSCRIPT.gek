@@ -1,0 +1,16 @@
+SCN VBSCave1NightStalkerTriggerSCRIPT
+
+Begin OnTriggerEnter
+
+if IsActionRef Player
+	vBSCaveNightStalker1REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	vBSCaveNightStalker2REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	vBSCaveNightStalker3REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	vBSCaveNightStalker4REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	vBSCaveNightStalker5REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	; RASM - adds two additional ambush creatures
+	vBSCaveNightStalker6REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+	vBSCaveNightStalker7REF.AddScriptPackage VBSCave1NightStalkerAmbushPACKAGE
+endif
+
+end

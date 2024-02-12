@@ -1,0 +1,26 @@
+scn RASMInfectionScript
+
+short baseModifier
+short infectionRoll
+short effectRoll
+ref effectTarget
+
+begin ScriptEffectStart
+	set effectTarget to GetSelf
+	if effectTarget.GetIsReference player
+		set baseModifier to (PlayerREF.getav endurance * 3) + (PlayerREF.getav luck * 3) + (PlayerREF.getav survival / 2)
+		set infectionRoll to GetRandomPercent
+		set effectRoll to GetRandomPercent
+		if effectRoll >= 50
+			if infectionRoll > baseModifier
+				CastImmediateOnSelf RASMBacterialInfection
+				ShowMessage RASMInfectionBacterialMessage
+			endif
+		else
+			if infectionRoll > baseModifier
+				CastImmediateOnSelf RASMParasiticInfection
+				ShowMessage RASMInfectionParasiticMessage
+			endif
+		endif
+	endif
+end

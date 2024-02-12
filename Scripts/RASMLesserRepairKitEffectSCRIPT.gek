@@ -1,0 +1,36 @@
+scn RASMLesserRepairKitEffectSCRIPT
+
+;Most code taken directly from the DLC05AlienEpoxyEffectScript.
+;Values have been adjusted slightly (-5 across the board), now includes a +30 bonus for having Repair 100
+;7.6.10 JES
+
+float WeapHealth
+
+BEGIN ScriptEffectStart
+
+     ;// get the current health percent and add 25
+     set WeapHealth to player.getWeaponHealthPerc
+
+
+     ;// run through the player's repair skill and augment appropriately
+     IF ( player.getAV Repair < 25 )
+          set WeapHealth to WeapHealth + 5
+
+     ELSEIF ( player.getAV Repair >= 25 && player.getAV Repair < 50 )     
+          set WeapHealth to WeapHealth + 10
+
+     ELSEIF ( player.getAV Repair >= 50 && player.getAV Repair < 75 )     
+          set WeapHealth to WeapHealth + 15
+
+     ELSEIF ( player.getAV Repair >= 75 && player.getAV Repair < 100 ) 
+          set WeapHealth to WeapHealth + 20
+
+     ELSEIF ( player.getAV Repair >= 100 ) 
+          set WeapHealth to WeapHealth + 20
+
+     ENDIF
+
+     ;// set the weapons new health percent
+     player.setWeaponHealthPerc WeapHealth
+
+END

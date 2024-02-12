@@ -1,0 +1,10 @@
+scn RASMFoodAttackSpeedScript
+
+begin ScriptEffectStart
+	player.addPerk RASMFoodAttackSpeed
+
+end
+
+begin ScriptEffectFinish
+	player.removePerk RASMFoodAttackSpeed
+end

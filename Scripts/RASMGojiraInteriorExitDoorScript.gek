@@ -1,0 +1,31 @@
+scn RASMGojiraInteriorExitDoorScript
+int messageButton
+ref self
+
+begin OnActivate player
+	if GetQuestCompleted RASMGojiraQuest == 1
+		; transport user
+		player.moveTo RASMPostGojiraMarkerREF
+		;player.pushActorAway player 0
+		RASMGojiraLairMapMarkerREF.disable
+		RASMGojiraEntranceREF.disable
+		showMessage RASMPostGojiraMessage
+	else
+		showMessage RASMGojiraExitTriggerMessage
+	endif
+end
+
+Begin GameMode
+	set messageButton to GetButtonPressed
+	Set Self to GetSelf
+	
+	if messageButton == 1
+		FailQuest RASMGojiraQuest
+		RASMGojiraLairMapMarkerREF.disable
+		RASMGojiraEntranceREF.disable
+		; transport user
+		player.moveTo RASMPostGojiraMarkerREF
+		;player.pushActorAway player 0
+		showMessage RASMPostGojiraMessage
+	endif
+End

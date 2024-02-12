@@ -1,0 +1,5 @@
+scn RASMCookieScript
+
+begin OnLoad
+	setscale 0.25
+end

@@ -1,0 +1,47 @@
+scn RASMBrightAmbushActivatorScript
+
+begin OnTriggerEnter player
+	if JasonBright.GetDead == 1
+		if GetIsReference RASMBrightAmbushActivatorREF1 == 1
+			RASMBrightAmbusher1REFa.enable
+			RASMBrightAmbusher1REFb.enable
+			RASMBrightAmbushActivatorREF1.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF2 == 1
+			RASMBrightAmbusher2REFa.enable
+			RASMBrightAmbusher2REFb.enable
+			RASMBrightAmbushActivatorREF2.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF3 == 1
+			RASMBrightAmbusher3REFa.enable
+			RASMBrightAmbusher3REFb.enable
+			RASMBrightAmbushActivatorREF3.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF4 == 1
+			RASMBrightAmbusher4REFa.enable
+			RASMBrightAmbusher4REFb.enable
+			RASMBrightAmbushActivatorREF4.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF5 == 1
+			RASMBrightAmbusher5REFa.enable
+			RASMBrightAmbusher5REFb.enable
+			RASMBrightAmbushActivatorREF5.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF6 == 1
+			RASMBrightAmbusher6REFa.enable
+			RASMBrightAmbusher6REFb.enable
+			RASMBrightAmbushActivatorREF6.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF7 == 1
+			RASMBrightAmbusher7REFa.enable
+			RASMBrightAmbusher7REFb.enable
+			RASMBrightAmbushActivatorREF7.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF8 == 1
+			RASMBrightAmbusher8REFa.enable
+			RASMBrightAmbusher8REFb.enable
+			RASMBrightAmbushActivatorREF8.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF9 == 1
+			RASMBrightAmbusher9REFa.enable
+			RASMBrightAmbusher9REFb.enable
+			RASMBrightAmbushActivatorREF9.disable
+		elseif GetIsReference RASMBrightAmbushActivatorREF10 == 1
+			RASMBrightAmbusher10REFa.enable
+			RASMBrightAmbusher10REFb.enable
+			RASMBrightAmbushActivatorREF10.disable
+		endif
+	endif
+end

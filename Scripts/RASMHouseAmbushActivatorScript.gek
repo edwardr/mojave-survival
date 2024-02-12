@@ -1,0 +1,18 @@
+scn RASMHouseAmbushActivatorScript
+
+begin OnTriggerEnter player
+	; RASMHouseAmbushPackage triggers dialog and aggro
+	if NVCRMrHouse.GetDead == 1
+		if GetIsReference RASMHouseAmbusherActivatorREF1 == 1
+			RASMHouseAmbusherREF1.enable
+			RASMHouseAmbusherREF1.evp
+			RASMHouseAmbusherActivatorREF1.disable
+			RASMHouseAmbusherActivatorREF2.disable
+		elseif GetIsReference RASMHouseAmbusherActivatorREF2 == 1
+			RASMHouseAmbusherREF2.enable
+			RASMHouseAmbusherREF2.evp
+			RASMHouseAmbusherActivatorREF1.disable
+			RASMHouseAmbusherActivatorREF2.disable
+		endif
+	endif
+end

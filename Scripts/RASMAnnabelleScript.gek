@@ -1,0 +1,48 @@
+scn RASMAnnabelleScript
+
+ref AnnabelleREF
+
+begin onDeath playerREF
+	SetReputation RASMRepWaterMerchants 0 100
+	ShowMessage RASMAnnabelleMurdered
+	; disable the rest of her incarnations if one dies
+	if RASMWaterMerchantAnnabellePrimmREF.GetDead == 0
+		RASMWaterMerchantAnnabellePrimmREF.disable
+	endif
+	if RASMWaterMerchantAnnabelleMojaveOutpostREF.GetDead == 0
+		RASMWaterMerchantAnnabelleMojaveOutpostREF.disable
+	endif
+	if RASMWaterMerchantAnnabelleHooverDamREF.GetDead == 0
+		RASMWaterMerchantAnnabelleHooverDamREF.disable
+	endif
+	if RASMWaterMerchantAnnabelleVegasREF.GetDead == 0
+		RASMWaterMerchantAnnabelleVegasREF.disable
+	endif
+	if RASMWaterMerchantAnnabelleNovacREF.GetDead == 0
+		RASMWaterMerchantAnnabelleNovacREF.disable
+	endif
+end
+
+begin onDeath
+	set AnnabelleREF to GetSelf
+	if AnnabelleREF.isKiller playerREF == 0
+		ShowMessage RASMAnnabelleDead
+		; disable the rest of her incarnations if one dies
+		if RASMWaterMerchantAnnabellePrimmREF.GetDead == 0
+			RASMWaterMerchantAnnabellePrimmREF.disable
+		endif
+		if RASMWaterMerchantAnnabelleMojaveOutpostREF.GetDead == 0
+			RASMWaterMerchantAnnabelleMojaveOutpostREF.disable
+		endif
+		if RASMWaterMerchantAnnabelleHooverDamREF.GetDead == 0
+			RASMWaterMerchantAnnabelleHooverDamREF.disable
+		endif
+		if RASMWaterMerchantAnnabelleVegasREF.GetDead == 0
+			RASMWaterMerchantAnnabelleVegasREF.disable
+		endif
+		if RASMWaterMerchantAnnabelleNovacREF.GetDead == 0
+			RASMWaterMerchantAnnabelleNovacREF.disable
+		endif
+	endif
+end
+

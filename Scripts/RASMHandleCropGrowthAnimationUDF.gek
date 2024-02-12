@@ -1,0 +1,13 @@
+scn RASMHandleCropGrowthAnimationUDF
+
+ref slotRef
+
+begin function { slotRef }
+	;print "animation handler"
+	;print $slotRef
+	if slotRef.GetIsId RASMCropBrocFlower == 1 || slotRef.GetIsId RASMCropWhiteHorseNettle == 1 || slotRef.GetIsId RASMCropMaize == 1 || slotRef.GetIsId RASMCropXanderRoot == 1
+		slotRef.playGroup Forward 1
+	else
+		slotRef.playGroup Backward 1
+	endif
+end

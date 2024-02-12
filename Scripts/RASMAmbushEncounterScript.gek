@@ -1,0 +1,5 @@
+scn RASMAmbushEncounterScript
+
+begin OnTriggerEnter
+
+end

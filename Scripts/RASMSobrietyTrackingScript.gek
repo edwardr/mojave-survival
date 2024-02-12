@@ -1,0 +1,154 @@
+scn RASMSobrietyTrackingScript
+short drinkTracker
+short timer
+short playerWasDrunk
+short blackoutInit
+short incrementBlackoutLocation
+short triggerBlackoutTeleport
+ref blackoutLocationRef
+short playerStuckInDLC
+short playerHasBlackedOutBefore
+short timesDrunk
+short soberUpSignal
+
+begin GameMode
+
+	if soberUpSignal == 1
+		set drinkTracker to 0
+		set soberUpSignal to 0
+		set playerWasDrunk to 0
+		RemoveImageSpaceModifier RASMDrunkSFX
+		playerREF.dispel RASMDrunk
+		showMessage RASMPlayerSober
+	endif
+
+	; multiple ingestibles can affect this in succession
+	if drinkTracker < 0
+		set drinkTracker to 0
+	endif
+
+	if drinkTracker == 0
+		set timer to 0
+	endif
+
+	if drinkTracker >= 1
+		; set max drinkTracker value so PC won't be drunk for weeks.
+		if drinkTracker > 10
+			set drinkTracker to 10
+		endif
+
+		set timer to (timer + 1)
+
+		; "removes" a drink from the tracker after an interval as player sobers up
+		if timer >= 200
+			set drinkTracker to (drinkTracker - 1)
+			set timer to 0
+		endif
+
+		if drinkTracker > (playerREF.getAV endurance) && drinkTracker >= 3
+			; player is drunk
+			set playerWasDrunk to 1
+			showMessage RASMPlayerDrunk
+			playerREF.CastImmediateOnSelf RASMDrunk
+			ApplyImageSpaceModifier RASMDrunkSFX
+
+			if getRandomPercent <= 5
+				playSound RASMMaleDrunk
+			endif
+			
+			if getRandomPercent >= 97
+				PlaySound NPCIdleVomit
+			endif
+
+			if getRandomPercent <= 5
+				; player stumbles and falls down.
+				playerREF.pushActorAway playerREF 0
+			endif
+
+			if playerREF.hasPerk RASMWinoForeverTrait == 1
+				if triggerBlackoutTeleport == 1
+					player.pushActorAway player 0
+					player.AddScriptPackage NVDLC01PlayerKnockedOut
+					ApplyImageSpaceModifier FadeToBlackISFX
+					set playerWasDrunk to 0
+					set drinkTracker to 0
+					set triggerBlackoutTeleport to 0
+					; teleports player to a blackout location
+					if incrementBlackoutLocation == 0
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutNovacREF
+					elseif incrementBlackoutLocation == 1
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutSunkenBeachHouseREF
+					elseif incrementBlackoutLocation == 2
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutFollowersREF
+					elseif incrementBlackoutLocation == 3
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutDanceREF
+					elseif incrementBlackoutLocation == 4
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutWinsREF
+					elseif incrementBlackoutLocation == 5
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutJoanaREF
+					elseif incrementBlackoutLocation == 6
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMBlackoutHostetlerREF
+					else
+						; reset to start over
+						set incrementBlackoutLocation to 0
+						set blackoutLocationRef to RASMBlackoutGoodspringsREF
+					endif
+
+					; stay down.
+					player.pushActorAway player 0
+					player.removeScriptPackage
+
+					; if he dies, he dies.
+					playerREF.forceAV dehydration (playerREF.getAV dehydration + 200)
+					playerREF.forceAV hunger (playerREF.getAV hunger + 200)
+					playerREF.forceAV SleepDeprevation 0
+					SetGameHour (GetCurrentTime + 8.00)
+
+					player.moveTo blackoutLocationRef
+					player.pushActorAway player 0
+
+					RemoveImageSpaceModifier FadeToBlackISFX
+					RemoveImageSpaceModifier RASMDrunkSFX
+					playerREF.dispel RASMDrunk
+					playerREF.dispel RASMDrunk
+
+					if playerHasBlackedOutBefore == 0
+						ShowMessage RASMPlayerBlackedOut
+					else
+						ShowMessage RASMPlayerBlackedOutAgain
+					endif
+
+					set playerHasBlackedOutBefore to 1
+				endif
+
+				; Skip the whole blackout series if trapped in a DLC space.
+				if blackoutInit == 1 && RASMPlayerControllerQuest.playerStuckInDLC == 0
+					player.pushActorAway player 0
+					ApplyImageSpaceModifier FadeToBlackISFX
+					ToggleFirstPerson 1 
+					set blackoutInit to 0
+					set triggerBlackoutTeleport to 1
+				else
+					; lazy way to set a variable timer
+					if getRandomPercent >= 99
+						set blackoutInit to 1
+					endif
+				endif
+			endif
+		else
+			if playerWasDrunk == 1
+				set playerWasDrunk to 0
+				RemoveImageSpaceModifier RASMDrunkSFX
+				playerREF.dispel RASMDrunk
+				showMessage RASMPlayerSober
+			endif
+		endif
+	endif
+end

@@ -1,0 +1,5 @@
+scn RASMSharedWeaponsActivatorScript
+
+begin OnActivate player
+	RASMSharedWeaponContainerREF.Activate player
+end

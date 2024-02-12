@@ -1,0 +1,9 @@
+scn RASMKillMortyScript
+
+ref npcSelf
+Begin OnLoad
+	set npcSelf to getSelf
+	; advance morty's age so he can be killed
+	npcSelf.AgeRace 1
+	npcSelf.killActor npcSelf 1
+End

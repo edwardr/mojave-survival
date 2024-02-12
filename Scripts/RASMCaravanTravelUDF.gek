@@ -1,0 +1,19 @@
+scn RASMCaravanTravelUDF
+
+int price
+float timePassed
+ref travelMarkerRef
+
+begin Function { price, travelMarkerRef }
+	playerREF.removeItem Caps001 100
+	ApplyImageSpaceModifier FadeToBlackISFX
+	CallAfterSeconds 3 (begin function {}
+		set timePassed to (GetRandomInRange 20 80) * 0.10
+		playerREF.DamageAV dehydration (timePassed * 25.0)
+		playerREF.DamageAV SleepDeprevation (timePassed * 40.0)
+		playerREF.DamageAV hunger (timePassed * 25.0)
+
+		SetGameHour (GetCurrentTime + timePassed)
+		playerREF.moveTo travelMarkerRef
+	end)
+end

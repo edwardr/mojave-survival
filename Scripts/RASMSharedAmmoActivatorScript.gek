@@ -1,0 +1,5 @@
+scn RASMSharedAmmoActivatorScript
+
+begin OnActivate player
+	RASMSharedAmmoContainerREF.Activate player
+end

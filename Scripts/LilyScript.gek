@@ -1,0 +1,195 @@
+scn LilyScript
+
+int Waiting							; 0 = Not waiting, 1 = Waiting
+int CombatStyleMelee			; 0 = Not melee, 1= Melee
+int CombatStyleRanged			; 0 = Not ranged, 1 = Ranged
+int IsFollowingDefault			; 0 = Not following default, 1 = Is following default range
+int IsFollowingLong				; 0 = Not following long, 1 = Is following long
+int FollowerSwitchAggressive	; 0 = Passive (wait on player), 1 = Aggressive (attack when see enemies)
+int bBreaking						; Lily is in a psychotic break
+short LilyReceivedStealthboy	; 0 = No Stealthboy, 1 = Testing Stealthboy
+Short bCloaked;					; Is Lily Stealthboy-ing?
+Short SoundCheck;
+
+; RASM - some setup to use antivenom and stimpaks
+short healCheckTimerStart
+float healCheckTimer
+short iteration
+
+begin SayToDone LilyToDoctorHenry01	
+	VRemDoctorHenryRef.SayTo LilyRef DoctorHenryToLily02
+end
+
+begin SayToDone LilyToDoctorHenry02
+	VRemDoctorHenryRef.SayTo JacobstownCalamityRef DoctorHenryToCalamity01
+	;VRemDoctorHenryRef.SayTo LilyRef DoctorHenryToLily03
+end
+
+begin SayToDone LilyToDoctorHenry03									; "Awww... I liked having it on."
+	VRemDoctorHenryRef.SayTo LilyRef DoctorHenryToLily04 ; "I'll get back to you on that in a moment..."
+	SetStage VMS41 60
+end
+
+BEGIN OnLoad
+	LilyREF.SetNPCRadio 1 VLilyGrandkidsRecordingREF
+	;Script to make sure we set the right combat style on loading.
+	If (CombatStyleRanged == 1)
+		LilyREF.SetCombatStyle FollowersCombatStyleRanged;
+	Else
+		LilyREF.SetCombatStyle FollowersCombatStyleMelee;
+	EndIf
+END
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnHit
+
+if (VdialogueLily.iLilyUpgrade <= 1)
+	if (GetHealthPercentage <= 0.25) && (VDialogueLily.bOncePerCombat == 0)
+		if VDialogueLily.bPsychoticBreak == 0
+			if (VNPCFollowers.bLilyHired == 1)
+				ShowMessage FollowerMessageLilyBreak
+			endif
+			set VDialogueLily.bPsychoticBreak to 1
+		endif
+
+;		LilyREF.SetPlayerTeammate 0
+		LilyREF.PlayIdle SB2HAIntimidate
+		Set FollowerSwitchAggressive to 1
+		LilyREF.RestoreAV Health 100
+		set bBreaking to 1
+
+		StartQuest LilysPsychoticBreaks
+		set VDialogueLily.bOncePerCombat to 1
+		set LilysPsychoticBreaks.bRunTimer to 1
+		set LilysPsychoticBreaks.fTimer to 60
+	endif
+elseif (VdialogueLily.iLilyUpgrade == 3)
+	if (GetHealthPercentage <= 0.50) && (VDialogueLily.bOncePerCombat == 0)
+		if VDialogueLily.bPsychoticBreak == 0
+			if (VNPCFollowers.bLilyHired == 1)
+				ShowMessage FollowerMessageLilyBreak
+			endif
+			set VDialogueLily.bPsychoticBreak to 1
+		endif
+
+;		LilyREF.SetPlayerTeammate 0
+		LilyREF.PlayIdle SB2HAIntimidate
+		Set FollowerSwitchAggressive to 1
+		LilyREF.RestoreAV Health 150
+		set bBreaking to 1
+
+		StartQuest LilysPsychoticBreaks
+		set VDialogueLily.bOncePerCombat to 1
+		set LilysPsychoticBreaks.bRunTimer to 1
+		set LilysPsychoticBreaks.fTimer to 60
+	endif
+endif
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnDeath
+
+	if VNPCFollowers.bLilyHired == 1
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		set VNPCFollowers.bHumanoidInParty to 0
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.bLilyHired to 0
+		ShowMessage FollowerMessageDeadLily
+		player.RemovePerk StealthGirl
+		ShowMessage FollowerMessagePerkLilyRemove
+	endif
+
+	set VNPCFollowers.bLilyDead to 1
+
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnCombatEND
+	if VNPCFollowers.bLilyHired == 1
+		set VDialogueLily.bOncePerCombat to 0
+		if GetPlayerTeammate == 0
+			SetPlayerTeammate 1
+		endif
+	endif
+
+	if GetPlayerTeammate == 1
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+		if LilyREF.getIsPoisoned == 1
+			if LilyREF.getItemCount NVAntivenom >= 1
+				LilyREF.equipItem NVAntivenom
+			endif
+		endif
+	endif
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+BEGIN GameMode
+
+	if bBreaking == 1 && FollowerSwitchAggressive == 0
+		set FollowerSwitchAggressive to 1
+	endif
+
+	If (VNPCFollowers.bLilyHired == 1)	
+		If (Player.IsSneaking == 1) && (bCloaked == 0)
+			PMS NightkinCloakFXShader 1
+			AddSpell StealthBoyInvisibilitySpell;
+			Set bCloaked to 1;
+			LilyREF.PlaySound3D OBJStealthBoyActivate
+		EndIf
+
+		If (Player.IsSneaking == 0) && (bCloaked == 1)
+			PMS NightkinCloakFXShader 1
+			RemoveSpell StealthBoyInvisibilitySpell;
+			Set bCloaked to 0;
+			LilyREF.PlaySound3D OBJStealthBoyActivate;
+		EndIf
+	
+		If (GetAnimAction == 2) && (bCloaked == 1)
+			RemoveSpell StealthBoyInvisibilitySpell;
+			set bCloaked to 0;
+			PMS NightkinCloakFXShader 1;
+			If (SoundCheck == 0)
+				LilyREF.PlaySound3D OBJStealthBoyActivate;
+				set soundcheck to 1;
+			EndIf
+		EndIf
+	EndIf
+	if GetPlayerTeammate == 1
+		if LilyREF.isInCombat == 1
+			if healCheckTimerStart == 0 
+				set healCheckTimer to 10
+				set healCheckTimerStart to 1
+			else
+				if healCheckTimer >= 0
+					set healCheckTimer to healCheckTimer - getSecondsPassed
+				else
+					if LilyREF.GetHealthPercentage <= 0.50
+						if LilyREF.getItemCount stimpak >= 1
+							LilyREF.equipItem stimpak
+						endif
+					endif
+					if LilyREF.getIsPoisoned == 1
+						if LilyREF.getItemCount NVAntivenom >= 1
+							LilyREF.equipItem NVAntivenom
+						endif
+					endif
+
+					set healCheckTimerStart to 0
+				endif
+			endif
+		endif
+	endif
+END

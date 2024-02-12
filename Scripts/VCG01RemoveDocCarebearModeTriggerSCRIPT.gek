@@ -1,0 +1,64 @@
+ScriptName VCG01RemoveDocCarebearModeTriggerSCRIPT
+; Doc never gets mad at the player for fighting or stealing... until the player steps outside his house and hits this trigger
+
+short bDoOnce;
+short bDoneImpulse;
+float fTimer;
+short bActive;
+
+BEGIN OnTriggerEnter player
+	if (bDoOnce == 0)
+		EnablePlayerControls 1 1 1 1 1 1;
+		; Added the companion suite perk - Jorge
+		; RASM - disabling the companion suite perk because sometimes it works.
+		;Player.AddPerk CompanionSuite 1
+		ApplyImageSpaceModifier NVEyeAdjustISFX;
+		StartingTumbleweedREF.Enable;
+		ForceWeather NVWastelandClearWindy 1;
+		PlayMusic musSCRGoodspringsStinger;
+		set fTimer to 18;
+		set bActive to 1;
+		set bDoOnce to 1;
+	
+		; Activate radio stations
+		RadioBlackMountainTAREF.enable
+		RNVTARef.Enable		;enable Radio New Vegas
+		StopQuest VCG02;
+		; Disabled this so that Victor fights Molerat invader.
+		;GSVictorREF.MoveTo GSVictorCircuitStartMarkerREF;
+		Set VFreeformGoodsprings.bVictorPatrol to 1;
+		GSVictorREF.EVP;
+
+		If IsPS3 == 1											; Added this bit to kill the feature if the game is running on PS3 - Jorge
+			VStreetLightStarterOneREF.Disable
+			VStreetLightStarterTwoREF.Disable
+			VStreetLightStarterThreeREF.Disable
+			StopQuest VStreetLighting
+			VStreetGamblerAREF.Disable					; Had to remove some NPCs for the PS3 version - Jorge
+			VStreetGamblerBREF.Disable
+			VStreetTravelerAREF.Disable
+			VStripNCRTrooperCREF.Disable
+			VStripNCRMPBREF.Disable
+			VStreetGamblerAREF.MarkForDelete
+			VStreetGamblerBREF.MarkForDelete
+			VStreetTravelerAREF.MarkForDelete
+			VStripNCRTrooperCREF.MarkForDelete
+			VStripNCRMPBREF.MarkForDelete
+		Endif
+	endif
+END
+
+BEGIN GameMode
+	if(bActive)
+		set fTimer to fTimer - GetSecondsPassed;
+		if (fTimer < 10 && bDoneImpulse == 0)
+			VCG01TumbleweedHolderREF.Disable;
+			VCG01TumbleweedHolderREF.MarkForDelete;
+			VCG01TumbleweedImpulseREF.placeatme vsmallimpulseexplosion;
+			set bDoneImpulse to 1;
+		elseif (fTimer < 0)
+			ReleaseWeatherOverride;		get rid of gusty wind
+			MarkForDelete;
+		endif
+	endif
+END

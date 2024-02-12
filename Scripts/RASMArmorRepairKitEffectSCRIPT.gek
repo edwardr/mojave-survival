@@ -1,0 +1,41 @@
+scn RASMArmorRepairKitEffectSCRIPT
+;RASM - dup and modify for armor instead of weapons.
+;no armor eq. to setWeaponHealthPerc so we must use FOSE functions which use floats
+
+float armorHealth
+float armorBaseHealth
+float healArmorAmt
+float setArmorHealth
+ref armorREF
+
+BEGIN ScriptEffectStart
+
+     ;// get the current health percent and add 25
+     set armorREF to player.getEquippedItemRef 2 
+     set armorBaseHealth to armorREF.getHealth
+     set armorHealth to player.getEquippedCurrentHealth 2
+
+
+     ;// run through the player's repair skill and augment appropriately
+     IF (player.getAV Repair < 25)
+          set healArmorAmt to (armorBaseHealth * 0.10)
+     ELSEIF (player.getAV Repair >= 25 && player.getAV Repair < 50)     
+          set healArmorAmt to (armorBaseHealth * 0.15)
+     ELSEIF (player.getAV Repair >= 50 && player.getAV Repair < 75)     
+          set healArmorAmt to (armorBaseHealth * 0.20)
+     ELSEIF (player.getAV Repair >= 75 && player.getAV Repair < 100) 
+          set healArmorAmt to (armorBaseHealth * 0.25)
+     ELSEIF (player.getAV Repair >= 100) 
+          set healArmorAmt to (armorBaseHealth * 0.35)
+     ENDIF
+
+     if (healArmorAmt + armorHealth > armorBaseHealth)
+          set setArmorHealth to armorBaseHealth
+     else
+          set setArmorHealth to (healArmorAmt + armorHealth)
+     endif
+
+     ; sets the raw value
+     player.setEquippedCurrentHealth setArmorHealth 2
+
+END

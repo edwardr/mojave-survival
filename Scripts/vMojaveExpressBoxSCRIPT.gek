@@ -1,0 +1,100 @@
+scn vMojaveExpressBoxSCRIPT
+
+int bDiscovered			;Has This box been discovered
+int iMenuLevel				;Tracks Menu Level
+int iButton
+float fDays					; Day timer to check if the delivery is ready
+int bShip						; Container is ready to ship
+int bFlag						; 0 Flag Down, 1 Flag Up
+
+begin OnLoad
+	if bFlag == 1
+		playgroup Forward 1
+		set bFlag to -1
+	else if bFlag == 0
+		playgroup Backward 1
+		set bFlag to -1
+	endif
+	
+	; RASM skip tutorial
+	set vMojaveExpressControl.bTutorial to 1
+	set vMojaveExpressControl.bSystemActive to 2
+end
+
+
+begin onActivate
+	if IsActionRef Player == 0
+		return
+	endif
+	vMEControlBox.activate vMEControlBox 1
+	if This == vMEGoodSpringsRef
+		set vMojaveExpressControl.iCurrentContainer to 6
+	elseif This == vMENovacRef 
+		set vMojaveExpressControl.iCurrentContainer to 4
+	elseif This == vMEVegasRef 
+		set vMojaveExpressControl.iCurrentContainer to 2
+	elseif This == vMEPrimmRef1
+		set vMojaveExpressControl.iCurrentContainer to 5
+	elseif This == vMEFreesideRef 
+		set vMojaveExpressControl.iCurrentContainer to 3
+	endif
+	if GetContainerInventoryCount > 0
+		set vMojaveExpressControl.bContainerFull to 1
+	else
+		set vMojaveExpressControl.bContainerFull to 0
+	endif
+	if vMojaveExpressControl.bTutorial == 0
+		showmessage vMojaveExpressTutorial
+		set vMojaveExpressControl.bTutorial to 1
+		set bDiscovered to 1
+		set vMojaveExpressControl.bSystemActive to vMojaveExpressControl.bSystemActive + 1
+	elseif bDiscovered == 0
+		set bDiscovered to 1
+		showmessage vMojaveExpressFirstMessage
+		set iMenuLevel to 1
+		set vMojaveExpressControl.bSystemActive to vMojaveExpressControl.bSystemActive + 1
+	elseif bDiscovered == 1 && vMojaveExpressControl.bSystemActive < 2
+		showMessage vMojaveExpressInvalid
+	elseif bDiscovered == 1
+		showMessage vMojaveExpressShippingMessage
+		set iMenuLevel to 1
+	endif
+end
+
+begin GameMode
+	if iMenuLevel != 0
+		set iButton to GetButtonPressed
+		if iButton == 1
+			if GetContainerInventoryCount == 0					; If the container is empty
+				showMessage vMojaveExpressEmpty
+			else
+				removeallitems player 1							; Give the player everything
+				set bFlag to 0
+			endif
+		elseif iButton > 1
+			vMEControlBox.Activate Player
+;			playGroup Right 1
+			set vMEControlBox.iDestination to iButton
+			set iMenuLevel to 0
+			set bShip to 1
+		endif
+	endif
+	if bShip == 2 && MenuMode 1008 == 0
+		vMEControlBox.activate vMEControlBox 1
+;		playGroup Left 1
+		set bShip to 0
+	endif
+	if bFlag == 1
+		playgroup Forward 1
+		set bFlag to -1
+	elseif bFlag == 0
+		playgroup Backward 1
+		set bFlag to -1
+	endif
+end
+
+begin MenuMode 1008
+	if bShip == 1
+		set bShip to 2
+	endif
+end

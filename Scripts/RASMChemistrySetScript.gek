@@ -1,0 +1,12 @@
+scn RASMChemistrySetScript
+
+Ref  User
+
+Begin OnActivate
+     Set User to GetActionRef
+     If GetActionRef != Player
+          User.Activate
+     Elseif GetActionRef == Player
+          player.showrecipemenu RASMChemistrySetRecipes
+     Endif
+End

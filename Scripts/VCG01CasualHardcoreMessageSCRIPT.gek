@@ -1,0 +1,23 @@
+ScriptName VCG01CasualHardcoreMessageSCRIPT
+; unsed. Replaced by RASMStartSurvivalModeSCRIPT
+short nButton
+short bModeSet;
+
+BEGIN OnActivate
+	ShowMessage VCG01CasualHardcoreMessage 1
+	SetHardcore 1
+	if player.hasPerk WildWasteland
+		RASMBennyPictureFrameREF.enable
+	endif
+
+	; calculates VATS hit chance based on Perception
+	if PlayerREF.hasPerk RASMPerceptionToVATS == 0
+		PlayerREF.addPerk RASMPerceptionToVATS
+	endif
+
+	; we have to set this with script because if 0 in GS, override here doesn't work.
+	; this gets reactivated if PC has EDE
+	con_SetGameSetting iHUDMaxCompassNPCTicks 0
+	set bModeSet to 1;
+	MarkForDelete;
+END

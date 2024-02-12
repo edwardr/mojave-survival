@@ -1,0 +1,8 @@
+scn RASMSoberUpEffectScript
+
+; works in conjunction with RASMDrunkEffect to increment/decrement the RASMPlayerSobrietyTracking quest counter.
+; this script decrements the drink counter when it finishes
+
+begin ScriptEffectFinish
+	set RASMPlayerSobrietyTracking.drinkTracker to (RASMPlayerSobrietyTracking.drinkTracker - 1)
+end

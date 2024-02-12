@@ -1,0 +1,21 @@
+scn PrimerSmallPistolAddScript
+
+int killme
+
+BEGIN OnAdd Player
+;	int countofstuff;
+;	int numberToAdd;
+;	set countofstuff to (player.GetItemCount BoxPrimersSmallPistol)
+;	set numberToAdd to countofstuff*25
+
+	set killme to 1
+END
+
+begin GameMode
+
+	if (killme == 1)
+		Player.AddItem PrimerSmallPistol 25
+		RemoveMe
+	endif
+
+end

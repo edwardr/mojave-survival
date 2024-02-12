@@ -1,0 +1,9 @@
+When you first acquire Brahmin, you will need to escort them to your property. If you reach the property and the following Brahmin are not in your vicinity, the quest will fail and the Brahmin will die.
+
+Once you have delivered the Brahim to your property, they become owned Brahmin and will graze around your property. If you wish to move them to a different property, activate them and tell them to follow you. When you arrive at your destination, tell them to stay put.
+
+Your farm will produce one dung unit per day / per Brahmin located on your property. This dung will accumulate in the property's Brahmin pile.
+
+Over time, you may notice that your Brahmin have a tendency to graze and wander a few feet away. If they start to get too far away from your proprerty, you may need to herd them back to the area. If the Brahmin are too far from your farm, they will not produce dung.
+
+There is no hard limit on the number of Brahmin you can keep at a property.

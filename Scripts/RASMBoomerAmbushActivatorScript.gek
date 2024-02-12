@@ -1,0 +1,36 @@
+scn RASMBoomerAmbushActivatorScript
+
+begin OnTriggerEnter player
+	; RASMBoomerAmbushPackage triggers dialog and aggro
+	if NellisPearl.GetDead == 1 || NellisLoyal.GetDead == 1
+		if GetIsReference RASMBoomerAmbusherActivatorREF2 == 1
+			RASMBoomerAmbusherREF2.enable
+			RASMBoomerAmbusherREF2.evp
+			RASMBoomerAmbusherActivatorREF2.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF3 == 1
+			RASMBoomerAmbusherREF3.enable
+			RASMBoomerAmbusherREF3.evp
+			RASMBoomerAmbusherActivatorREF3.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF4 == 1
+			RASMBoomerAmbusherREF4.enable
+			RASMBoomerAmbusherREF4.evp
+			RASMBoomerAmbusherActivatorREF4.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF5 == 1
+			RASMBoomerAmbusherREF5.enable
+			RASMBoomerAmbusherREF5.evp
+			RASMBoomerAmbusherActivatorREF5.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF6 == 1
+			RASMBoomerAmbusherREF6.enable
+			RASMBoomerAmbusherREF6.evp
+			RASMBoomerAmbusherActivatorREF6.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF7 == 1
+			RASMBoomerAmbusherREF7.enable
+			RASMBoomerAmbusherREF7.evp
+			RASMBoomerAmbusherActivatorREF7.disable
+		elseif GetIsReference RASMBoomerAmbusherActivatorREF8 == 1
+			RASMBoomerAmbusherREF8.enable
+			RASMBoomerAmbusherREF8.evp
+			RASMBoomerAmbusherActivatorREF8.disable
+		endif
+	endif
+end

@@ -1,0 +1,11 @@
+ScriptName RASMGenericSpawnDeathScript
+
+ref Self
+
+begin onReset
+	set Self to GetSelfAlt
+	if GetDead == 1
+		Self.disable
+		Self.MarkForDelete
+	endif
+end

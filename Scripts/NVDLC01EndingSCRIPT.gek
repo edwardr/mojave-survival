@@ -1,0 +1,18 @@
+scn NVDLC01EndingSCRIPT
+; JSH 10.11.10
+; Script for the ending slideshow of DM
+
+; Variable tracking the failure state (if any), resulting in player doom
+short bFailureState
+; 0 = No failure, all's well.
+; 1 = Player screwed up and gets a bad ending, following by credit roll. Sad times.
+
+short runOnce
+
+begin GameMode
+	if runOnce == 0
+		; RASM clearing flag now that player is not stuck in DLC
+		set RASMPlayerControllerQuest.playerStuckInDLC to 0
+		set runOnce to 1
+	endif
+end

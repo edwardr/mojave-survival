@@ -1,0 +1,49 @@
+scn RASMJetBuff
+
+short baseDehydrationRate
+short baseStarvationRate
+short baseSleepRate
+
+short increasedDehydrationRate
+short increasedStarvationRate
+short increasedSleepRate
+
+begin ScriptEffectStart
+	player.addperk RASMSpeedDemon
+	set baseDehydrationRate to GetGameSetting fHCDehydrationRate
+	set baseStarvationRate to GetGameSetting fHCStarvationrate
+	set baseSleepRate to GetGameSetting fHCSleepDeprivationRate
+
+	set increasedDehydrationRate to GetGameSetting fHCDehydrationRate * 1.25
+	set increasedStarvationRate to GetGameSetting fHCStarvationrate * 1.25
+	set increasedSleepRate to GetGameSetting fHCSleepDeprivationRate * 1.25
+
+	print "increased increasedDehydrationRate"
+	printc "%g" baseDehydrationRate
+	printc "%g" increasedDehydrationRate
+	print "increased increasedStarvationRate"
+	printc "%g" baseDehydrationRate
+	printc "%g" increasedStarvationRate
+	print "increased increasedSleepRate"
+	printc "%g" baseSleepRate
+	printc "%g" increasedSleepRate
+
+	; setnumericgamesetting is session based, not save based.
+	; so need to use con_setgamesetting here. Nope, doesn't support var arg
+	SetNumericGameSetting fHCDehydrationRate increasedDehydrationRate
+	SetNumericGameSetting fHCStarvationrate increasedStarvationRate
+	SetNumericGameSetting fHCSleepDeprivationRate increasedSleepRate
+end
+
+begin ScriptEffectFinish
+	player.removeperk RASMSpeedDemon
+	; speed change hack
+
+	player.addItem RASMFakeIngestible 1 1
+	player.equipItem RASMFakeIngestible 0 1
+
+	; reset hardcore needs
+	SetNumericGameSetting fHCDehydrationRate baseDehydrationRate
+	SetNumericGameSetting fHCStarvationrate baseStarvationRate
+	SetNumericGameSetting fHCSleepDeprivationRate baseSleepRate
+end

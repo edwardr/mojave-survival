@@ -1,0 +1,127 @@
+scn RASMSpoilMeatUDF
+
+int tempItemCount
+int randItemCount
+
+begin Function {}
+	if PlayerREF.GetItemCount BrahminMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount BrahminMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem BrahminMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount AntMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount AntMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem AntMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount BigHornerMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount BigHornerMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem BigHornerMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount BloatflyMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount BloatflyMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem BloatflyMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount CoyoteMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount CoyoteMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem CoyoteMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount DogMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount DogMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem DogMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount FireAntMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount FireAntMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem FireAntMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount GiantRatMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount GiantRatMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem GiantRatMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount LakelurkMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount LakelurkMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem LakelurkMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount MoleRatMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount MoleRatMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem MoleRatMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount NVGeckoMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount NVGeckoMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem NVGeckoMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount RadroachMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount RadroachMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem RadroachMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount RatMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount RatMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem RatMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount StrangeMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount StrangeMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem StrangeMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+	if PlayerREF.GetItemCount YaoGuaiMeat >= 1
+		if GetRandomPercent > 50
+			set tempItemCount to PlayerREF.GetItemCount YaoGuaiMeat
+			set randItemCount to 1 + GetRandomPercent * tempItemCount / 100
+			PlayerREF.removeitem YaoGuaiMeat randItemCount
+			PlayerREF.additem RASMSpoiledMeat randItemCount
+		endif
+	endif
+end

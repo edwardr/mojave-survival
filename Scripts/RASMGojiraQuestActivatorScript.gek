@@ -1,0 +1,9 @@
+scn RASMGojiraQuestActivatorScript
+
+begin OnTriggerEnter player
+	if player.hasPerk WildWasteland == 1
+		if (GetQuestCompleted RASMGojiraQuest == 0)
+			SetStage RASMGojiraQuest 10
+		endif
+	endif
+end

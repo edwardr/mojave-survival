@@ -1,0 +1,5 @@
+scn RASMSharedFridgeActivatorScript
+
+begin OnActivate player
+	RASMSharedFridgeContainerREF.Activate player
+end

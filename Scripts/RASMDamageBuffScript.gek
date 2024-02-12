@@ -1,0 +1,9 @@
+ScriptName RASMDamageBuffScript
+
+Begin ScriptEffectStart
+	AddPerk RASMDamageBuffPerk
+End
+
+Begin ScriptEffectFinish
+	RemovePerk RASMDamageBuffPerk
+End

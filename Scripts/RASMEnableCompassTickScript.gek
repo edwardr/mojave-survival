@@ -1,0 +1,9 @@
+scn RASMEnableCompassTickScript
+
+begin ScriptEffectStart
+	con_SetGameSetting iHUDMaxCompassNPCTicks 1
+end
+
+begin ScriptEffectFinish
+	con_SetGameSetting iHUDMaxCompassNPCTicks 0
+end

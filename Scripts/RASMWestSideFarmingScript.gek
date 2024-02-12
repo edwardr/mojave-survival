@@ -1,0 +1,203 @@
+scn RASMWestSideFarmingScript
+
+ref slot0
+ref slot1
+ref slot2
+ref slot3
+ref slot4
+ref slot5
+ref slot6
+ref slot7
+ref slot8
+ref slot9
+ref slot10
+ref slot11
+ref slot12
+ref slot13
+ref slot14
+ref slot15
+ref slot16
+ref slot17
+ref slot18
+ref slot19
+ref slot20
+ref slot21
+ref slot22
+ref slot23
+
+array_var nvCropSlotsA
+array_var nvCropSlotsB
+array_var slot
+ref slotRef
+int slotIndex
+
+short growRoll
+short waterRoll
+short fertilizerRoll
+int playerModifier
+
+int hasWater
+int hasFertilizer
+ref waterType
+
+int lastRunTime
+int slotsAFirstRunComplete
+int slotsBFirstRunComplete
+int daysPassed
+
+begin GameMode
+	; runs on a 24-hr game time processing delay
+	print "WestSide farming check runs"
+
+	set daysPassed to GetGameDaysPassed
+
+	if lastRunTime == daysPassed
+		print "ws already ran today"
+		return
+	endif
+
+	if player.getDistance RASMFarmingWaterReservoirWestSideREF > 5000
+		print "Player too far"
+		return
+	endif
+
+	; todo make this stuff UDF
+
+	; max size of 20 in Ar_List
+	let nvCropSlotsA := Ar_List slot0, slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9, slot10, slot11, slot12, slot13, slot14, slot15, slot16, slot17, slot18, slot19
+
+	let nvCropSlotsB := Ar_List slot20, slot21, slot22, slot23
+
+	foreach slot <- nvCropSlotsA
+		let slotIndex := slot["key"]
+		let slotRef := slot["value"]
+		if IsFormValid slotRef == 1
+			if isReference slotRef != 1
+				continue
+			endif
+			; skip the first day's run
+			set lastRunTime to daysPassed
+			if slotsAFirstRunComplete == 0
+				set slotsAFirstRunComplete to 1
+				print "skipping slotsA first run"
+				break
+			endif
+			if slotRef.GetDestroyed == 1
+				; check water level and ensure there's at least one water unit (1 purified or 2 dirty)
+				if RASMFarmingWaterReservoirWestSideREF.GetItemCount WaterPurified >= 1
+					set hasWater to 1
+					set waterType to WaterPurified
+				else
+					if RASMFarmingWaterReservoirWestSideREF.GetItemCount WaterUnpurified >= 2
+						set hasWater to 1
+						set waterType to WaterUnpurified
+					else
+						set hasWater to 0
+					endif
+				endif
+
+				if RASMFertilizerStorageWestSideREF.GetItemCount RASMFertilizer >=1
+					set hasFertilizer to 1
+				endif
+
+				if hasWater == 1 && hasFertilizer == 1
+					set growRoll to GetRandomPercent
+					set waterRoll to GetRandomPercent
+					set playerModifier to Clamp (player.getAv Survival + player.getAv Luck) 10 95
+					if growRoll <= playerModifier
+						slotRef.SetVariable "State", 0
+						slotRef.SetScale 1
+						;slotRef.PlayGroup Backward 1
+						call RASMHandleCropGrowthAnimationUDF slotRef
+						slotRef.setdestroyed 0
+					endif
+
+					if waterRoll < 75
+						if waterType == WaterPurified
+							RASMFarmingWaterReservoirWestSideREF.removeItem WaterPurified 1
+						else
+							RASMFarmingWaterReservoirWestSideREF.removeItem WaterUnpurified 2
+						endif
+					endif
+
+					if fertilizerRoll < 50
+						RASMFertilizerStorageWestSideREF.removeItem RASMFertilizer 1
+					endif
+				else
+					print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
+				endif
+			endif
+		endif
+	loop
+
+	set slotIndex to 0
+	set slotRef to 0
+	set hasWater to 0
+	set waterType to 0
+	set hasFertilizer to 0
+
+	foreach slot <- nvCropSlotsB
+		let slotIndex := slot["key"]
+		let slotRef := slot["value"]
+		if IsFormValid slotRef == 1
+			; skip the first day's run
+			set lastRunTime to daysPassed
+			if slotsBFirstRunComplete == 0
+				set slotsBFirstRunComplete to 1
+				print "skipping slotsB first run"
+				break
+			endif
+			if slotRef.GetDestroyed == 1
+				; check water level and ensure there's at least one water unit (1 purified or 2 dirty)
+				if RASMFarmingWaterReservoirWestSideREF.GetItemCount WaterPurified >= 1
+					set hasWater to 1
+					set waterType to WaterPurified
+				else
+					if RASMFarmingWaterReservoirWestSideREF.GetItemCount WaterUnpurified >= 2
+						set hasWater to 1
+						set waterType to WaterUnpurified
+					else
+						set hasWater to 0
+					endif
+				endif
+
+				if RASMFertilizerStorageWestSideREF.GetItemCount RASMFertilizer >=1
+					set hasFertilizer to 1
+				endif
+
+				if hasWater == 1 && hasFertilizer == 1
+					set growRoll to GetRandomPercent
+					set waterRoll to GetRandomPercent
+					set playerModifier to Clamp (player.getAv Survival + player.getAv Luck) 10 95
+					if growRoll <= playerModifier
+						slotRef.SetVariable "State", 0
+						slotRef.SetScale 1
+						;slotRef.PlayGroup Backward 1
+						call RASMHandleCropGrowthAnimationUDF slotRef
+						slotRef.setdestroyed 0
+					endif
+
+					if waterRoll < 75
+						if waterType == WaterPurified
+							RASMFarmingWaterReservoirWestSideREF.removeItem WaterPurified 1
+						else
+							RASMFarmingWaterReservoirWestSideREF.removeItem WaterUnpurified 2
+						endif
+					endif
+
+					if fertilizerRoll < 50
+						RASMFertilizerStorageWestSideREF.removeItem RASMFertilizer 1
+					endif
+				else
+					print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
+				endif
+			endif
+		endif
+	loop
+
+	set slotIndex to 0
+	set slotRef to 0
+	set hasWater to 0
+	set waterType to 0
+	set hasFertilizer to 0
+end

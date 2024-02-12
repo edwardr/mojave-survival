@@ -1,0 +1,33 @@
+scn RASMRealtorScript
+
+;short fHealthDmg
+ref targetRef
+
+begin OnHit
+	set targetRef to GetSelf
+	;set fHealthDmg to targetRef.GetHitHealthDamage
+	;print "Damdage:"
+	;print $fHealthDmg
+end
+
+begin OnDeath
+	if GetQuestRunning RASMBishopsRevenge == 1
+		; Bishop dies while confronting a player squatter.
+		; RASMRealtyBedScript handles ownership and closure
+		StartQuest RASMWantedMan
+		SetStage RASMWantedMan 10
+		SetObjectiveDisplayed RASMWantedMan 10 1
+	else
+		; Bishop dies under normal circumstances
+		; Bishop carries Freeside key
+		SetVariable playerBoughtFreesideApartment, 1, RASMControllerQuest
+		StartQuest RASMFreesideFarming
+		call RASMRealtyClosePropertiesUDF
+
+		StartQuest RASMWantedMan
+		SetStage RASMWantedMan 10
+		SetObjectiveDisplayed RASMWantedMan 10 1
+	endif
+
+	FailQuest RASMBishopsRevenge
+end

@@ -1,0 +1,139 @@
+scn RASMSuperMutantEncounterActivatorScript
+
+begin OnTriggerEnter player
+	if TabithaREF.GetDead == 1
+		if GetIsReference RASMSuperMutantEncounterActivatorREF1 == 1
+			RASMAmbushMutant1REF1.enable
+			RASMAmbushMutant1REF2.enable
+			RASMAmbushMutant1REF3.enable
+
+			RASMAmbushMutant1REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant1REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant1REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant1REF1.evp
+			RASMAmbushMutant1REF2.evp
+			RASMAmbushMutant1REF3.evp
+
+			RASMSuperMutantEncounterActivatorREF1.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF2 == 1
+			RASMAmbushMutant2REF1.enable
+			RASMAmbushMutant2REF2.enable
+			RASMAmbushMutant2REF3.enable
+
+			RASMAmbushMutant2REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant2REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant2REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant2REF1.evp
+			RASMAmbushMutant2REF2.evp
+			RASMAmbushMutant2REF3.evp
+
+			RASMSuperMutantEncounterActivatorREF2.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF3 == 1
+			RASMAmbushMutant3REF1.enable
+			RASMAmbushMutant3REF2.enable
+			RASMAmbushMutant3REF3.enable
+
+			RASMAmbushMutant3REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant3REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant3REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant3REF1.evp
+			RASMAmbushMutant3REF2.evp
+			RASMAmbushMutant3REF3.evp
+			RASMSuperMutantEncounterActivatorREF3.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF4 == 1
+			RASMAmbushMutant4REF1.enable
+			RASMAmbushMutant4REF2.enable
+			RASMAmbushMutant4REF3.enable
+
+			RASMAmbushMutant4REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant4REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant4REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant4REF1.evp
+			RASMAmbushMutant4REF2.evp
+			RASMAmbushMutant4REF3.evp
+			RASMSuperMutantEncounterActivatorREF4.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF5 == 1
+			RASMAmbushMutant5REF1.enable
+			RASMAmbushMutant5REF2.enable
+			RASMAmbushMutant5REF3.enable
+
+			RASMAmbushMutant5REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant5REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant5REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant5REF1.evp
+			RASMAmbushMutant5REF2.evp
+			RASMAmbushMutant5REF3.evp
+			RASMSuperMutantEncounterActivatorREF5.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF6 == 1
+			RASMAmbushMutant6REF1.enable
+			RASMAmbushMutant6REF2.enable
+			RASMAmbushMutant6REF3.enable
+
+			RASMAmbushMutant6REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant6REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant6REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant6REF1.evp
+			RASMAmbushMutant6REF2.evp
+			RASMAmbushMutant6REF3.evp
+			RASMSuperMutantEncounterActivatorREF6.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF7 == 1
+			RASMAmbushMutant7REF1.enable
+			RASMAmbushMutant7REF2.enable
+			RASMAmbushMutant7REF3.enable
+
+			RASMAmbushMutant7REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant7REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant7REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant7REF1.evp
+			RASMAmbushMutant7REF2.evp
+			RASMAmbushMutant7REF3.evp
+			RASMSuperMutantEncounterActivatorREF7.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF8 == 1
+			RASMAmbushMutant8REF1.enable
+			RASMAmbushMutant8REF2.enable
+			RASMAmbushMutant8REF3.enable
+
+			RASMAmbushMutant8REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant8REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant8REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant8REF1.evp
+			RASMAmbushMutant8REF2.evp
+			RASMAmbushMutant8REF3.evp		
+			RASMSuperMutantEncounterActivatorREF8.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF9 == 1
+			RASMAmbushMutant9REF1.enable
+			RASMAmbushMutant9REF2.enable
+			RASMAmbushMutant9REF3.enable
+
+			RASMAmbushMutant9REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant9REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant9REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant9REF1.evp
+			RASMAmbushMutant9REF2.evp
+			RASMAmbushMutant9REF3.evp
+			RASMSuperMutantEncounterActivatorREF9.disable
+		elseif GetIsReference RASMSuperMutantEncounterActivatorREF10 == 1
+			RASMAmbushMutant10REF1.enable
+			RASMAmbushMutant10REF2.enable
+			RASMAmbushMutant10REF3.enable
+
+			RASMAmbushMutant10REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant10REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMAmbushMutant10REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMAmbushMutant10REF1.evp
+			RASMAmbushMutant10REF2.evp
+			RASMAmbushMutant10REF3.evp
+			RASMSuperMutantEncounterActivatorREF10.disable
+		endif
+	endif
+end

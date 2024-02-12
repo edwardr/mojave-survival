@@ -1,0 +1,147 @@
+scn EDEScript
+
+int Waiting								; 0 = Not waiting, 1 = Waiting
+int CombatStyleMelee				; 0 = Not melee, 1= Melee
+int CombatStyleRanged				; 0 = Not ranged, 1 = Ranged
+int IsFollowingDefault				; 0 = Not following default, 1 = Is following default range
+int IsFollowingLong					; 0 = Not following long, 1 = Is following long
+int FollowerSwitchAggressive		; 0 = Passive (wait on player), 1 = Aggressive (attack when see enemies)
+float fTimer					
+int OnceOnly
+int iLogsPlayed						; Count of the number of logs played
+int iRadioConversation				;
+ref rLogBlocker							; reference to stop the player from getting logs in the same cell
+int bSameCell							; Set to 1 if the player is in the same cell as a log blocker.
+short brokenEDE
+int repairMenuButton
+ref EDERef
+
+begin OnLoad
+	if OnceOnly == 0
+		set OnceOnly to 1
+	endif
+end
+
+begin OnActivate
+	if GetActionRef == Player
+		if brokenEDE == 1
+			showMessage RASMEDERepair00
+		else
+			activate
+		endif
+	endif
+end
+
+begin GameMode
+	if brokenEDE == 1
+		set repairMenuButton to GetButtonPressed
+		set EDERef to GetSelf
+		if repairMenuButton == 1
+			activate
+		endif
+		if repairMenuButton == 2
+			if player.getItemCount SpareParts >= 1 && player.getItemCount ScrapElectronics >= 1
+				player.removeitem ScrapElectronics 1
+				player.removeitem SpareParts 1
+				set brokenEDE to 0
+				set VNPCFollowers.bEDEDead to 0
+				EDERef.ResurrectActor 1
+				EDERef.ResetHealth
+				;EDERef.resetai
+				EDERef.StartConversation player GREETING
+				;set VNPCFollowers.bEDEHired to 1
+			else
+				showMessage RASMEDERepairMissingParts
+			endif
+		endif
+		if repairMenuButton == 3
+			if player.getav Repair >= 75
+				set brokenEDE to 0
+				set VNPCFollowers.bEDEDead to 0
+				EDERef.ResurrectActor 1
+				EDERef.ResetHealth
+				EDERef.resetai
+				EDERef.StartConversation player GREETING
+				;set VNPCFollowers.bEDEHired to 1
+			else
+				showMessage RASMEDERepairFailedSkillCheck
+			endif
+		endif
+	endif
+	if iRadioConversation == 1 && this == EDE1Ref
+		EDERadioREF.enable
+		sayto Player EDEStatic
+		set iRadioConversation to 2
+	endif
+	if (rLogBlocker != 0 && bSameCell == 0)
+		if (rLogBlocker.GetInSameCell Player)
+			set bSameCell to 1
+		endif
+	elseif bSameCell == 1 && rLogBlocker.GetInSameCell Player == 0
+		set bSameCell to 0
+	endif
+end
+
+begin SayToDone EDEStatic
+	startconversation Player EDERadioConversation
+end
+
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnDeath
+
+	if VNPCFollowers.bEDEHired == 1
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		set vNPCFollowers.bCritterinParty to 0
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.bEDEHired to 0
+		ShowMessage FollowerMessageDeadEDE
+		player.RemovePerk EnhancedSensors
+		ShowMessage FollowerMessagePerkEDERemove
+		;player.placeatme NVCompanionEdEDdisabled 1
+		set brokenEDE to 1
+	endif
+	
+	set VNPCFollowers.bEDEDead to 1
+	;RASM - we don't want to fail the quest since EDE can be repaired.
+	;if GetQuestCompleted vDialogueEDE == 0
+		;setstage vDialogueEDE 100
+	;endif
+
+end
+
+begin GameMode
+	if OnceOnly == 1
+		set fTimer to GetSecondsPassed + fTimer
+		if fTimer >= 5
+			set OnceOnly to 2
+			set EDE2Ref.OnceOnly to 2
+			set EDE3Ref.OnceOnly to 2
+			setrestrained 0
+			resetai
+		endif
+	endif
+end
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+begin OnCombatEND
+
+	if GetPlayerTeammate == 1
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+	
+		; JSH 02.04.11 - Reset ED-E if he's frenzied.
+		SetActorValue Aggression 0;
+		RestoreActorValue BrainCondition 100;
+	endif
+
+end

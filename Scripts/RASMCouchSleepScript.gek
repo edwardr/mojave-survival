@@ -1,0 +1,22 @@
+scn RASMCouchSleepScript
+short messageButton
+short playerSitting
+
+Begin OnActivate
+	if playerSitting == 0
+		ShowMessage RASMCouchMessage
+	else
+		Activate
+		set playerSitting to 0
+	endif
+End
+
+Begin GameMode
+	set messageButton to GetButtonPressed
+	if messageButton == 1
+		Activate
+		set playerSitting to 1
+	elseif messageButton == 2
+		ShowSleepWaitMenu 1
+	endif
+End

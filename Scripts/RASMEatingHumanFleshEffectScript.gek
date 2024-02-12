@@ -1,0 +1,23 @@
+scn RASMEatingHumanFleshEffectScript
+short baseModifier
+short skillRoll
+ref effectTarget
+
+begin ScriptEffectStart
+	set effectTarget to GetSelf
+	if effectTarget.GetIsReference player
+		set baseModifier to PlayerREF.getav survival + PlayerREF.getav luck
+		set skillRoll to GetRandomPercent
+		; Karma ding if anyone sees the player eating human flesh
+		if GetPCDetectionState != 0
+			PlayerREF.RewardKarma -50
+		endif
+
+		if skillRoll + baseModifier >= 100
+			If PlayerREF.HasPerk Cannibal == 0
+				PlayerREF.AddPerk Cannibal
+				ShowMessage RASMCannibalMessage
+			endIf
+		endif
+	endif
+end

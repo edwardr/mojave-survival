@@ -1,0 +1,19 @@
+scn RASMRealtyFailUDF
+
+ref ambushMarker
+ref key
+string_var questFlag
+int addKey
+
+begin Function { ambushMarker, key, questFlag, addKey }
+	StartQuest RASMBishopsRevenge
+	SetStage RASMBishopsRevenge 10
+	RASMBishopREF.moveTo ambushMarker
+	if addKey != 0
+		RASMBishopREF.additem key 1
+	endif
+	
+
+	; give the player ownership of the housing they squatted in
+	SetVariable $questFlag, 1, RASMControllerQuest
+end

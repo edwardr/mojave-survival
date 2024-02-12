@@ -1,0 +1,111 @@
+scn RASMPlanterLargeScript
+; unused/aborted attempt at farming.
+
+short planted
+short button
+ref activeMenu
+ref planterREF
+ref cropToPlant
+ref plantedCrop
+
+ref freesidePlanter1Slot1
+ref freesidePlanter1Slot2
+ref freesidePlanter1Slot3
+ref freesidePlanter1Slot4
+ref freesidePlanter1Slot5
+ref freesidePlanter1Slot6
+ref freesidePlanter1Slot7
+ref freesidePlanter1Slot8
+ref freesidePlanter1Slot9
+ref freesidePlanter1Slot10
+ref freesidePlanter1Slot11
+ref freesidePlanter1Slot12
+
+ref freesidePlanter2Slot1
+ref freesidePlanter2Slot2
+ref freesidePlanter2Slot3
+ref freesidePlanter2Slot4
+ref freesidePlanter2Slot5
+ref freesidePlanter2Slot6
+ref freesidePlanter2Slot7
+ref freesidePlanter2Slot8
+ref freesidePlanter2Slot9
+ref freesidePlanter2Slot10
+ref freesidePlanter2Slot11
+ref freesidePlanter2Slot12
+
+begin GameMode
+	set button to GetButtonPressed
+
+	; Menu 1
+	if activeMenu == RASMPlanterInterface
+		if button == 0
+			set cropToPlant to 0
+		elseif button == 1
+			; remove last plant
+			set cropToPlant to 0
+		elseif button == 2
+			; maize
+			set cropToPlant to MaizePickable
+		elseif button == 3
+			; mutfruit
+			set cropToPlant to RASMMutfruitPickable
+		elseif button == 4
+			; banana yucca
+			set cropToPlant to BananaYuccaPickable
+		elseif button == 5
+			; barrel cactus
+			set cropToPlant to BarrelCactusPickable
+		elseif button == 6
+			; potato
+			set cropToPlant to RASMPotatoPickable
+		elseif button == 7
+			; buffalo gourd
+			set cropToPlant to BuffaloGourdPickable
+		elseif button == 8
+			; broc flower
+			set cropToPlant to BrocFlowerPlant
+		elseif button == 9
+			ShowMessage RASMPlanterInterface2
+			set activeMenu to RASMPlanterInterface2
+		endif
+
+		if cropToPlant != 0
+			print $cropToPlant
+			;set plantedCrop to RASMPlanterLargeFreeside2PlantREF1.PlaceAtMe cropToPlant 1
+			print $plantedCrop
+			set cropToPlant to 0
+		endif
+
+	; Menu 2
+	elseif activeMenu == RASMPlanterInterface2
+		if button == 1
+			; coyote tobacco
+		elseif button == 2
+			; honey mesquite
+		elseif button == 3
+			; jalapeno
+		elseif button == 4
+			; nevada agave
+		elseif button == 5
+			; pinto bean
+		elseif button == 6
+			; prickly pear cactus
+		elseif button == 7
+			; xander root
+		endif
+
+		;print "planter ref " + $planterREF
+	endif
+end
+
+begin OnActivate
+	ShowMessage RASMPlanterInterface
+	set activeMenu to RASMPlanterInterface
+	;set planterREF to RASMPlanterLargeFreesideREF1
+	;if GetIsReference RASMPlanterLargeFreesideREF1 == 1
+		;print "freeside planter 1"
+	;elseif GetIsReference RASMPlanterLargeFreesideREF2 == 1
+		;print "freeside planter 2"
+	;endif
+end

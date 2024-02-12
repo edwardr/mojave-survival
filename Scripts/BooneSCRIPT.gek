@@ -1,0 +1,156 @@
+scn BooneSCRIPT
+
+short 	HasBeenHired
+short	WeaponOut
+short	CombatStyleRanged
+short	CombatStyleMelee
+short	IsFollowingDefault
+short	IsFollowingShort
+short	IsFollowingLong
+short FollowerSwitchAggressive			; 0 = Passive (wait for player), 1 = Aggressive (attack when see enemy)
+short	Waiting
+short	DoOnce
+short bEquippedBeret
+short bGotRevenge
+short bInNest
+short bLoadedOnce;
+
+; RASM - some setup to use antivenom and stimpaks
+short healCheckTimerStart
+float healCheckTimer
+short iteration
+
+; Beret TRACKING!!!
+short bCheckedOnce;
+float fLastCheckHour;
+short nLastCheckDay;
+short nLastBeretCount;
+short nBeretCount;
+
+Begin OnLoad
+;	set up base stats
+	if (bLoadedOnce == 0)
+;		SetActorValue guns 35; JES 11/2/10 - Artificial buffs found and removed! Mazel tov!
+;		SetActorValue energyweapons 60;
+;		SetActorValue meleeweapons 20;
+;		SetActorValue unarmed 40;
+;		SetActorValue medicine 50;
+;		SetActorValue sneak 100;
+		set bLoadedOnce to 1;
+	endif
+
+	;Script to make sure we set the right combat style on loading.
+	If (CombatStyleMelee == 1)
+		CraigBooneREF.SetCombatStyle FollowersCombatStyleMelee;
+	Else
+		CraigBooneREF.SetCombatStyle FollowersCombatStyleRanged;
+	EndIf
+
+End
+
+Begin OnTriggerEnter CraigBooneREF
+	set CraigBooneREF.bInNest to 1
+End
+
+Begin OnTriggerLeave CraigBooneREF
+	set CraigBooneREF.bInNest to 0
+End
+
+BEGIN GameMode
+
+	if ( DoOnce == 0 )
+		if ( GetDistance Player <= 1400 )
+			set DoOnce to 1
+			evp
+		endif
+	endif
+
+	if GetPlayerTeammate == 1
+		if CraigBooneREF.isInCombat == 1
+			if healCheckTimerStart == 0 
+				set healCheckTimer to 10
+				set healCheckTimerStart to 1
+			else
+				if healCheckTimer >= 0
+					set healCheckTimer to healCheckTimer - getSecondsPassed
+				else
+					if CraigBooneREF.GetHealthPercentage <= 0.50
+						if CraigBooneREF.getItemCount stimpak >= 1
+							CraigBooneREF.equipItem stimpak
+						endif
+					endif
+					if CraigBooneREF.getIsPoisoned == 1
+						if CraigBooneREF.getItemCount NVAntivenom >= 1
+							CraigBooneREF.equipItem NVAntivenom
+						endif
+					endif
+
+					set healCheckTimerStart to 0
+				endif
+			endif
+		endif
+	endif
+END
+
+
+BEGIN OnCombatEND
+
+	if ( GetPlayerTeammate == 1 )
+		resethealth
+		restoreav perceptioncondition 100
+		restoreav endurancecondition 100
+		restoreav leftattackcondition 100
+		restoreav leftmobilitycondition 100
+		restoreav rightattackcondition 100
+		restoreav rightmobilitycondition 100
+		if CraigBooneREF.getIsPoisoned == 1
+			if CraigBooneREF.getItemCount NVAntivenom >= 1
+				CraigBooneREF.equipItem NVAntivenom
+			endif
+		endif
+	endif
+
+END
+
+BEGIN OnDeath
+	if (GetQuestCompleted VMS53 == 0)
+		SetStage VMS53 255;
+	endif
+	if (GetQuestCompleted VMS39 == 0)
+		SetStage VMS39 80;
+	endif
+	if ( VNPCFollowers.bBooneHired == 1  )
+		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
+		if (VNPCFollowers.nCurrentFollowers == 0)
+			set VNPCFollowers.bPlayerHasFollower to 0
+		endif
+		set VNPCFollowers.bBooneHired to 0
+		set VNPCFollowers.bHumanoidInParty to 0;
+		Player.RemoveFromFaction VBooneFaction
+		ShowMessage FollowerMessageDeadBoone
+		player.RemovePerk Spotting
+		ShowMessage FollowerMessagePerkBooneRemove
+	endif
+	if (GetQuestCompleted VMS39 && VDialogueCraigBoone.bHeardWifeStory)
+		AddItem VBooneLastLetterNote 1;
+	endif
+
+	set VNPCFollowers.bBooneDead to 1
+END ;OnDeath
+
+; track in here to see if the player gives Veronica a dress.
+BEGIN MenuMode 1008; container
+	if (GameHour > fLastCheckHour || GameDaysPassed > nLastCheckDay)
+		set fLastCheckHour to GameHour;
+		set nLastCheckDay to GameDaysPassed;
+
+		Set nBeretCount to GetItemCount RepairNVHatNCRBeret;
+
+		; react only if the player has just now taken his last beret
+		if (nBeretCount < nLastBeretCount && nBeretCount == 0)
+			SayTo player VDialogueCraigBooneNoBeretReact;
+		endif
+		set nLastBeretCount to nBeretCount;
+	endif
+	
+END ;MenuMode 1008 - container

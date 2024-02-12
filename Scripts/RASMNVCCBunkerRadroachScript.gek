@@ -1,0 +1,25 @@
+scn RASMNVCCBunkerRadroachScript
+
+int iDead
+float iTimer
+float iTimer2
+
+begin GameMode
+	if getdead == 0
+		if iTimer2 > 1
+			RestoreActorValue Health 2
+			set iTimer2 to 0
+		else
+			set iTimer2 to iTimer2 + GetSecondsPassed
+
+		endif
+
+		if iTimer > 3
+			set iTimer to 0
+			PlaceAtMe vGlowingOneRadiationAuraExplosion
+		else
+			set iTimer to iTimer + GetSecondsPassed
+		endif
+	endif
+
+end

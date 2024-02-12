@@ -1,0 +1,113 @@
+scn RASMNovacFarmingScript
+
+ref slot0
+ref slot1
+ref slot2
+ref slot3
+ref slot4
+ref slot5
+
+array_var cropSlots
+array_var slot
+ref slotRef
+int slotIndex
+
+short growRoll
+short waterRoll
+short fertilizerRoll
+int playerModifier
+
+int hasWater
+int hasFertilizer
+ref waterType
+
+int lastRunTime
+int slotsFirstRunComplete
+int daysPassed
+
+begin GameMode
+	; runs on a 24-hr game time processing delay
+	print "Novac farming check runs"
+
+	set daysPassed to GetGameDaysPassed
+	if lastRunTime == daysPassed
+		print "Novac already ran today"
+		return
+	endif
+
+	if player.getDistance RASMFarmingWaterReservoirNovacREF > 5000
+		print "Player too far"
+		return
+	endif
+
+	let cropSlots := Ar_List slot0, slot1, slot2, slot3, slot4, slot5
+
+	foreach slot <- cropSlots
+		let slotIndex := slot["key"]
+		let slotRef := slot["value"]
+		if IsFormValid slotRef == 1
+			if isReference slotRef != 1
+				continue
+			endif
+			; skip the first run
+			set lastRunTime to daysPassed
+			if slotsFirstRunComplete == 0
+				print "skipping slotsB first run"
+				set slotsFirstRunComplete to 1
+				break
+			endif
+			if slotRef.GetDestroyed == 1
+				; check water level and ensure there's at least one water unit (1 purified or 2 dirty)
+				if RASMFarmingWaterReservoirNovacREF.GetItemCount WaterPurified >= 1
+					set hasWater to 1
+					set waterType to WaterPurified
+				else
+					if RASMFarmingWaterReservoirNovacREF.GetItemCount WaterUnpurified >= 2
+						set hasWater to 1
+						set waterType to WaterUnpurified
+					else
+						set hasWater to 0
+					endif
+				endif
+
+				if RASMFertilizerStorageNovacREF.GetItemCount RASMFertilizer >=1
+					set hasFertilizer to 1
+				endif
+
+				if hasWater == 1 && hasFertilizer == 1
+					set growRoll to GetRandomPercent
+					set waterRoll to GetRandomPercent
+					set playerModifier to Clamp (player.getAv Survival + player.getAv Luck) 10 95
+					if growRoll <= playerModifier
+						slotRef.SetVariable "State", 0
+						slotRef.SetScale 1
+						;slotRef.PlayGroup Backward 1
+						call RASMHandleCropGrowthAnimationUDF slotRef
+						slotRef.setdestroyed 0
+					endif
+
+					if waterRoll < 75
+						if waterType == WaterPurified
+							RASMFarmingWaterReservoirNovacREF.removeItem WaterPurified 1
+						else
+							RASMFarmingWaterReservoirNovacREF.removeItem WaterUnpurified 2
+						endif
+					endif
+
+					if fertilizerRoll < 50
+						RASMFertilizerStorageNovacREF.removeItem RASMFertilizer 1
+					endif
+				else
+					print "Novac plant #" + $slotIndex + " wants to grow but has no water or fert."
+				endif
+			endif
+		endif
+	loop
+
+
+	set slotIndex to 0
+	set slotRef to 0
+	set hasWater to 0
+	set waterType to 0
+	set hasFertilizer to 0
+end

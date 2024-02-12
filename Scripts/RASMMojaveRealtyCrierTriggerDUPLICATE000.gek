@@ -1,0 +1,13 @@
+scn RASMMojaveRealtyCrierTrigger
+
+begin OnTriggerEnter player
+
+	;if VFSMickAndRalphsCrierREF.GetDead == 0
+		;if VFSMickAndRalphsCrierREF.IsTalking == 0
+			;if VFSMickAndRalphsCrierREF.IsInCombat == 0
+				;VFSMickAndRalphsCrierREF.Say VFSMickAndRalphsCrierShout
+			;endif
+		;endif
+	;endif
+
+end

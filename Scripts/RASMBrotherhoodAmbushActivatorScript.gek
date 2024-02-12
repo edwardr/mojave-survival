@@ -1,0 +1,58 @@
+scn RASMBrotherhoodAmbushActivatorScript
+
+begin OnTriggerEnter player
+	; RASMBrotherhoodAmbushPackage triggers dialog and aggro
+	; brotherhood is destroyed
+	if VStoryEventBoS == 2
+
+		; Ambusher Type A
+		if GetIsReference RASMBrotherhoodAmbusherActivatorREF1 == 1
+			RASMBrotherhoodAmbusherAREF1.enable
+			RASMBrotherhoodAmbusherAREF1.evp
+			RASMBrotherhoodAmbusherActivatorREF1.disable
+			RASMBrotherhoodAmbusherActivatorREF2.disable
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF2 == 1
+			RASMBrotherhoodAmbusherAREF2.enable
+			RASMBrotherhoodAmbusherAREF2.evp
+			RASMBrotherhoodAmbusherActivatorREF1.disable
+			RASMBrotherhoodAmbusherActivatorREF2.disable
+
+		; Ambusher Type B
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF3 == 1
+			RASMBrotherhoodAmbusherBREF1.enable
+			RASMBrotherhoodAmbusherBREF1.evp
+			RASMBrotherhoodAmbusherActivatorREF3.disable
+			RASMBrotherhoodAmbusherActivatorREF4.disable
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF4 == 1
+			RASMBrotherhoodAmbusherBREF2.enable
+			RASMBrotherhoodAmbusherBREF2.evp
+			RASMBrotherhoodAmbusherActivatorREF3.disable
+			RASMBrotherhoodAmbusherActivatorREF4.disable
+
+		; Ambusher Type C
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF5 == 1
+			RASMBrotherhoodAmbusherCREF1.enable
+			RASMBrotherhoodAmbusherCREF1.evp
+			RASMBrotherhoodAmbusherActivatorREF5.disable
+			RASMBrotherhoodAmbusherActivatorREF6.disable
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF6 == 1
+			RASMBrotherhoodAmbusherCREF2.enable
+			RASMBrotherhoodAmbusherCREF2.evp
+			RASMBrotherhoodAmbusherActivatorREF5.disable
+			RASMBrotherhoodAmbusherActivatorREF6.disable
+
+		; Ambusher Type D
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF7 == 1
+			RASMBrotherhoodAmbusherDREF1.enable
+			RASMBrotherhoodAmbusherDREF1.evp
+			RASMBrotherhoodAmbusherActivatorREF7.disable
+			RASMBrotherhoodAmbusherActivatorREF8.disable
+		elseif GetIsReference RASMBrotherhoodAmbusherActivatorREF8 == 1
+			RASMBrotherhoodAmbusherDREF2.enable
+			RASMBrotherhoodAmbusherDREF2.evp
+			RASMBrotherhoodAmbusherActivatorREF7.disable
+			RASMBrotherhoodAmbusherActivatorREF8.disable
+		endif
+
+	endif
+end

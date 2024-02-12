@@ -1,0 +1,59 @@
+ScriptName NVDLC02EndingSCRIPT
+
+
+; Used for the End Slides
+; OMP 12/16/2010
+; OMP 12/21/2010 - Moved some initialization code from NVDLC02SlideShowTriggerSCRIPT to here where it belongs.
+; OMP 01/06/2011 - Added code to delay the start of the Ending Slide sequence.
+; OMP 01/10/2011 - Remove NVDLC02SacredDaturaPoisonISFX; added call to set value of NVDLC02SlideShowTriggerREF.bRunScript to 1, allowing the Ending Slide sequence to run.
+; OMP 01/18/2011 - Added the bMQ06Triggered variable used to play the "abridged" version of the Ending Slide sequence.
+; OMP 01/20/2011 - Added code to skip the delay.
+; OMP 01/21/2011 - Added code to disable Joshua, Daniel, and SaltUponWounds.
+; OMP 01/31/2011 - Moved the Disable calls to NVDLC02SlideShowTriggerSCRIPT so the player doesn't see it happen.
+; TLS 02/01/2011 - Added line to disable boulder that blocks off MQ04 finale
+; OMP 02/18/2011 - Added a call to disable sneaking before the timer; moved the MQ06 timer set immediately after the new disable call; changed the timer setting to 3.9 seconds to give a bit of time before firing the ending sequence.
+
+Short bSlideShowStarted;																		; Used to initialize what's needed for the start of the End Slides (prevent the player from doing anything and teleport them to the "theatre")
+Float fTimer;																						; Timer used to delay the start of the Ending Slide sequence
+Short bMQ06Triggered;																			; Used to play the "abridged" version of the Ending Slide sequence
+
+
+BEGIN GameMode
+
+	If ( bSlideShowStarted == 0 )																; Has the initialization run yet?
+
+		DisablePlayerControls 0 0 1 0 0 0 1;
+
+		If ( bMQ06Triggered == 1 )																; Do we want to skip the delay?
+			Set fTimer To 3.9;																		; Set the timer to start the sequence
+		EndIf
+
+		Set fTimer To ( fTimer + GetSecondsPassed );										; Increment the delay timer
+
+		If ( fTimer >= 4.0 )																			; Delay to allow the Tunnel Collapse sequence to finish
+			Set bSlideShowStarted to 1;															; Prevent the script from running again
+
+			Player.DispelAllSpells;																; Removes all chem effects
+			RemoveImageSpaceModifier NVDLC02SacredDaturaPoisonISFX;			; Removes Dark Datura poison visual effect
+			Player.CastImmediateOnSelf NVDLC02RestUp;								; Restore the player's Dehydration, Sleep Deprivation, and Starvation
+			Player.ResetHealth;																	; Heal the player and remove any crippling damage
+			PipBoyRadioOff;																		; Turn off PipBoy radio
+
+			PlayMusic EndSlideShow;
+
+			SetInCharGen 1;																		; Keep the player from leveling during the show
+			Player.AddScriptPackage NVDLC02PlayerNoSavePackage;					; Prevent the player from saving the game
+			DisablePlayerControls 1 1 1 1 1 1 1;												; Prevent the player from disrupting the show
+
+			Set NVDLC02SlideShowTriggerREF.bRunScript To 1;							; Set Trigger's variable to let Ending Slide sequence run.
+			Player.MoveTo NVDLC02SlideShowMarkerREF;								; Send the player to the "theatre" to begin slide show
+			NVDLC02MQ04FinaleBlockerREF.Disable										; Disables the rock used to block off the boss arena of NVDLC02MQ04
+
+			; RASM clearing flag now that player is not stuck in DLC
+			set RASMPlayerControllerQuest.playerStuckInDLC to 0
+
+		EndIf
+
+	EndIf
+
+END

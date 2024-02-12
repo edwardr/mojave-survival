@@ -1,0 +1,125 @@
+scn RASMFiendDayAmbushEncounterActivatorScript
+
+; this script handles random Fiend attacks > level 10 during the day.
+
+int spawnCount
+int spawnCountAlt
+int lastSpawnDay
+
+begin OnTriggerEnter player
+	
+	if playerREF.getLevel < 15
+		return
+	endif
+
+	if lastSpawnDay == getGameDaysPassed
+		return
+	endif
+	
+	if GetIsReference RASMFiendDayAmbushEncounterActivatorREF1 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 3
+		RASMFiendDayAmbushEncounterSpawnActivatorREF1.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF1.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF1.placeAtMe RASMFiendAmbushMeleeFemaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF1.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF2 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF2.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF2.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF2.placeAtMe RASMFiendAmbushMeleeFemaleB spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF2.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF3 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF3.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF3.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF3.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF4 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF4.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF4.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF4.placeAtMe RASMFiendAmbushMeleeFemaleB spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF4.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF5 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF5.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF5.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF5.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF6 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF6.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF6.placeAtMe RASMFiendAmbushMeleeFemaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF6.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF7 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF7.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF7.placeAtMe RASMFiendAmbushMeleeFemaleB spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF7.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF8 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF8.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF8.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF8.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF9 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF9.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF9.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF9.placeAtMe RASMFiendAmbushMeleeFemaleB spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF9.disable
+		endif
+	elseif GetIsReference RASMFiendDayAmbushEncounterActivatorREF10 == 1
+		set lastSpawnDay to getGameDaysPassed
+		set spawnCount to Rand 1, 3
+		set spawnCountAlt to Rand 1, 2
+		RASMFiendDayAmbushEncounterSpawnActivatorREF10.placeAtMe RASMFiendAmbushGunMaleA spawnCount
+		RASMFiendDayAmbushEncounterSpawnActivatorREF10.placeAtMe RASMFiendAmbushMeleeMaleA spawnCountAlt
+		RASMFiendDayAmbushEncounterSpawnActivatorREF10.placeAtMe RASMFiendAmbushMeleeFemaleA spawnCountAlt
+
+		if getRandomPercent < 50
+			RASMFiendDayAmbushEncounterActivatorREF10.disable
+		endif
+	endif
+end

@@ -1,0 +1,14 @@
+scn RASMBlindEffectScript
+
+begin ScriptEffectStart
+	ApplyImageSpaceModifier RASMBlindSFX
+	ShowMessage RASMBlindness
+	;if getRandomPercent <= 5
+		;playSound RASMMaleDrunk
+	;endif
+end
+
+begin ScriptEffectFinish
+	ShowMessage RASMBlindnessEnd
+	RemoveImageSpaceModifier RASMBlindSFX
+end

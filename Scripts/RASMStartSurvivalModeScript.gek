@@ -1,0 +1,57 @@
+ScriptName RASMStartSurvivalModeScript
+
+short nButton
+short bModeSet;
+
+; TODO make this a quest and/or UDF.
+
+BEGIN OnActivate
+	ShowMessage RASMStartSurvivalModeMessage
+	SetHardcore 1
+	; disables fast travel, enabled sleep/waiting
+	EnableFastTravel 0 1 1
+	SetGameHour 8
+	con_SetGameSetting iMaxCharacterLevel 40
+	; better to do this through a quest
+	if player.hasPerk WildWasteland
+		RASMBennyPictureFrameREF.enable
+		RASMMadBrahminActivatorREF1.enable
+		RASMMadBrahminActivatorREF2.enable
+		RASMMadBrahminActivatorREF3.enable
+		RASMMadBrahminActivatorREF4.enable
+		RASMMadBrahminREF1.enable
+		RASMMadBrahminREF2.enable
+		RASMMadBrahminREF3.enable
+		RASMMadBrahminREF4.enable
+		RASMMadBrahminREF5.enable
+		RASMMadBrahminREF6.enable
+		RASMFO1PosterREF.enable
+		RASMMiniatureGiantSpaceRatREF.enable
+	endif
+
+	if GetHasNote RASMWastelandSurvivalGuide == 0
+		addNote RASMWastelandSurvivalGuide
+	endif
+
+	if GetHasNote RASMWastelandCraftingGuide == 0
+		addNote RASMWastelandCraftingGuide
+	endif
+
+	if GetHasNote RASMWastelandFarmingGuide == 0
+		addNote RASMWastelandFarmingGuide
+	endif
+
+	; calculates VATS hit chance based on Perception
+	if PlayerREF.hasPerk RASMPerceptionToVATS == 0
+		PlayerREF.addPerk RASMPerceptionToVATS
+	endif
+		
+	; we have to set this with script because if 0 in GS, override here doesn't work.
+	; this gets reactivated if PC has EDE
+	; overall npc compass ticks seems quite buggy
+	; RASMControllerQuestScript does periodic checks as well
+	con_SetGameSetting iHUDMaxCompassNPCTicks 0
+
+	set bModeSet to 1;
+	MarkForDelete;
+END

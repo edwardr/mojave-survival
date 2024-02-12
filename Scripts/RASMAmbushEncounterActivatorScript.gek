@@ -1,0 +1,472 @@
+scn RASMAmbushEncounterActivatorScript
+
+; this script handles random map ghoul encounters at night
+
+int spawnCount
+int lastSpawnDay
+
+begin OnTriggerEnter player
+	if getCurrentTime <= 4.5 || getCurrentTime >= 20.00
+		if lastSpawnDay == getGameDaysPassed
+			return
+		endif
+
+		if GetIsReference RASMAmbushEncounterActivator1REF == 1
+			RASMGhoulEncounter1REF1.enable
+			RASMGhoulEncounter1REF2.enable
+			RASMGhoulEncounter1REF3.enable
+			RASMGhoulEncounter1REF4.enable
+			RASMGhoulEncounter1REF5.enable
+
+			RASMGhoulEncounter1REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter1REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter1REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter1REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter1REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter1REF1.evp
+			RASMGhoulEncounter1REF2.evp
+			RASMGhoulEncounter1REF3.evp
+			RASMGhoulEncounter1REF4.evp
+			RASMGhoulEncounter1REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator1REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator2REF == 1
+			RASMGhoulEncounter2REF1.enable
+			RASMGhoulEncounter2REF2.enable
+			RASMGhoulEncounter2REF3.enable
+
+			RASMGhoulEncounter2REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter2REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter2REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter2REF1.evp
+			RASMGhoulEncounter2REF2.evp
+			RASMGhoulEncounter2REF3.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator2REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator3REF == 1
+			RASMGhoulEncounter3REF1.enable
+			RASMGhoulEncounter3REF2.enable
+			RASMGhoulEncounter3REF3.enable
+			RASMGhoulEncounter3REF4.enable
+
+			RASMGhoulEncounter3REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter3REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter3REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter3REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter3REF1.evp
+			RASMGhoulEncounter3REF2.evp
+			RASMGhoulEncounter3REF3.evp
+			RASMGhoulEncounter3REF4.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator3REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator4REF == 1
+			RASMGhoulEncounter4REF1.enable
+			RASMGhoulEncounter4REF2.enable
+			RASMGhoulEncounter4REF3.enable
+			RASMGhoulEncounter4REF4.enable
+			RASMGhoulEncounter4REF5.enable
+
+			RASMGhoulEncounter4REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter4REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter4REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter4REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter4REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter4REF1.evp
+			RASMGhoulEncounter4REF2.evp
+			RASMGhoulEncounter4REF3.evp
+			RASMGhoulEncounter4REF4.evp
+			RASMGhoulEncounter4REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator4REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator5REF == 1
+			RASMGhoulEncounter5REF1.enable
+			RASMGhoulEncounter5REF2.enable
+			RASMGhoulEncounter5REF3.enable
+			RASMGhoulEncounter5REF4.enable
+			RASMGhoulEncounter5REF5.enable
+			RASMGhoulEncounter5REF6.enable
+
+			RASMGhoulEncounter5REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter5REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter5REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter5REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter5REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter5REF6.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter5REF1.evp
+			RASMGhoulEncounter5REF2.evp
+			RASMGhoulEncounter5REF3.evp
+			RASMGhoulEncounter5REF4.evp
+			RASMGhoulEncounter5REF5.evp
+			RASMGhoulEncounter5REF6.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator5REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator6REF == 1
+			RASMGhoulEncounter6REF1.enable
+			RASMGhoulEncounter6REF2.enable
+			RASMGhoulEncounter6REF3.enable
+			RASMGhoulEncounter6REF4.enable
+			RASMGhoulEncounter6REF5.enable
+
+			RASMGhoulEncounter6REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter6REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter6REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter6REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter6REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter6REF1.evp
+			RASMGhoulEncounter6REF2.evp
+			RASMGhoulEncounter6REF3.evp
+			RASMGhoulEncounter6REF4.evp
+			RASMGhoulEncounter6REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator6REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator7REF == 1
+			RASMGhoulEncounter7REF1.enable
+			RASMGhoulEncounter7REF2.enable
+			RASMGhoulEncounter7REF3.enable
+			RASMGhoulEncounter7REF4.enable
+			RASMGhoulEncounter7REF5.enable
+
+			RASMGhoulEncounter7REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter7REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter7REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter7REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter7REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter7REF1.evp
+			RASMGhoulEncounter7REF2.evp
+			RASMGhoulEncounter7REF3.evp
+			RASMGhoulEncounter7REF4.evp
+			RASMGhoulEncounter7REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator7REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator8REF == 1
+			RASMGhoulEncounter8REF1.enable
+			RASMGhoulEncounter8REF2.enable
+			RASMGhoulEncounter8REF3.enable
+			RASMGhoulEncounter8REF4.enable
+			RASMGhoulEncounter8REF5.enable
+
+			RASMGhoulEncounter8REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter8REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter8REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter8REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter8REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter8REF1.evp
+			RASMGhoulEncounter8REF2.evp
+			RASMGhoulEncounter8REF3.evp
+			RASMGhoulEncounter8REF4.evp
+			RASMGhoulEncounter8REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator8REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator9REF == 1
+			RASMGhoulEncounter9REF1.enable
+			RASMGhoulEncounter9REF2.enable
+			RASMGhoulEncounter9REF3.enable
+			RASMGhoulEncounter9REF4.enable
+			RASMGhoulEncounter9REF5.enable
+
+			RASMGhoulEncounter9REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter9REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter9REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter9REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter9REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter9REF1.evp
+			RASMGhoulEncounter9REF2.evp
+			RASMGhoulEncounter9REF3.evp
+			RASMGhoulEncounter9REF4.evp
+			RASMGhoulEncounter9REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator9REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator10REF == 1
+			RASMGhoulEncounter10REF1.enable
+			RASMGhoulEncounter10REF2.enable
+			RASMGhoulEncounter10REF3.enable
+			RASMGhoulEncounter10REF4.enable
+			RASMGhoulEncounter10REF5.enable
+
+			RASMGhoulEncounter10REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter10REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter10REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter10REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter10REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter10REF1.evp
+			RASMGhoulEncounter10REF2.evp
+			RASMGhoulEncounter10REF3.evp
+			RASMGhoulEncounter10REF4.evp
+			RASMGhoulEncounter10REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator10REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator11REF == 1
+			RASMGhoulEncounter11REF1.enable
+			RASMGhoulEncounter11REF2.enable
+			RASMGhoulEncounter11REF3.enable
+			RASMGhoulEncounter11REF4.enable
+			RASMGhoulEncounter11REF5.enable
+
+			RASMGhoulEncounter11REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter11REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter11REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter11REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter11REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter11REF1.evp
+			RASMGhoulEncounter11REF2.evp
+			RASMGhoulEncounter11REF3.evp
+			RASMGhoulEncounter11REF4.evp
+			RASMGhoulEncounter11REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator11REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator12REF == 1
+			RASMGhoulEncounter12REF1.enable
+			RASMGhoulEncounter12REF2.enable
+			RASMGhoulEncounter12REF3.enable
+			RASMGhoulEncounter12REF4.enable
+			RASMGhoulEncounter12REF5.enable
+
+			RASMGhoulEncounter12REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter12REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter12REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter12REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter12REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter12REF1.evp
+			RASMGhoulEncounter12REF2.evp
+			RASMGhoulEncounter12REF3.evp
+			RASMGhoulEncounter12REF4.evp
+			RASMGhoulEncounter12REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator12REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator13REF == 1
+			RASMGhoulEncounter13REF1.enable
+			RASMGhoulEncounter13REF2.enable
+			RASMGhoulEncounter13REF3.enable
+			RASMGhoulEncounter13REF4.enable
+			RASMGhoulEncounter13REF5.enable
+
+			RASMGhoulEncounter13REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter13REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter13REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter13REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter13REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter13REF1.evp
+			RASMGhoulEncounter13REF2.evp
+			RASMGhoulEncounter13REF3.evp
+			RASMGhoulEncounter13REF4.evp
+			RASMGhoulEncounter13REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator13REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator14REF == 1
+			RASMGhoulEncounter14REF1.enable
+			RASMGhoulEncounter14REF2.enable
+			RASMGhoulEncounter14REF3.enable
+			RASMGhoulEncounter14REF4.enable
+			RASMGhoulEncounter14REF5.enable
+
+			RASMGhoulEncounter14REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter14REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter14REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter14REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter14REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter14REF1.evp
+			RASMGhoulEncounter14REF2.evp
+			RASMGhoulEncounter14REF3.evp
+			RASMGhoulEncounter14REF4.evp
+			RASMGhoulEncounter14REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator14REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator15REF == 1
+			RASMGhoulEncounter15REF1.enable
+			RASMGhoulEncounter15REF2.enable
+			RASMGhoulEncounter15REF3.enable
+			RASMGhoulEncounter15REF4.enable
+			RASMGhoulEncounter15REF5.enable
+
+			RASMGhoulEncounter15REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter15REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter15REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter15REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter15REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter15REF1.evp
+			RASMGhoulEncounter15REF2.evp
+			RASMGhoulEncounter15REF3.evp
+			RASMGhoulEncounter15REF4.evp
+			RASMGhoulEncounter15REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator15REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator16REF == 1
+			RASMGhoulEncounter16REF1.enable
+			RASMGhoulEncounter16REF2.enable
+			RASMGhoulEncounter16REF3.enable
+			RASMGhoulEncounter16REF4.enable
+			RASMGhoulEncounter16REF5.enable
+
+			RASMGhoulEncounter16REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter16REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter16REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter16REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter16REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter16REF1.evp
+			RASMGhoulEncounter16REF2.evp
+			RASMGhoulEncounter16REF3.evp
+			RASMGhoulEncounter16REF4.evp
+			RASMGhoulEncounter16REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator16REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator17REF == 1
+			RASMGhoulEncounter17REF1.enable
+			RASMGhoulEncounter17REF2.enable
+			RASMGhoulEncounter17REF3.enable
+			RASMGhoulEncounter17REF4.enable
+			RASMGhoulEncounter17REF5.enable
+
+			RASMGhoulEncounter17REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter17REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter17REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter17REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter17REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter17REF1.evp
+			RASMGhoulEncounter17REF2.evp
+			RASMGhoulEncounter17REF3.evp
+			RASMGhoulEncounter17REF4.evp
+			RASMGhoulEncounter17REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator17REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator18REF == 1
+			RASMGhoulEncounter18REF1.enable
+			RASMGhoulEncounter18REF2.enable
+			RASMGhoulEncounter18REF3.enable
+			RASMGhoulEncounter18REF4.enable
+			RASMGhoulEncounter18REF5.enable
+
+			RASMGhoulEncounter18REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter18REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter18REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter18REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter18REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter18REF1.evp
+			RASMGhoulEncounter18REF2.evp
+			RASMGhoulEncounter18REF3.evp
+			RASMGhoulEncounter18REF4.evp
+			RASMGhoulEncounter18REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator18REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator19REF == 1
+			RASMGhoulEncounter19REF1.enable
+			RASMGhoulEncounter19REF2.enable
+			RASMGhoulEncounter19REF3.enable
+			RASMGhoulEncounter19REF4.enable
+			RASMGhoulEncounter19REF5.enable
+
+			RASMGhoulEncounter19REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter19REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter19REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter19REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter19REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter19REF1.evp
+			RASMGhoulEncounter19REF2.evp
+			RASMGhoulEncounter19REF3.evp
+			RASMGhoulEncounter19REF4.evp
+			RASMGhoulEncounter19REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator19REF.disable
+		elseif GetIsReference RASMAmbushEncounterActivator20REF == 1
+			RASMGhoulEncounter20REF1.enable
+			RASMGhoulEncounter20REF2.enable
+			RASMGhoulEncounter20REF3.enable
+			RASMGhoulEncounter20REF4.enable
+			RASMGhoulEncounter20REF5.enable
+
+			RASMGhoulEncounter20REF1.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter20REF2.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter20REF3.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter20REF4.AddPackageAt RASMGenericAttackPlayerPackage 0
+			RASMGhoulEncounter20REF5.AddPackageAt RASMGenericAttackPlayerPackage 0
+
+			RASMGhoulEncounter20REF1.evp
+			RASMGhoulEncounter20REF2.evp
+			RASMGhoulEncounter20REF3.evp
+			RASMGhoulEncounter20REF4.evp
+			RASMGhoulEncounter20REF5.evp
+
+			set lastSpawnDay to getGameDaysPassed
+			RASMAmbushEncounterActivator20REF.disable
+
+		; 21 - 30 are spawned refs that will repeat.
+		elseif GetIsReference RASMAmbushEncounterActivator21REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator21SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator22REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator22SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator23REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator23SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator24REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator24SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator25REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator25SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator26REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator26SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator27REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator27SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator28REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator28SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator29REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator29SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		elseif GetIsReference RASMAmbushEncounterActivator30REF == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 1, 8
+			RASMAmbushEncounterActivator30SpawnREF.placeAtMe RASMFeralGhoulSpawn spawnCount
+		endif
+	endif
+end

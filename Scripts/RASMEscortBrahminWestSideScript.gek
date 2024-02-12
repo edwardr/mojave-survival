@@ -1,0 +1,53 @@
+scn RASMEscortBrahminWestSideScript
+
+ref slot1
+ref slot2
+ref slot3
+ref slot4
+ref slot5
+
+array_var brahminSlots
+array_var slot
+ref slotRef
+int slotIndex
+
+int foundLivingBrahmin
+int foundFollowingBrahmin
+
+begin GameMode
+	let brahminSlots := Ar_List slot1, slot2, slot3, slot4, slot5
+
+	foreach slot <- brahminSlots
+		let slotIndex := slot["key"]
+		let slotRef := slot["value"]
+		if slotRef != 0
+			if slotRef.GetDead == 0
+				set foundLivingBrahmin to 1
+			else
+				set slotRef to 0
+			endif
+
+			if slotRef.ActorHasEffect RASMHerdFollowSpellEffect == 1
+				; if the brahmin all lose the spell, kill quest.
+				set foundFollowingBrahmin to 1
+			endif
+		endif
+	loop
+
+	; no living brahmins, kill the quest
+	if foundLivingBrahmin == 0
+		print "failed escort quest"
+		SetStage RASMEscortBrahminWestSide 100
+		StopQuest RASMEscortBrahminWestSide
+	endif
+
+	; disable during testing bc coc breaks the spell pc of non-persistent ref
+	;if foundFollowingBrahmin == 0
+		;print "failed escort quest"
+		;SetStage RASMEscortBrahminWestSide 100
+		;StopQuest RASMEscortBrahminWestSide
+	;endif
+
+	set foundLivingBrahmin to 0
+	set foundFollowingBrahmin to 0
+end

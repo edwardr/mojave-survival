@@ -1,0 +1,79 @@
+ScriptName VCassCompanionScript
+
+float ftimer
+short runtimer
+
+; Cass' companion arc script for discovering what happened to her caravan.
+
+short bDoOnce
+
+; For only setting the incriminating notes in both the Crimson Caravan and Van Graff safes once.
+
+short bKilledCrimsonCaravan
+
+; Player murdered everyone in Crimson Caravan camp + Alice McLafferty.
+
+short bKilledVanGraffs
+
+; Player killed every Van Graff in the Silver Rush.
+
+short numNotesAcquired
+
+; Number of evidence notes the player has acquired
+
+short iCaravanQuestStages
+
+; Tracks the stages that Cass is at for the quest for the caravan.
+; 0 = Nothing
+; 1 = Starts the quest so if you take Cass to the first caravan site, she's ready to say something.
+; 2 = Found 1st Caravan, says barkstring.
+; 3 = Prompt for "let's go find second caravan."
+; 4 = Prompt for #3 over, won't say again, trigger conditional when entering second caravan trigger.
+; 5 = Found 2nd Caravan, set to 5 allows Cass to say 2nd barkstring trigger.
+; 6 = Doesn't repeat 5, sets up the 2nd stage of the quest.
+; 7 = Found 3rd Caravan, set to 8 allows Cass to say 3rd barkstring trigger
+; 8 = Prompt for "we found 3rd caravan."
+; 9 = Don't repeat 8, and sets up "Van Graffs and Crimson Caravan were involved."
+; 10 = Don't repeat 9, and get on with either turning in evidence or going after the VGs and Alice.
+; 11 = Investigation trigger saying "hey, I'm going to gather evidence." This prompts Cass to keep asking about evidence.*
+
+short bEvidence1 ; set to 1 when the player has the objective completed for the Crimson Caravan note
+
+short bEvidence2 ; set to 1 when the player has the objective completed for the Van Graff note
+
+
+BEGIN GameMode
+
+	IF runtimer == 0
+		; return
+	ELSE 
+		IF ftimer > 0
+		set ftimer to (ftimer - getsecondspassed)
+		ELSEIF ftimer <= 0
+			RoseofSharonCassidyREF.AddScriptPackage VCassCaravanDialoguePackage;
+			set runtimer to 0	
+		ENDIF
+	ENDIF
+
+	IF VCassCompanion.iCaravanQuestStages > 10 && bDoOnce == 0
+		CrimsonCaravanSafeREF.additem CassNoteCrimsonCaravan 1
+		VanGraffSafeCass.additem CassNoteVanGraff 1
+		Set bDoOnce to 1
+	ENDIF
+
+	if GetStageDone VCassCompanion 50 
+		if GetHasNote CassNoteCrimsonCaravan && bEvidence1 == 0 && VCassCompanion.bKilledCrimsonCaravan == 0
+			SetObjectiveCompleted VCassCompanion 40 1
+			set bEvidence1 to 1
+			set numNotesAcquired to (numNotesAcquired + 1)
+			RoseofSharonCassidyREF.AddScriptPackage CassEvidenceDialoguePackage
+		endif
+		if GetHasNote CassNoteVanGraff && bEvidence2 == 0 && VCassCompanion.bKilledVanGraffs == 0
+			SetObjectiveCompleted VCassCompanion 50 1
+			set bEvidence2 to 1
+			set numNotesAcquired to (numNotesAcquired + 1)
+			RoseofSharonCassidyREF.AddScriptPackage CassEvidenceDialoguePackage
+		endif
+	endif
+
+END

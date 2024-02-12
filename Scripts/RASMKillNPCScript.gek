@@ -1,0 +1,7 @@
+scn RASMKillNPCScript
+
+ref npcSelf
+Begin OnLoad
+	set npcSelf to getSelf
+	npcSelf.killActor npcSelf 3
+End

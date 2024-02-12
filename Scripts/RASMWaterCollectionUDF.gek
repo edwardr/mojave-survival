@@ -1,0 +1,142 @@
+scn RASMWaterCollectionUDF
+
+int returnedCount
+int maxCount
+ref activatorType
+int totalFilledBottles
+int tempFillBottleCount
+
+begin function { maxCount, activatorType}
+
+	set totalFilledBottles to 0
+
+	if PlayerREF.GetItemCount Milkbottle01 >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount Milkbottle01) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem Milkbottle01 tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+	
+	if PlayerREF.GetItemCount NukaColaBottle >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount NukaColaBottle) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem NukaColaBottle tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+
+	if PlayerREF.GetItemCount ScotchBottle01Empty01 >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount ScotchBottle01Empty01) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem ScotchBottle01Empty01 tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+	
+	if PlayerREF.GetItemCount SodaBottleEmpty01 >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount SodaBottleEmpty01) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem SodaBottleEmpty01 tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+
+	if PlayerREF.GetItemCount SSBottleEmpty >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount SSBottleEmpty) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem SSBottleEmpty tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+	if PlayerREF.GetItemCount SSBottleEmptyNoFloat >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount SSBottleEmptyNoFloat) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem SSBottleEmptyNoFloat tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+
+	; todo what the hell is this?
+	if PlayerREF.GetItemCount VCG02Bottle >= tempFillBottleCount
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount VCG02Bottle) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem VCG02Bottle tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+
+	if PlayerREF.GetItemCount WhiskeyBottle01Empty01 >= 1
+		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount WhiskeyBottle01Empty01) 0 (maxCount - totalFilledBottles)
+		if tempFillBottleCount != 0
+			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
+			PlayerREF.removeitem WhiskeyBottle01Empty01 tempFillBottleCount
+			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
+			if activatorType == d1PurifiedWater0r30h
+				PlayerREF.additem WaterPurified tempFillBottleCount
+			elseif activatorType == d5TerribleWater20r4h
+				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
+			else
+				PlayerREF.additem WaterUnpurified tempFillBottleCount
+			endif
+		endif
+	endif
+
+	SetFunctionValue totalFilledBottles
+end

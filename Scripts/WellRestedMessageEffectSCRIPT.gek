@@ -1,0 +1,50 @@
+scn WellRestedMessageEffectSCRIPT
+
+; effect's job is to simply give a message when the effect starts and ends
+
+begin ScriptEffectStart
+	showMessage AbilityWellRestedStartMsg
+	; player.resetHealth
+	; RASM - restores some health and limbs for 8-hour rest but no cripple limb healing.
+	player.restoreActorValue Health 20
+	; restores head
+	if PlayerREF.GetActorValue PerceptionCondition != 0
+		PlayerREF.RestoreActorValue perceptioncondition 20
+	endif
+
+	; restores torso
+	if PlayerREF.GetActorValue EnduranceCondition != 0
+		PlayerREF.RestoreActorValue EnduranceCondition 20
+	endif
+
+	; restores left arm
+	if PlayerREF.GetActorValue LeftAttackCondition != 0
+		PlayerREF.RestoreActorValue LeftAttackCondition 20
+	endif
+
+	; restores right arm
+	if PlayerREF.GetActorValue RightAttackCondition != 0
+		PlayerREF.RestoreActorValue RightAttackCondition 20
+	endif
+
+	; restores left leg
+	if PlayerREF.GetActorValue LeftMobilityCondition != 0
+		PlayerREF.RestoreActorValue LeftMobilityCondition 20
+	endif
+
+	; restores right leg
+	if PlayerREF.GetActorValue RightMobilityCondition != 0
+		PlayerREF.RestoreActorValue RightMobilityCondition 20
+	endif
+
+	If HasPerk WellRestedPerk == 0
+		; Give the player the perk if he doesn't already have it.
+		AddPerk WellRestedPerk
+	EndIf
+end
+
+begin ScriptEffectFinish
+	showMessage AbilityWellRestedEndMsg
+	RemovePerk WellRestedPerk
+end
+

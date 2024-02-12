@@ -1,0 +1,203 @@
+ScriptName RASMBrahminStockScript
+
+ref Self
+short messageButton
+int drinkCount
+int lastPoopDay
+int daysPassed
+ref poopPileRef
+int fillBottleCount
+int foundBottle
+
+short checkDistance
+
+; cow tipping disabled for stock Brahmin 
+
+Begin OnActivate
+	if GetActionRef == Player
+		if GetDead == 0
+			ShowMessage RASMStockBrahminInterface;
+		else
+			activate
+		endif
+	endif
+End
+
+begin OnDeath
+	print "Stock Brahmin has died."
+end
+
+begin OnLoad
+	set Self to GetSelfAlt
+	set daysPassed to GetGameDaysPassed
+
+	if lastPoopDay == daysPassed
+		return
+	else
+		set lastPoopDay to daysPassed
+		if GetDead == 0
+			; have to loosely determine location based on distance to poo pile
+			; because of non-persistent reference.
+			if Self.GetDistance RASMBrahminPilePlayerFarmWestSideREF <= 3000
+				set poopPileRef to RASMBrahminPilePlayerFarmWestSideREF
+			elseif Self.GetDistance RASMBrahminPilePlayerFarmNovacREF <= 3000
+				set poopPileRef to RASMBrahminPilePlayerFarmNovacREF
+			elseif Self.GetDistance RASMBrahminPilePlayerFarmNewVegasREF <= 3000
+				set poopPileRef to RASMBrahminPilePlayerFarmNewVegasREF
+			elseif Self.GetDistance RASMBrahminPilePlayerFarmLong15REF <= 3000
+				set poopPileRef to RASMBrahminPilePlayerFarmLong15REF
+			elseif Self.GetDistance RASMBrahminPilePlayerFarmFreesideREF <= 3000
+				set poopPileRef to RASMBrahminPilePlayerFarmFreesideREF
+			else
+				set poopPileRef to 0
+			endif
+
+			set drinkCount to Clamp (drinkcount - 1) 0 5
+			if poopPileRef != 0
+				poopPileRef.addItem RASMBrahminDung 1
+			endif
+		endif
+	endif
+end
+
+Begin GameMode
+	set messageButton to GetButtonPressed
+	Set Self to GetSelf
+
+	if messageButton == 1
+		Self.cios RASMHerdFollowSpell
+		Self.evp
+		return
+	endif
+
+	if messageButton == 2
+		Self.dispel RASMHerdFollowSpell
+		Self.evp
+		return
+	endif
+
+	; Check drink count
+	if ( messageButton == 3 || messageButton == 4 )
+		if drinkCount >= 5
+			ShowMessage RASMBrahminEmpty
+			Return
+		endif
+	endif
+
+	; todo make this a udf
+	if messageButton == 3
+		set foundBottle to 0
+
+		if PlayerREF.GetItemCount Milkbottle01 >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount Milkbottle01) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem Milkbottle01 fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount NukaColaBottle >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount NukaColaBottle) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem NukaColaBottle fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount ScotchBottle01Empty01 >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount ScotchBottle01Empty01) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem ScotchBottle01Empty01 fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount SodaBottleEmpty01 >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				print "fill btl count"
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount SodaBottleEmpty01) 0 (5 - drinkCount)
+				print $fillBottleCount
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem SodaBottleEmpty01 fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount SSBottleEmpty >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount SSBottleEmpty) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem SSBottleEmpty fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount SSBottleEmptyNoFloat >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount SSBottleEmptyNoFloat) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem SSBottleEmptyNoFloat fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+		
+		if PlayerREF.GetItemCount VCG02Bottle >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount VCG02Bottle) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem VCG02Bottle fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if PlayerREF.GetItemCount WhiskeyBottle01Empty01 >= 1
+			set foundBottle to 1
+			if drinkCount < 5
+				set fillBottleCount to Clamp (PlayerREF.GetItemCount WhiskeyBottle01Empty01) 0 (5 - drinkCount)
+				Self.PlaySound NPCBrahminIdleMoo
+				PlayerREF.removeitem WhiskeyBottle01Empty01 fillBottleCount
+				PlayerREF.additem RASMBrahminMilkItem fillBottleCount
+				set drinkCount to drinkCount + fillBottleCount
+			endif
+		endif
+
+		if foundBottle == 0
+			ShowMessage RASMBrahminMilkNoBottle
+		endif
+	elseif messageButton == 4
+		set drinkCount to drinkCount + 1
+		PlaySound NPCHumanDrinkingBottleGulp
+		Self.PlaySound NPCBrahminIdleMoo
+		PlayerREF.CastImmediateOnSelf RASMDrinkFromBrahmin
+		ShowMessage RASMBrahminDrinkSuccess
+	endif
+End
+
+begin onReset
+	set Self to GetSelfAlt
+	if GetDead == 0
+		set drinkCount to 0
+	else
+		Self.disable
+		Self.MarkForDelete
+	endif
+
+	set poopPileRef to 0
+end

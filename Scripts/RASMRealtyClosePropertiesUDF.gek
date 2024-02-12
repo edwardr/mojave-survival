@@ -1,0 +1,20 @@
+scn RASMRealtyClosePropertiesUDF
+
+array_var varToDoorMap
+string_var questVar
+array_var entry
+ref loopDoor
+
+begin Function {}
+	let varToDoorMap := Ar_Map "playerBoughtNewVegasHome"::RASMNewVegasHomeExtDoorREF, "playerBoughtNovacShack"::RASMNovacShackExtDoorREF, "playerBoughtWestSideHome"::RASMWestSideHomeExtDoorREF, "playerBoughtFreesideApartment"::RASMFreesideApartmentExtDoorREF, "playerBoughtLong15Trailer"::RASMLong15TrailerExtDoorREF
+
+	foreach entry <- varToDoorMap
+		let questVar := entry["key"]
+		let loopDoor := entry["value"]
+
+		if GetVariable $questVar, RASMControllerQuest == 0
+			loopDoor.SetReferenceFlag 256 1
+			loopDoor.SetOwnership RASMRealtor
+		endif
+	loop
+end

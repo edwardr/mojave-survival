@@ -1,0 +1,10 @@
+scn RASMMadBrahminActivatorScript
+
+begin OnTriggerEnter
+	if player.hasPerk WildWasteland
+		if RASMShownMadBrahminMessage == 0
+			ShowMessage RASMMadBrahminMessage
+			set RASMShownMadBrahminMessage to 1
+		endif
+	endif
+end

@@ -1,0 +1,142 @@
+scn VCG04ActivatorScript
+
+; JSH 02/24/11 - Removed NVDLC03 traits.
+
+int Button
+short MessageBoxPending
+short bWasActivated
+
+short nCurrentXP
+
+short bCharacterRevised
+short bShowSPECIAL
+short bShowTagSkills
+short bShowTraits
+
+BEGIN OnActivate
+	
+	set nCurrentXP to player.GetAV XP
+	ShowMessage VCG04Message
+	set bWasActivated to 1
+				
+END
+
+BEGIN GameMode
+
+		if MenuMode == 0 && MessageBoxPending
+			ShowMessage VCG04Message
+			set MessageBoxPending to 0
+
+		elseif (bShowSPECIAL == 1)
+		
+			player.SetAV Strength 5
+			player.SetAV Perception 5
+			player.SetAV Endurance 5
+			player.SetAV Charisma 5
+			player.SetAV Intelligence 5
+			player.SetAV Agility 5
+			player.SetAV Luck 5
+
+			SetSPECIALPoints 40
+			set bShowSPECIAL to 0
+			set bShowTagSkills to 1
+
+		elseif (bShowTagSkills == 1)
+			player.SetAV Barter 0
+			player.SetAV EnergyWeapons 0
+			player.SetAV Explosives 0
+			player.SetAV Guns 0
+			player.SetAV Lockpick 0
+			player.SetAV Medicine 0
+			player.SetAV MeleeWeapons 0
+			player.SetAV Repair 0
+			player.SetAV Science 0
+			player.SetAV Sneak 0
+			player.SetAV Speech 0
+			player.SetAV Survival 0
+			player.SetAV Unarmed 0
+
+			SetTagSkills 3
+			set bShowTagSkills to 0
+			set bShowTraits to 1
+
+		elseif (bShowTraits == 1)
+			ShowTraitMenu	
+			set bShowTraits to 0		
+			set MessageBoxPending to 1
+		endif
+
+		set Button to GetButtonPressed
+			
+		; Edit Name
+		if ( Button == 0 )
+			GetPlayerName
+			set MessageBoxPending to 1
+		endif
+
+		; Edit Race/Sex + SPECIAL + Tag Skills + Traits
+		if ( Button == 1 )
+			set bCharacterRevised to 1
+
+			player.SetLevel 1
+			ResetXP
+			
+			; Remove Perks
+			player.RemovePerk BlackWidow
+			player.RemovePerk CherchezLaFemme
+			player.RemovePerk ConfirmedBachelor
+			player.RemovePerk FriendOfTheNight
+			player.RemovePerk Hunter
+			player.RemovePerk IntenseTraining
+			player.RemovePerk LadyKiller
+			player.RemovePerk RapidReload
+			player.RemovePerk Retention
+			player.RemovePerk SwiftLearner
+			player.RemovePerk HeaveHo
+			player.RemovePerk ChildAtHeart
+			player.RemovePerk Comprehension
+			player.RemovePerk Educated
+			player.RemovePerk Entomologist
+			player.RemovePerk RadChild
+			player.RemovePerk RunNGun
+			player.RemovePerk TravelLight
+
+			; Remove Traits
+			player.RemovePerk BuiltToDestroy
+			player.RemovePerk FastShot
+			player.RemovePerk FourEyes
+			player.RemovePerk GoodNatured
+			player.RemovePerk HeavyHanded
+			player.RemovePerk Kamikaze
+			player.RemovePerk LooseCannon
+			player.RemovePerk SmallFrame
+			player.RemovePerk TriggerDiscipline
+			player.RemovePerk WildWasteland
+			; RASM remove custom traits
+			player.removePerk RASMSpeedDemonTrait
+			player.removePerk RASMWinoForeverTrait
+			player.dispel RASMPermanentJetAddictionEffect
+			player.dispel RASMPerkWinoForeverEffect
+
+			; JSH 02/24/11 - Removed NVDLC03 traits.
+			Player.RemovePerk NVDLC03TraitClaustrophobia;
+			Player.RemovePerk NVDLC03TraitEarlyBird;
+			Player.RemovePerk NVDLC03TraitHoarder;
+			Player.RemovePerk NVDLC03TraitHotBlooded;
+			Player.RemovePerk NVDLC03TraitLogansLoophole;
+			Player.RemovePerk NVDLC03TraitSkilled;
+
+			ShowRaceMenu
+			set bShowSpecial to 1
+		endif
+
+		; Finished - Travel Onward
+		if ( Button == 2 )
+			if bCharacterRevised == 1
+				RewardXP nCurrentXP
+			endif
+			StopQuest VCG04			
+		endif
+
+END
+

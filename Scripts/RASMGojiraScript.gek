@@ -1,0 +1,17 @@
+scn RASMGojiraScript
+
+short fHealthDmg
+ref targetRef
+
+begin OnDeath player
+	setstage RASMGojiraQuest 100
+	SetObjectiveCompleted RASMGojiraQuest 20 1
+	CompleteQuest RASMGojiraQuest
+end
+
+begin OnHit
+	set targetRef to GetSelf
+	set fHealthDmg to targetRef.GetHitHealthDamage
+	print "Damage:"
+	print $fHealthDmg
+end

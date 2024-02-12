@@ -1,0 +1,10 @@
+scn RASMBeerEffectScript
+
+ref drinkTarget
+begin ScriptEffectStart
+	set drinkTarget to getSelf
+	if drinkTarget.GetIsReference player
+		;set testingtracka to RASMPlayerSobrietyTracking.drinkTracker
+		set RASMPlayerSobrietyTracking.drinkTracker to (RASMPlayerSobrietyTracking.drinkTracker + 1)
+	endif
+end

@@ -1,0 +1,216 @@
+ScriptName RASMPlayerControllerQuestScript 
+short beginHealth
+short endHealth
+short hitCooldownActive
+short cooldownTimer
+short resetCooldown
+short playerStartSleep
+short baseDehydrationRate
+short baseStarvationRate
+short playerHasSlept
+short sleepHardcoreVarSet
+short swimmingTimer
+short scriptIncreasedWalkSpeed
+short baseModifier
+short infectionRoll
+short effectRoll
+short menuDisabled
+short testing
+short openInventoryRunOnce
+short sendPlayerSoberUp
+short sleepTimer
+int currentDayOfWeek
+
+; drunk blackout checking in RASMPlayerSobrietyTracking. Gets set when in "trapped" DLCs
+short playerStuckInDLC
+
+begin GameMode
+	; set testing to player.IsInCombat
+	; isControlDisabled is returning the opposite of what it should. Working around for now.
+	set testing to (IsControlDisabled 14)
+	; starts combat inventory flag
+	if player.isInCombat == 1 && player.GetIsPoisoned == 0
+		if beginHealth == 0
+			set beginHealth to player.getav Health
+		endif
+
+		if resetCooldown == 1
+			set beginHealth to 0
+			set resetCooldown to 0
+			set hitCooldownActive to 0
+			set cooldownTimer to 0
+		endif
+
+		if hitCooldownActive == 1
+			set cooldownTimer to (cooldownTimer - 1)
+			DisableControl 14
+		else
+			EnableControl 14
+			set menuDisabled to 0
+			set endHealth to player.getav Health
+			
+			if (endHealth + 5 < beginHealth)
+				DisableControl 14
+				set cooldownTimer to 30
+				set hitCooldownActive to 1
+				set menuDisabled to 1
+				ShowMessage RASMNoCombatInventoryMessage
+			endif
+		endif
+
+		if cooldownTimer < 0
+			set hitCooldownActive to 0
+			set resetCooldown to 1
+			EnableControl 14
+			set beginHealth to 0
+		endif
+	else
+	 	; make sure control is enabled outside of combat
+	 	; isControlDisabled not working as it should. Returns 1 when not-disabled.
+		if IsControlDisabled 14 == 0
+	 		EnableControl 14
+	 		set menuDisabled to 0
+	 	endif
+	 	; reset beginHealth
+	 	if beginHealth != 0
+	 		set beginHealth to 0
+	 	endif
+	endif
+	; ends combat inventory flag
+
+	; reset inventory AP flag 
+	if openInventoryRunOnce == 1
+		set openInventoryRunOnce to 0
+		; if the player opens and closes menu many times really fast this can go below 0.
+		if PlayerREF.getAv ActionPoints < 0
+			PlayerREF.forceAV ActionPoints 0
+		endif
+	endif
+
+	; checks for encumbrance and modifies SpeedMult if encumbered.
+	if (player.getav InventoryWeight > (player.getav CarryWeight + 1))
+		if scriptIncreasedWalkSpeed == 0
+			player.forceav SpeedMult 175
+			; hack for engine speed issue.
+			; equiping item or weapon recalibrates speed.
+			player.addItem RASMFakeIngestible 1 1
+			player.equipItem RASMFakeIngestible 0 1
+			set scriptIncreasedWalkSpeed to 1
+		endif
+	else
+		if scriptIncreasedWalkSpeed == 1
+			player.forceav SpeedMult 100
+			set scriptIncreasedWalkSpeed to 0
+			player.addItem RASMFakeIngestible 1 1
+			player.equipItem RASMFakeIngestible 0 1
+		endif
+	endif
+	; ends checks for encumbrance
+
+	; doesn't check if the player is swimming in dirty water or not...
+	; consider removing.
+	; player swimming flag
+	; chance of disease while in water
+	if IsPlayerSwimming
+		if swimmingTimer == 0
+			set swimmingTimer to 1
+		else
+			set swimmingTimer to swimmingTimer + 1
+		endif
+
+		if swimmingTimer >= 120
+			set baseModifier to (PlayerREF.getav endurance * 2) + (PlayerREF.getav luck * 2) + (PlayerREF.getav survival / 2)
+			set infectionRoll to GetRandomPercent
+			set effectRoll to GetRandomPercent
+			if effectRoll >= 50
+				if infectionRoll > baseModifier
+					PlayerREF.CastImmediateOnSelf RASMBacterialInfection
+					ShowMessage RASMInfectionBacterialMessage
+					set swimmingTimer to 1
+				endif
+			else
+				if infectionRoll > baseModifier
+					PlayerREF.CastImmediateOnSelf RASMParasiticInfection
+					ShowMessage RASMInfectionParasiticMessage
+					set swimmingTimer to 1
+				endif
+			endif
+		endif
+	else
+		set swimmingTimer to 0
+	endif
+
+	if playerHasSlept == 1
+		set currentDayOfWeek to GetDayOfWeek
+		SetNumericGameSetting fHCDehydrationRate baseDehydrationRate
+		SetNumericGameSetting fHCStarvationrate baseStarvationRate
+		set playerHasSlept to 0
+		set sleepHardcoreVarSet to 0
+		if sendPlayerSoberUp == 1
+			; sober the player up if has slept.
+			set RASMPlayerSobrietyTracking.soberUpSignal to 1
+			set sendPlayerSoberUp to 0
+		endif
+
+		if currentDayOfWeek != 0
+			; restocking is a problem due to the long, extended days
+			; so we reshuffle everyday. imerchantrespawnday1 restocks on 0/Sunday.
+			SetNumericGameSetting imerchantrespawnday2 currentDayOfWeek
+		endif
+
+		call RASMSpoilMeatUDF
+	endif
+end
+
+begin MenuMode
+	; sometimes rapidly pushing the menu button while it's in the process of being disable 
+	; can open the pip-boy with no way to close it.
+	; IsControlDisabled is reversed. Function doesn't work as expected.
+	if IsControlDisabled 14 == 0
+		EnableControl 14
+	endif
+end
+
+begin MenuMode 1002
+	; Adds AP cost for opening inventory
+	if openInventoryRunOnce == 0
+		PlayerREF.DamageActorValue ActionPoints (25 - PlayerREF.getAv Agility)
+		set openInventoryRunOnce to 1
+	endif
+end
+
+; slows down hardcore needs during sleep
+begin MenuMode 1012
+	if IsPCSleeping == 1
+		if sleepHardcoreVarSet == 0
+			; reset tied to playerHasSlept var
+			set baseDehydrationRate to GetGameSetting fHCDehydrationRate
+			set baseStarvationRate to GetGameSetting fHCStarvationrate
+			set sleepHardcoreVarSet to 1
+		endif
+
+		set sleepTimer to sleepTimer + 1
+
+		print $sleepTimer
+
+		if sleepTimer > 10
+			set sendPlayerSoberUp to 1
+			set sleepTimer to 0
+			if GetQuestCompleted RASMQueenieEncounter == 0
+				print "quest not completed"
+				;if player.IsInInterior == 0
+					if FiendCookCookRef.GetDead == 1 && QueenieRef.GetDead == 0
+						print "cook dead and queen not"
+						set sleepTimer to 0
+						SetStage RASMQueenieEncounter 100
+						WakeUpPC
+					endif
+				;endif
+			endif
+		endif
+
+		SetNumericGameSetting fHCDehydrationRate 25.0
+		SetNumericGameSetting fHCStarvationrate 25.0
+		set playerHasSlept to 1
+	endif
+end

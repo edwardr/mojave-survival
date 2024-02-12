@@ -1,0 +1,5 @@
+scn RASMSharedReloadingActivatorScript
+
+begin OnActivate player
+	RASMSharedReloadingContainerREF.Activate player
+end

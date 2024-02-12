@@ -1,0 +1,5 @@
+scn RASMSharedArmorActivatorScript
+
+begin OnActivate player
+	RASMSharedArmorContainerREF.Activate player
+end

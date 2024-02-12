@@ -1,0 +1,40 @@
+scn RASMMadBrahminScript
+short combatStarted
+short combatEnded
+short randNum
+float timer
+ref brahmin
+
+begin OnStartCombat
+	if player.hasPerk WildWasteland
+		set combatStarted to 1
+	endif
+end
+
+begin GameMode
+	if combatEnded == 1
+		Return
+	endif
+
+	if combatStarted == 1
+		set timer to (timer + getSecondsPassed)
+		set randNum to 12 + GetRandomPercent * 25 / 100
+		if timer >= randNum
+			set brahmin to GetSelf
+			brahmin.KillActor brahmin 1 0
+			brahmin.KillActor brahmin 2 0
+			brahmin.KillActor brahmin 3 0
+			brahmin.KillActor brahmin 4 0
+			brahmin.KillActor brahmin 5 0
+			brahmin.KillActor brahmin 6 0
+			brahmin.KillActor brahmin 7 0
+			brahmin.KillActor brahmin 8 0
+			brahmin.KillActor brahmin 9 0
+			brahmin.KillActor brahmin 10 0
+			brahmin.KillActor brahmin 11 0
+			brahmin.KillActor brahmin 12 0
+			brahmin.KillActor brahmin 13 0
+			set combatEnded to 1
+		endif
+	endif
+end

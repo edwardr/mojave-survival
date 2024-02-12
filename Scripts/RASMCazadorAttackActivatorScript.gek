@@ -1,0 +1,11 @@
+scn RASMCazadorAttackActivatorScript
+
+int runOnce
+
+begin OnTriggerEnter
+	if runOnce == 0
+		RASMLesserCazadorAmbushREF01.enable
+		RASMLesserCazadorAmbushREF02.enable
+		set runOnce to 1
+	endif
+end

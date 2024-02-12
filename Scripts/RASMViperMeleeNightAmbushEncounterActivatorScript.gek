@@ -1,0 +1,101 @@
+scn RASMViperMeleeNightAmbushEncounterActivatorScript
+
+; this script handles random Viper attacks > level 10 at night.
+
+int spawnCount
+int lastSpawnDay
+
+begin OnTriggerEnter player
+	
+	if playerREF.getLevel < 10
+		return
+	endif
+
+	if getCurrentTime <= 5 || getCurrentTime >= 19.00
+		if lastSpawnDay == getGameDaysPassed
+			return
+		endif
+		
+		if GetIsReference RASMViperMeleeAmbusherActivatorREF1 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF1.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF1.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF2 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF2.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF2.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF3 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF3.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF3.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF4 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF4.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF4.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF5 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF5.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF5.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF6 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF6.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF6.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF7 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF7.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF7.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF8 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF8.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF8.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF9 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF9.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF9.disable
+			endif
+		elseif GetIsReference RASMViperMeleeAmbusherActivatorREF10 == 1
+			set lastSpawnDay to getGameDaysPassed
+			set spawnCount to Rand 2, 5
+			RASMViperMeleeAmbusherActivatorSpawnREF10.placeAtMe RASMViperMeleeAmbush spawnCount
+
+			if getRandomPercent < 50
+				RASMViperMeleeAmbusherActivatorREF10.disable
+			endif
+		endif
+	endif
+end

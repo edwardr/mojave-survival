@@ -1,0 +1,50 @@
+scn RASMEscortBrahminNovacQuestActivatorScript
+
+array_var brahminSlots
+array_var slot
+ref slotRef
+int slotIndex
+
+int escortSuccess
+short checkDistance
+
+begin OnTriggerEnter Player
+	if GetQuestRunning RASMEscortBrahminNovac
+		let brahminSlots := Ar_List RASMEscortBrahminNovac.slot1, RASMEscortBrahminNovac.slot2, RASMEscortBrahminNovac.slot3, RASMEscortBrahminNovac.slot4, RASMEscortBrahminNovac.slot5
+
+		foreach slot <- brahminSlots
+			let slotIndex := slot["key"]
+			let slotRef := slot["value"]
+
+			if slotRef != 0
+				if slotRef.GetDead == 0
+					set checkDistance to player.GetDistance slotRef
+					print "distance:"
+					print $checkDistance
+					if player.GetDistance slotRef <= 4000
+						slotRef.cios RASMHerdNovac
+						slotRef.dispel RASMHerdFollowSpell
+						slotRef.resetAi
+						set escortSuccess to 1
+					else
+						; kill straggler
+						slotRef.kill
+					endif
+				endif
+			endif
+		loop
+
+		; no living brahmins, kill the quest
+		if escortSuccess == 0
+			print "failed escort quest"
+			SetStage RASMEscortBrahminNovac 100
+			StopQuest RASMEscortBrahminNovac
+		else
+			SetObjectiveCompleted RASMEscortBrahminNovac 10 1
+			CompleteQuest RASMEscortBrahminNovac
+			StopQuest RASMEscortBrahminNovac
+		endif
+
+		set escortSuccess to 0
+	endif
+end

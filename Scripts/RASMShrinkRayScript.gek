@@ -1,0 +1,22 @@
+scn RASMShrinkRayScript
+
+ref targetRef
+short roll
+float randomFailureModifier
+float randomSuccessModifier
+short targetIsInCombat
+
+begin OnHit
+	set targetRef to player.GetOwnerLastTarget
+	set targetIsInCombat to targetRef.IsInCombat
+	; obj effect doesn't run if damage = 0
+	set roll to getRandomPercent
+	if roll <= 10
+		; it's a prototype so there's a 10 percent chance of utter failure/enlargement
+		set randomFailureModifier to Rand 1.25, 3.0
+		targetRef.setScale randomFailureModifier 
+	else
+		set randomSuccessModifier to Rand 0.4, 0.75
+		targetRef.setScale randomSuccessModifier
+	endif
+end

@@ -1,0 +1,5 @@
+scn RASMSharedGeneralActivatorScript
+
+begin OnActivate player
+	RASMSharedGeneralContainerREF.Activate player
+end

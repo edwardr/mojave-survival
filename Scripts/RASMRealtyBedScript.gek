@@ -1,0 +1,80 @@
+scn RASMRealtyBedScript
+
+short playerSleep
+short playerSleptFullRest
+ref bedReference
+
+begin OnActivate
+	if isActionRef player == 1
+		; set playerBed ref variable to me
+		set playerSleep to 1
+		set bedReference to GetSelfAlt
+	endif
+
+	Activate
+end
+
+begin menumode
+	if playerSleep == 1 && IsPCSleeping == 1
+		set playerSleep to 2
+		; actually this is not a reliable indicator of time slept.
+		if GetPCSleepHours >= 8
+			set playerSleptFullRest to 1
+		endif
+	endif
+end
+
+begin gamemode
+	if playerSleep > 0
+		if playerSleep == 2 
+			if playerSleptFullRest >= 1
+				player.CastImmediateOnSelf WellRestedSpell
+			endif
+
+			; if the player is sleeping in a bed without having purchased
+			; he has either stolen the Freeside Apt. key from Bishop or cheated.
+			; so we surprise the squatter with a sneak attack fromBishop , go ahead and grant them 
+			; the unit, but lock out of the others. Bishop will chase the player indefinetely so his
+			; death is inevitable and the player can acquire no more properties.
+
+			if RASMBishopREF.GetDead == 0
+				; handle Freeside diferently because Bishop always keeps the key in his inventory anyway.
+				if GetIsReference RASMFreesideBed1 == 1
+					if RASMControllerQuest.playerBoughtFreesideApartment == 0
+						call RASMRealtyFailUDF RASMBishopFreesideMarker RASMFreesideApartmentKey "playerBoughtFreesideApartment" 0
+						StartQuest RASMFreesideFarming
+						call RASMRealtyClosePropertiesUDF
+					endif
+				else
+					if GetIsReference RASMLong15Bed1 == 1
+						if RASMControllerQuest.playerBoughtLong15Trailer == 0
+							call RASMRealtyFailUDF RASMBishopLong15Marker RASMLong15TrailerKey "playerBoughtLong15Trailer" 1
+							StartQuest RASMLong15Farming
+							call RASMRealtyClosePropertiesUDF
+						endif
+					elseif GetIsReference RASMNewVegasBed1 == 1 || GetIsReference RASMNewVegasBed2a == 1
+						if RASMControllerQuest.playerBoughtNewVegasHome == 0
+							call RASMRealtyFailUDF RASMBishopNewVegasMarker RASMNewVegasHomeKey "playerBoughtNewVegasHome" 1
+							StartQuest RASMNewVegasFarming
+							call RASMRealtyClosePropertiesUDF
+						endif
+					elseif GetIsReference RASMNovacBed1 == 1
+						if RASMControllerQuest.playerBoughtNovacShack == 0
+							call RASMRealtyFailUDF RASMBishopNovacMarker RASMNovacShackKey "playerBoughtNovacShack" 1
+							StartQuest RASMNovacFarming
+							call RASMRealtyClosePropertiesUDF
+						endif
+					elseif GetIsReference RASMWestSideBed1 == 1
+						if RASMControllerQuest.playerBoughtWestSideHome == 0
+							call RASMRealtyFailUDF RASMBishopWestSideMarker RASMWestSideHomeKey "playerBoughtWestSideHome" 1
+							StartQuest RASMWestSideFarming
+							call RASMRealtyClosePropertiesUDF
+						endif
+					endif
+				endif
+			endif
+		endif
+
+		set playerSleep to 0		
+	endif
+end

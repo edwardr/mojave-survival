@@ -1,0 +1,15 @@
+scn RASMJetEmptyInhaler
+short bonusModifier
+short checkRoll
+ref effectTarget
+
+begin ScriptEffectStart
+	set effectTarget to GetSelf
+	if effectTarget.GetIsReference player
+		set bonusModifier to ((PlayerREF.getav science / 2) + (PlayerREF.getav survival / 2) + PlayerREF.getav luck) / 2
+		set checkRoll to GetRandomPercent
+		if checkRoll <= bonusModifier
+			PlayerREF.additem JetEmpty 1
+		endif
+	endif
+end

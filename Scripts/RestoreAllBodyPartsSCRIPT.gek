@@ -1,0 +1,29 @@
+scn RestoreAllBodyPartsSCRIPT
+
+
+begin ScriptEffectStart
+	RestoreActorValue PerceptionCondition 100
+	RestoreActorValue EnduranceCondition 100
+	RestoreActorValue LeftAttackCondition 100
+	RestoreActorValue RightAttackCondition 100
+	RestoreActorValue LeftMobilityCondition 100
+	RestoreActorValue RightMobilityCondition 100
+end
+
+begin ScriptEffectUpdate
+	RestoreActorValue PerceptionCondition 100
+	RestoreActorValue EnduranceCondition 100
+	RestoreActorValue LeftAttackCondition 100
+	RestoreActorValue RightAttackCondition 100
+	RestoreActorValue LeftMobilityCondition 100
+	RestoreActorValue RightMobilityCondition 100
+end
+
+begin ScriptEffectFinish
+	RestoreActorValue PerceptionCondition 100
+	RestoreActorValue EnduranceCondition 100
+	RestoreActorValue LeftAttackCondition 100
+	RestoreActorValue RightAttackCondition 100
+	RestoreActorValue LeftMobilityCondition 100
+	RestoreActorValue RightMobilityCondition 100
+end

@@ -1,0 +1,121 @@
+scn RASMFreesideFarmingScript
+
+ref slot0
+ref slot1
+ref slot2
+ref slot3
+ref slot4
+ref slot5
+ref slot6
+ref slot7
+ref slot8
+ref slot9
+ref slot10
+ref slot11
+
+array_var cropSlots
+array_var slot
+ref slotRef
+int slotIndex
+
+short growRoll
+short waterRoll
+short fertilizerRoll
+int playerModifier
+
+int hasWater
+int hasFertilizer
+ref waterType
+
+int lastRunTime
+int slotsFirstRunComplete
+int daysPassed
+
+begin GameMode
+	; runs on a 24-hr game time processing delay
+	print "Freeside farming check runs"
+
+	set daysPassed to GetGameDaysPassed
+
+	if lastRunTime == daysPassed
+		print "fs already ran today"
+		return
+	endif
+
+	if player.getDistance RASMFarmingWaterReservoirFreesideREF > 5000
+		print "Player too far"
+		return
+	endif
+
+	let cropSlots := Ar_List slot0, slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9, slot10, slot11
+
+	foreach slot <- cropSlots
+		let slotIndex := slot["key"]
+		let slotRef := slot["value"]
+		if IsFormValid slotRef == 1
+			if isReference slotRef != 1
+				continue
+			endif
+			; skip the first run
+			set lastRunTime to daysPassed
+			if slotsFirstRunComplete == 0
+				print "skipping slots first run"
+				set slotsFirstRunComplete to 1
+				break
+			endif
+
+			if slotRef.GetDestroyed == 1
+				; check water level and ensure there's at least one water unit (1 purified or 2 dirty)
+				if RASMFarmingWaterReservoirFreesideREF.GetItemCount WaterPurified >= 1
+					set hasWater to 1
+					set waterType to WaterPurified
+				else
+					if RASMFarmingWaterReservoirFreesideREF.GetItemCount WaterUnpurified >= 2
+						set hasWater to 1
+						set waterType to WaterUnpurified
+					else
+						set hasWater to 0
+					endif
+				endif
+
+				if RASMFertilizerStorageFreesideREF.GetItemCount RASMFertilizer >=1
+					set hasFertilizer to 1
+				endif
+
+				if hasWater == 1 && hasFertilizer == 1
+					set growRoll to GetRandomPercent
+					set waterRoll to GetRandomPercent
+					set playerModifier to Clamp (player.getAv Survival + player.getAv Luck) 10 95
+					if growRoll <= playerModifier
+						slotRef.SetVariable "State", 0
+						slotRef.SetScale 1
+						;slotRef.PlayGroup Backward 1
+						call RASMHandleCropGrowthAnimationUDF slotRef
+						slotRef.setdestroyed 0
+					endif
+
+					if waterRoll < 75
+						if waterType == WaterPurified
+							RASMFarmingWaterReservoirFreesideREF.removeItem WaterPurified 1
+						else
+							RASMFarmingWaterReservoirFreesideREF.removeItem WaterUnpurified 2
+						endif
+					endif
+
+					if fertilizerRoll < 50
+						RASMFertilizerStorageFreesideREF.removeItem RASMFertilizer 1
+					endif
+				else
+					print "Freeside plant #" + $slotIndex + " wants to grow but has no water."
+				endif
+			endif
+		endif
+	loop
+
+
+	set slotIndex to 0
+	set slotRef to 0
+	set hasWater to 0
+	set waterType to 0
+	set hasFertilizer to 0
+end

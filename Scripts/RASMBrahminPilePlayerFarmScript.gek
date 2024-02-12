@@ -1,0 +1,5 @@
+scn RASMBrahminPilePlayerFarmScript
+
+begin OnLoad
+	print "Brahmin Pile Loads"
+end

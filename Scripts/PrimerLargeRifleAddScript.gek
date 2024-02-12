@@ -1,0 +1,24 @@
+scn PrimerLargeRifleAddScript
+
+int killme
+
+BEGIN OnAdd Player
+
+	set killme to 1
+END
+
+
+begin GameMode
+;	int countofstuff;
+;	int numberToAdd;
+
+	if (killme == 1)
+;		set countofstuff to (player.GetItemCount BoxPrimersLargeRifle)
+;		set numberToAdd to countofstuff*25;
+		; RASM replace with rifle primer
+		Player.AddItem RASMPrimerRifle 25
+		;Player.AddItem PrimerLargeRifle 25 
+		RemoveMe
+	endif
+
+end

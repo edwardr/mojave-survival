@@ -1,0 +1,37 @@
+scn PlayerBedSCRIPT
+
+short playerSleep
+short playerSleptFullRest
+
+begin OnActivate
+	if isActionRef player == 1
+		; set playerBed ref variable to me
+		set playerSleep to 1
+	endif
+	Activate
+end
+
+begin menumode
+	; player has activated me and is sleeping
+	if playerSleep == 1 && IsPCSleeping == 1
+		set playerSleep to 2
+		if GetPCSleepHours >= 8
+			set playerSleptFullRest to 1
+		endif
+	endif
+end
+
+begin gamemode
+	if playerSleep > 0
+		if playerSleep == 2
+			; RASM player must sleep at least 8 hours to get the well-rested perk
+			; player has actually slept in this bed
+			; give player Well-Rested spell and then clear variable 
+			if playerSleptFullRest >= 1
+				player.CastImmediateOnSelf WellRestedSpell
+			endif
+		endif
+		; clear variable
+		set playerSleep to 0
+	endif
+end

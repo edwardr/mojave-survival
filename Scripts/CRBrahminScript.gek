@@ -1,0 +1,131 @@
+ScriptName CRBrahminScript
+
+ref Self				;stores reference ID for what to push
+short Push			;flag set when animation starts, used to trigger timer
+short messageButton
+int drinkCount
+
+float PushTimer	;timer var used to delay pushing until proper point in animation
+
+;Cow tipping!
+
+;When activated, check to make sure:
+; A. Player has no weapon out.
+; B. Player is sneaking
+; C. Player is undetected
+;if the above are true, set Push and PushTimer vars
+
+Begin OnActivate
+if IsActionRef player == 1
+	Set Self to GetSelf	
+	if GetDead == 0
+		if ( Player.IsSneaking == 1 )
+			if ( Player.IsWeaponOut == 0 )
+				set Push to 1
+				set PushTimer to 0.8
+				Self.PlaySound NPCBrahminIdleMoo
+			endif
+		else
+			ShowMessage RASMBrahminMilk;
+		endif
+	else
+		Activate
+	endif
+else
+	Activate
+endif
+
+End
+
+;If Push has been set to 1 (meaning a successful push took place)
+;wait until timer runs out, then actually do the pushing and reset push to 0
+
+Begin GameMode
+	set messageButton to GetButtonPressed
+	Set Self to GetSelf
+	
+	; Check drink count
+	if ( messageButton == 1 || messageButton == 2 )
+		if drinkCount >= 5
+			ShowMessage RASMBrahminEmpty
+			Return
+		endif;
+	endif
+
+	if messageButton == 1
+		if PlayerREF.GetItemCount Milkbottle01 >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem Milkbottle01 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount NukaColaBottle >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem NukaColaBottle 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount ScotchBottle01Empty01 >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem ScotchBottle01Empty01 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount SodaBottleEmpty01 >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem SodaBottleEmpty01 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount SSBottleEmpty >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem SSBottleEmpty 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount SSBottleEmptyNoFloat >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem SSBottleEmptyNoFloat 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount VCG02Bottle >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem VCG02Bottle 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		elseif PlayerREF.GetItemCount WhiskeyBottle01Empty01 >= 1
+			Self.PlaySound NPCBrahminIdleMoo
+			PlayerREF.removeitem WhiskeyBottle01Empty01 1
+			PlayerREF.additem RASMBrahminMilkItem 1
+			set drinkCount to drinkCount + 1
+		else
+			ShowMessage RASMBrahminMilkNoBottle
+		endif
+	elseif messageButton == 2
+		set drinkCount to drinkCount + 1
+		PlaySound NPCHumanDrinkingBottleGulp
+		Self.PlaySound NPCBrahminIdleMoo
+		PlayerREF.CastImmediateOnSelf RASMDrinkFromBrahmin
+		ShowMessage RASMBrahminDrinkSuccess
+	endif
+	; Added conditional code to reduce the cost of running the script on every frame. Part of a game-wide revision of scripts - Jorge 03/14/10
+	if ( Push != 1 && messageButton != 1 && messageButton != 2 )
+		Return
+	else
+		if Push == 1
+			if ( IsPC1stPerson == 1 )
+				Player.playidle Loose1stPBrahminPush
+			else
+				Player.playIdle Loose3rdPBrahminPush
+			endif
+			if ( PushTimer <= 0 )
+				Player.pushactoraway self 1
+				set Push to 0
+			else
+				set PushTimer to ( PushTimer - GetSecondsPassed )
+			endif
+		endif
+	endif
+End
+
+; RASM - reset the drink counter on cell reset 
+begin onReset
+	;if State == 1
+		set drinkCount to 0
+	;endif
+end

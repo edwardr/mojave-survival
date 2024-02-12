@@ -1,0 +1,54 @@
+scn RASMEscortBrahminFreesideQuestActivatorScript
+
+array_var brahminSlots
+array_var slot
+ref slotRef
+int slotIndex
+
+int escortSuccess
+short checkDistance
+
+begin OnTriggerEnter Player
+	if GetQuestRunning RASMEscortBrahminFreeside
+		let brahminSlots := Ar_List RASMEscortBrahminFreeside.slot1, RASMEscortBrahminFreeside.slot2, RASMEscortBrahminFreeside.slot3, RASMEscortBrahminFreeside.slot4, RASMEscortBrahminFreeside.slot5
+
+		foreach slot <- brahminSlots
+			let slotIndex := slot["key"]
+			let slotRef := slot["value"]
+
+			if slotRef != 0
+				if slotRef.GetDead == 0
+					set checkDistance to player.GetDistance slotRef
+					print "distance:"
+					print $checkDistance
+					if player.GetDistance slotRef <= 4000
+						slotRef.cios RASMHerdFreeside
+						slotRef.dispel RASMHerdFollowSpell
+						slotRef.evp
+						slotRef.resetAi
+						set escortSuccess to 1
+					else
+						; kill straggler
+						slotRef.kill
+					endif
+				endif
+			endif
+		loop
+
+		; no living brahmins, kill the quest
+		if escortSuccess == 0
+			print "failed escort quest"
+			SetStage RASMEscortBrahminFreeside 100
+			StopQuest RASMEscortBrahminFreeside
+		else
+			; damage reputation for bringing an effing cow into Freeside.
+			AddReputation RepNVFreeside 0 3
+			SetObjectiveCompleted RASMEscortBrahminFreeside 10 1
+			CompleteQuest RASMEscortBrahminFreeside
+			StopQuest RASMEscortBrahminFreeside
+			RASMBrahminPilePlayerFarmFreesideREF.enable
+		endif
+
+		set escortSuccess to 0
+	endif
+end

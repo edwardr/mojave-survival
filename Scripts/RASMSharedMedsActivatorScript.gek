@@ -1,0 +1,5 @@
+scn RASMSharedMedsActivatorScript
+
+begin OnActivate player
+	RASMSharedMedsContainerREF.Activate player
+end

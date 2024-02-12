@@ -1,0 +1,13 @@
+ScriptName VPreorderTribalSCRIPT
+
+BEGIN GameMode
+	if (VDLCPackQuest.bTribalItemsGiven == 0)
+		ShowMessage PreorderMessageInventoryTribal;
+		; RASM - disables freebies.
+		;Player.AddItem PreordArmorTribalRaiding 1;
+		;Player.AddItem WeapNVThrowingSpear 10;
+		;Player.AddItem WeapPreordMachete 1;
+		;Player.AddItem BleakVenom 5;
+		set VDLCPackQuest.bTribalItemsGiven to 1;
+	endif
+END
