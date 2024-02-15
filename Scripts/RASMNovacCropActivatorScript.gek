@@ -89,7 +89,6 @@ begin GameMode
 		endif
 
 		if selectedPlant != 0
-			print $selectedPlant
 			if activeCrop != 0
 				activeCrop.disable
 				activeCrop.MarkForDelete
@@ -103,7 +102,6 @@ begin GameMode
 				let loopSlot := entry["value"]
 				if loopSlot == cropActivatorN
 					SetRefVariable $slotIndex, activeCrop, RASMNovacFarming
-					Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 
@@ -177,7 +175,6 @@ begin GameMode
 				let loopSlot := entry["value"]
 				if loopSlot == cropActivatorN
 					SetRefVariable $slotIndex, activeCrop, RASMNovacFarming
-					Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 

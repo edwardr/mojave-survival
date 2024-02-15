@@ -102,7 +102,7 @@ begin GameMode
 				let loopSlot := entry["value"]
 				if loopSlot == cropActivator
 					SetRefVariable $slotIndex, activeCrop, RASMFreesideFarming
-					Print $slotIndex + " is " + $activeCrop
+					;Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 
@@ -176,7 +176,7 @@ begin GameMode
 				let loopSlot := entry["value"]
 				if loopSlot == cropActivator
 					SetRefVariable $slotIndex, activeCrop, RASMFreesideFarming
-					Print $slotIndex + " is " + $activeCrop
+					;Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 

@@ -7,9 +7,6 @@ begin GameMode
 	; 1 cycle = 120sec
 	set cycles to cycles + 1
 
-	print "cycles"
-	print $cycles
-
 	if cycles == 5
 		RASMMojaveRealtyDoorREF.SetOwnership RASMRealtor
 		RASMMojaveRealtyDoorREF.Lock 100

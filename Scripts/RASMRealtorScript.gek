@@ -4,10 +4,7 @@ scn RASMRealtorScript
 ref targetRef
 
 begin OnHit
-	set targetRef to GetSelf
-	;set fHealthDmg to targetRef.GetHitHealthDamage
-	;print "Damdage:"
-	;print $fHealthDmg
+	;set targetRef to GetSelf
 end
 
 begin OnDeath
@@ -28,6 +25,4 @@ begin OnDeath
 		SetStage RASMWantedMan 10
 		SetObjectiveDisplayed RASMWantedMan 10 1
 	endif
-
-	FailQuest RASMBishopsRevenge
 end

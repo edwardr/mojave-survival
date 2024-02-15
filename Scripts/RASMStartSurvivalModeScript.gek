@@ -40,11 +40,6 @@ BEGIN OnActivate
 	if GetHasNote RASMWastelandFarmingGuide == 0
 		addNote RASMWastelandFarmingGuide
 	endif
-
-	; calculates VATS hit chance based on Perception
-	if PlayerREF.hasPerk RASMPerceptionToVATS == 0
-		PlayerREF.addPerk RASMPerceptionToVATS
-	endif
 		
 	; we have to set this with script because if 0 in GS, override here doesn't work.
 	; this gets reactivated if PC has EDE

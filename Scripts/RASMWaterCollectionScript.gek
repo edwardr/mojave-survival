@@ -22,6 +22,7 @@ Begin OnActivate
 	endif
 End
 
+
 begin onLoad
 	set daysPassed to GetGameDaysPassed
 	if lastResetDay != daysPassed

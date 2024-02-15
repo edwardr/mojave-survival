@@ -1,0 +1,23 @@
+scn Primer50MGAddScript
+
+int killme
+
+BEGIN OnAdd Player
+	Set killme to 1
+END
+
+begin GameMode
+		int countofstuff;
+		int numberToAdd;
+	
+	if (killme == 1)
+
+;		set countofstuff to (player.GetItemCount BoxPrimers50MG)
+;		set numberToAdd to countofstuff*25
+		; RASM replace with rifle primer
+		Player.AddItem RASMPrimerRifle 25
+		;Player.AddItem Primer50MG 25
+		RemoveMe
+	endif
+
+end

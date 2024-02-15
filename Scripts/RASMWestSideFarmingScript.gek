@@ -47,17 +47,15 @@ int daysPassed
 
 begin GameMode
 	; runs on a 24-hr game time processing delay
-	print "WestSide farming check runs"
+	;print "WestSide farming check runs"
 
 	set daysPassed to GetGameDaysPassed
 
 	if lastRunTime == daysPassed
-		print "ws already ran today"
 		return
 	endif
 
 	if player.getDistance RASMFarmingWaterReservoirWestSideREF > 5000
-		print "Player too far"
 		return
 	endif
 
@@ -79,7 +77,6 @@ begin GameMode
 			set lastRunTime to daysPassed
 			if slotsAFirstRunComplete == 0
 				set slotsAFirstRunComplete to 1
-				print "skipping slotsA first run"
 				break
 			endif
 			if slotRef.GetDestroyed == 1
@@ -124,7 +121,7 @@ begin GameMode
 						RASMFertilizerStorageWestSideREF.removeItem RASMFertilizer 1
 					endif
 				else
-					print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
+					;print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
 				endif
 			endif
 		endif
@@ -144,7 +141,6 @@ begin GameMode
 			set lastRunTime to daysPassed
 			if slotsBFirstRunComplete == 0
 				set slotsBFirstRunComplete to 1
-				print "skipping slotsB first run"
 				break
 			endif
 			if slotRef.GetDestroyed == 1
@@ -189,7 +185,7 @@ begin GameMode
 						RASMFertilizerStorageWestSideREF.removeItem RASMFertilizer 1
 					endif
 				else
-					print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
+					;print "WestSide plant #" + $slotIndex + " wants to grow but has no water or fert."
 				endif
 			endif
 		endif

@@ -2,7 +2,7 @@ scn RASMBoomerAmbushActivatorScript
 
 begin OnTriggerEnter player
 	; RASMBoomerAmbushPackage triggers dialog and aggro
-	if NellisPearl.GetDead == 1 || NellisLoyal.GetDead == 1
+	if NellisPearlREF.GetDead == 1 || NellisLoyalREF.GetDead == 1
 		if GetIsReference RASMBoomerAmbusherActivatorREF2 == 1
 			RASMBoomerAmbusherREF2.enable
 			RASMBoomerAmbusherREF2.evp

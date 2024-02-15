@@ -59,11 +59,13 @@ begin GameMode
 				if VeronicaREF.GetHealthPercentage <= 0.50
 					if VeronicaREF.getItemCount stimpak >= 1
 						VeronicaREF.equipItem stimpak
+						MessageEx "%n used a stimpak." VeronicaREF
 					endif
 				endif
 				if VeronicaREF.getIsPoisoned == 1
 					if VeronicaREF.getItemCount NVAntivenom >= 1
 						VeronicaREF.equipItem NVAntivenom
+						MessageEx "%n used antivenom." VeronicaREF
 					endif
 				endif
 

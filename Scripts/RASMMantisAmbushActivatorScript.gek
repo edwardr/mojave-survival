@@ -1,7 +1,6 @@
 scn RASMMantisAmbushActivatorScript
 
 begin OnTriggerEnter player
-	print "player enter"
 	if GetIsReference RASMMantisAmbushActivatorREF1 == 1
 		RASMMantisAmbushREF1.enable
 		RASMMantisAmbushREF2.enable

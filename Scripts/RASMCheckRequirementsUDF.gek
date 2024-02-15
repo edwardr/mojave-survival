@@ -1,0 +1,16 @@
+scn RASMCheckRequirementsUDF
+
+begin function {}
+	; NVSE etc
+	if GetNVSEVersion < 6
+		ShowMessage RASMRequirementNVSE
+	endif
+
+	if (GetPluginVersion "JIP NVSE Plugin") < 56
+		ShowMessage RASMRequirementJIP
+	endif
+
+	if (GetPluginVersion "JohnnyGuitarNVSE") == -1
+		ShowMessage RASMRequirementJohnny
+	endif
+end

@@ -24,7 +24,10 @@ BEGIN GameMode
 			StopQuest NVDLC02IntroSlides;											; Stop the NVDLC02Intro quest since we're done
 
 		Else
-			Set bSlideShowStarted To 1;												; Prevent the script from running again.
+			Set bSlideShowStarted To 1;										; Prevent the script from running again.
+			
+			; RASM vanilla hardcore mode crash here if fod > 0
+			player.forceActorValue hunger 0
 
 			Player.DispelAllSpells;														; Removes all chem effects.
 			Player.CastImmediateOnSelf NVDLC02RestUp;						; Restore the player's Dehydration, Sleep Deprivation, and Starvation

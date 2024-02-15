@@ -24,7 +24,7 @@ Begin OnActivate
 End
 
 begin OnDeath
-	print "Stock Brahmin has died."
+	;print "Stock Brahmin has died."
 end
 
 begin OnLoad
@@ -124,9 +124,7 @@ Begin GameMode
 		if PlayerREF.GetItemCount SodaBottleEmpty01 >= 1
 			set foundBottle to 1
 			if drinkCount < 5
-				print "fill btl count"
 				set fillBottleCount to Clamp (PlayerREF.GetItemCount SodaBottleEmpty01) 0 (5 - drinkCount)
-				print $fillBottleCount
 				Self.PlaySound NPCBrahminIdleMoo
 				PlayerREF.removeitem SodaBottleEmpty01 fillBottleCount
 				PlayerREF.additem RASMBrahminMilkItem fillBottleCount

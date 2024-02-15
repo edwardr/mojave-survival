@@ -127,7 +127,6 @@ begin GameMode
 				if loopSlot == cropActivator
 					set foundActivatorCrop to 1
 					SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
-					Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 
@@ -136,13 +135,10 @@ begin GameMode
 				set loopSlot to 0
 
 				foreach entry <- cropSlotsB
-				print "B: " + $slotIndex
-				print "B: " + $loopSlot
 					let slotIndex := entry["key"]
 					let loopSlot := entry["value"]
 					if loopSlot == cropActivator
 						SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
-						Print $slotIndex + " is " + $activeCrop
 					endif
 				loop
 			endif
@@ -218,7 +214,6 @@ begin GameMode
 				if loopSlot == cropActivator
 					set foundActivatorCrop to 1
 					SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
-					Print $slotIndex + " is " + $activeCrop
 				endif
 			loop
 
@@ -231,7 +226,6 @@ begin GameMode
 					let loopSlot := entry["value"]
 					if loopSlot == cropActivator
 						SetRefVariable $slotIndex, activeCrop, RASMNewVegasFarming
-						Print $slotIndex + " is " + $activeCrop
 					endif
 				loop
 			endif

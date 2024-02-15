@@ -9,15 +9,16 @@ array_var brahminQuestSlots
 array_var entry
 string_var slot
 int key
+float randOffset
 
 
 begin function {count, spawnMarker, quest}
 	let brahminQuestSlots := Ar_Map "1"::"slot1", "2"::"slot2", "3"::"slot3", "4"::"slot4", "5"::"slot5"
 	foreach entry <- (Ar_Range 1, count)
-		print "loop runs"
 		let key := entry["value"]
 		let slot := brahminQuestSlots[$key]
-	    set spawnedBrahmin to spawnMarker.PlaceAtMe RASMBrahminStock 1
+		set randOffset to GetRandomInRange 1 30
+	    set spawnedBrahmin to spawnMarker.PlaceAtMe RASMBrahminStock 1 randOffset 
 	    SetRefVariable $slot, spawnedBrahmin, quest
 		spawnedBrahmin.cios RASMHerdFollowSpell
 		spawnedBrahmin.evp
