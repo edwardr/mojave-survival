@@ -4,5 +4,5 @@ begin OnDeath
 	SetObjectiveCompleted RASMWantedMan 10 1
 	CompleteQuest RASMWantedMan
 	StopQuest RASMWantedMan
-	RewardXP 1500
+	RewardXP 800
 end

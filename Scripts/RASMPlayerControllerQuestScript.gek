@@ -20,6 +20,7 @@ short openInventoryRunOnce
 short sendPlayerSoberUp
 short sleepTimer
 int currentDayOfWeek
+int playerWasInCombat
 
 ; drunk blackout checking in RASMPlayerSobrietyTracking. Gets set when in "trapped" DLCs
 short playerStuckInDLC
@@ -30,6 +31,7 @@ begin GameMode
 	set testing to (IsControlDisabled 14)
 	; starts combat inventory flag
 	if player.isInCombat == 1 && player.GetIsPoisoned == 0
+		set playerWasInCombat to 1
 		if beginHealth == 0
 			set beginHealth to player.getav Health
 		endif
@@ -51,7 +53,7 @@ begin GameMode
 			
 			if (endHealth + 5 < beginHealth)
 				DisableControl 14
-				set cooldownTimer to 30
+				set cooldownTimer to 60
 				set hitCooldownActive to 1
 				set menuDisabled to 1
 				ShowMessage RASMNoCombatInventoryMessage
@@ -70,6 +72,11 @@ begin GameMode
 		if IsControlDisabled 14 == 0
 	 		EnableControl 14
 	 		set menuDisabled to 0
+	 	endif
+
+	 	if playerWasInCombat == 1
+	 		EnableControl 14
+	 		set playerWasInCombat to 0
 	 	endif
 	 	; reset beginHealth
 	 	if beginHealth != 0
@@ -93,16 +100,22 @@ begin GameMode
 			player.forceav SpeedMult 175
 			; hack for engine speed issue.
 			; equiping item or weapon recalibrates speed.
+			; need to delay or it can cause a CTD
 			player.addItem RASMFakeIngestible 1 1
-			player.equipItem RASMFakeIngestible 0 1
+			CallAfterSeconds 0.5 (begin function {}
+				player.equipItem RASMFakeIngestible 0 1
+			end)
 			set scriptIncreasedWalkSpeed to 1
 		endif
 	else
 		if scriptIncreasedWalkSpeed == 1
 			player.forceav SpeedMult 100
 			set scriptIncreasedWalkSpeed to 0
+			; need to delay or it can cause a CTD
 			player.addItem RASMFakeIngestible 1 1
-			player.equipItem RASMFakeIngestible 0 1
+			CallAfterSeconds 0.5 (begin function {}
+				player.equipItem RASMFakeIngestible 0 1
+			end)
 		endif
 	endif
 	; ends checks for encumbrance
@@ -191,16 +204,12 @@ begin MenuMode 1012
 
 		set sleepTimer to sleepTimer + 1
 
-		print $sleepTimer
-
 		if sleepTimer > 10
 			set sendPlayerSoberUp to 1
 			set sleepTimer to 0
 			if GetQuestCompleted RASMQueenieEncounter == 0
-				print "quest not completed"
 				;if player.IsInInterior == 0
 					if FiendCookCookRef.GetDead == 1 && QueenieRef.GetDead == 0
-						print "cook dead and queen not"
 						set sleepTimer to 0
 						SetStage RASMQueenieEncounter 100
 						WakeUpPC

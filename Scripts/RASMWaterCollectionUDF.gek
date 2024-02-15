@@ -105,23 +105,6 @@ begin function { maxCount, activatorType}
 		endif
 	endif
 
-	; todo what the hell is this?
-	if PlayerREF.GetItemCount VCG02Bottle >= tempFillBottleCount
-		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount VCG02Bottle) 0 (maxCount - totalFilledBottles)
-		if tempFillBottleCount != 0
-			set totalFilledBottles to (totalFilledBottles + tempFillBottleCount)
-			PlayerREF.removeitem VCG02Bottle tempFillBottleCount
-			PlayerREF.PlaySound NPCHumanDrinkingWaterSink
-			if activatorType == d1PurifiedWater0r30h
-				PlayerREF.additem WaterPurified tempFillBottleCount
-			elseif activatorType == d5TerribleWater20r4h
-				PlayerREF.additem IrradiatedWaterUnpurified tempFillBottleCount
-			else
-				PlayerREF.additem WaterUnpurified tempFillBottleCount
-			endif
-		endif
-	endif
-
 	if PlayerREF.GetItemCount WhiskeyBottle01Empty01 >= 1
 		set tempFillBottleCount to Clamp (PlayerREF.GetItemCount WhiskeyBottle01Empty01) 0 (maxCount - totalFilledBottles)
 		if tempFillBottleCount != 0

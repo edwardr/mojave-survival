@@ -3,12 +3,12 @@ scn RASMBlindEffectScript
 begin ScriptEffectStart
 	ApplyImageSpaceModifier RASMBlindSFX
 	ShowMessage RASMBlindness
-	;if getRandomPercent <= 5
-		;playSound RASMMaleDrunk
-	;endif
+	TriggerScreenBlood 20
+	PlayerREF.addPerk RASMBlindOrDrunkChanceToHit
 end
 
 begin ScriptEffectFinish
 	ShowMessage RASMBlindnessEnd
 	RemoveImageSpaceModifier RASMBlindSFX
+	PlayerREF.removePerk RASMBlindOrDrunkChanceToHit
 end

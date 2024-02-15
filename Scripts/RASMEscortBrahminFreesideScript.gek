@@ -36,16 +36,9 @@ begin GameMode
 
 	; no living brahmins, kill the quest
 	if foundLivingBrahmin == 0
-		print "failed escort quest"
 		SetStage RASMEscortBrahminFreeside 100
 		StopQuest RASMEscortBrahminFreeside
 	endif
-
-	;if foundFollowingBrahmin == 0
-		;print "failed escort quest"
-		;SetStage RASMEscortBrahminFreeside 100
-		;StopQuest RASMEscortBrahminFreeside
-	;endif
 
 	set foundLivingBrahmin to 0
 	set foundFollowingBrahmin to 0

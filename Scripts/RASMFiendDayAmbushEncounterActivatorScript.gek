@@ -1,6 +1,6 @@
 scn RASMFiendDayAmbushEncounterActivatorScript
 
-; this script handles random Fiend attacks > level 10 during the day.
+; this script handles random Fiend attacks > level 15 during the day.
 
 int spawnCount
 int spawnCountAlt

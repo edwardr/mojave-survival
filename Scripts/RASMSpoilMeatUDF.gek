@@ -3,6 +3,8 @@ scn RASMSpoilMeatUDF
 int tempItemCount
 int randItemCount
 
+; todo make a UDF
+
 begin Function {}
 	if PlayerREF.GetItemCount BrahminMeat >= 1
 		if GetRandomPercent > 50

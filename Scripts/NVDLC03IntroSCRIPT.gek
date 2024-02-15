@@ -30,6 +30,9 @@ BEGIN GameMode
 
 		Set bIntroStarted To 1;
 
+		; RASM vanilla hardcore mode crash here if fod > 0
+		player.forceActorValue hunger 0
+			
 		RemoveImageSpaceModifier FriendOfTheNightInteriorISFX;
 		RemoveImageSpaceModifier FriendOfTheNightISFX;
 		StopQuest DisguiseFactionPulseQuest;												; Turn off disguise notifications

@@ -1,0 +1,36 @@
+scn NVDLC03ReloadingPackSCRIPT
+
+; Adds a quantity of primer and powder to the player's inventory for Reloading Bench recipes.
+; JSH 01/14/11
+; ETB 03/21/11 Added gamemode "removeme" routine to keep Player from drop-pickup additem exploit.
+
+
+Short bKillMe
+
+
+BEGIN OnAdd Player
+
+	Set bKillMe to 1;
+	; RASM updates for primer streamlining
+	Player.AddItem RASMPrimerPistol 100
+	Player.AddItem RASMPrimerRifle 100				
+	;Player.AddItem Primer50MG 25;
+	;Player.AddItem PrimerLargePistol 25;
+	;Player.AddItem PrimerLargeRifle 25;
+	;Player.AddItem PrimerShotshell 25;
+	;Player.AddItem PrimerSmallPistol 25;
+	;Player.AddItem PrimerSmallRifle 25;
+
+	Player.AddItem PowderPistol 200;
+	Player.AddItem PowderRifle 200;
+	
+END
+
+
+BEGIN GameMode
+
+	If ( bKillMe == 1 )													; ETB 03/21/11
+		RemoveMe;
+	Endif
+
+END

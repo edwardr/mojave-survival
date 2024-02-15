@@ -11,6 +11,10 @@ BEGIN GameMode
 		RemoveImageSpaceModifier FriendOfTheNightInteriorISFX
 		RemoveImageSpaceModifier FriendOfTheNightISFX
 		StopQuest DisguiseFactionPulseQuest ; Turn off disguise notifications.
+
+		; RASM vanilla hardcore mode crash here if fod > 0
+		player.forceActorValue hunger 0
+			
 		player.DispelAllSpells ; Removes all chem effects.
 		PipBoyRadioOff ; Turn off PipBoy radio.
 		Player.ResetHealth

@@ -1,0 +1,20 @@
+scn GSPowderGangTriggerScript
+
+short bDoOnce
+
+begin OnTriggerEnter player
+
+	if bDoOnce == 0 && GetStageDone VMS16 70
+		ShowWarning "Incoming powder gangers."
+		GSPG01Ref.AddScriptPackage GSPGTravelPackage
+		GSPG02Ref.AddScriptPackage GSPGTravelPackage
+		GSPG03Ref.AddScriptPackage GSPGTravelPackage
+		GSPG04Ref.AddScriptPackage GSPGTravelPackage
+		GSPG05Ref.AddScriptPackage GSPGTravelPackage
+		GSPG06Ref.AddScriptPackage GSPGTravelPackage
+		GSPG07Ref.AddScriptPackage GSPGTravelPackage
+		GSPG08Ref.AddScriptPackage GSPGTravelPackage
+		set bDoOnce to 1
+	endif
+
+end

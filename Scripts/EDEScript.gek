@@ -48,7 +48,7 @@ begin GameMode
 				EDERef.ResurrectActor 1
 				EDERef.ResetHealth
 				;EDERef.resetai
-				EDERef.StartConversation player GREETING
+				EDERef.StartConversation playerREF GREETING
 				;set VNPCFollowers.bEDEHired to 1
 			else
 				showMessage RASMEDERepairMissingParts
@@ -60,8 +60,9 @@ begin GameMode
 				set VNPCFollowers.bEDEDead to 0
 				EDERef.ResurrectActor 1
 				EDERef.ResetHealth
-				EDERef.resetai
-				EDERef.StartConversation player GREETING
+				;EDERef.resetai
+
+				EDERef.StartConversation playerREF GREETING
 				;set VNPCFollowers.bEDEHired to 1
 			else
 				showMessage RASMEDERepairFailedSkillCheck
@@ -90,7 +91,7 @@ end
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 
 begin OnDeath
-
+	set brokenEDE to 1
 	if VNPCFollowers.bEDEHired == 1
 		set VNPCFollowers.nCurrentFollowers to VNPCFollowers.nCurrentFollowers - 1;
 		set vNPCFollowers.bCritterinParty to 0
@@ -102,7 +103,6 @@ begin OnDeath
 		player.RemovePerk EnhancedSensors
 		ShowMessage FollowerMessagePerkEDERemove
 		;player.placeatme NVCompanionEdEDdisabled 1
-		set brokenEDE to 1
 	endif
 	
 	set VNPCFollowers.bEDEDead to 1

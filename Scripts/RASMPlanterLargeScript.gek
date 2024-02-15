@@ -71,9 +71,7 @@ begin GameMode
 		endif
 
 		if cropToPlant != 0
-			print $cropToPlant
 			;set plantedCrop to RASMPlanterLargeFreeside2PlantREF1.PlaceAtMe cropToPlant 1
-			print $plantedCrop
 			set cropToPlant to 0
 		endif
 

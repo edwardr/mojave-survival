@@ -10,8 +10,6 @@ begin OnDeath player
 end
 
 begin OnHit
-	set targetRef to GetSelf
-	set fHealthDmg to targetRef.GetHitHealthDamage
-	print "Damage:"
-	print $fHealthDmg
+	;set targetRef to GetSelf
+	;set fHealthDmg to targetRef.GetHitHealthDamage
 end

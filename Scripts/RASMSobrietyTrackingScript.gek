@@ -10,6 +10,10 @@ short playerStuckInDLC
 short playerHasBlackedOutBefore
 short timesDrunk
 short soberUpSignal
+short drunkFXTimer
+
+
+; todo - this is a catastrophe. Clean up
 
 begin GameMode
 
@@ -17,9 +21,17 @@ begin GameMode
 		set drinkTracker to 0
 		set soberUpSignal to 0
 		set playerWasDrunk to 0
-		RemoveImageSpaceModifier RASMDrunkSFX
-		playerREF.dispel RASMDrunk
+		if playerREF.hasPerk RASMWinoForeverTrait == 1
+			RemoveImageSpaceModifier RASMDrunkProSFX
+			playerREF.dispel RASMDrunkPro
+		else
+			RemoveImageSpaceModifier RASMDrunkSFX
+			playerREF.dispel RASMDrunk
+			playerREF.removePerk RASMBlindOrDrunkChanceToHit
+		endif
+
 		showMessage RASMPlayerSober
+		set drunkFXTimer to 0
 	endif
 
 	; multiple ingestibles can affect this in succession
@@ -39,7 +51,7 @@ begin GameMode
 
 		set timer to (timer + 1)
 
-		; "removes" a drink from the tracker after an interval as player sobers up
+		; removes a drink from the tracker after an interval as player sobers up
 		if timer >= 200
 			set drinkTracker to (drinkTracker - 1)
 			set timer to 0
@@ -47,20 +59,70 @@ begin GameMode
 
 		if drinkTracker > (playerREF.getAV endurance) && drinkTracker >= 3
 			; player is drunk
+			if playerWasDrunk == 0
+				set drunkFXTimer to 1
+				showMessage RASMPlayerDrunk
+				if playerREF.hasPerk RASMWinoForeverTrait == 1
+					playerREF.CastImmediateOnSelf RASMDrunkPro
+					ApplyImageSpaceModifier RASMDrunkProSFX
+				else
+					playerREF.CastImmediateOnSelf RASMDrunk
+					ApplyImageSpaceModifier RASMDrunkSFX
+					playerREF.addPerk RASMBlindOrDrunkChanceToHit
+				endif
+			endif
+
 			set playerWasDrunk to 1
-			showMessage RASMPlayerDrunk
-			playerREF.CastImmediateOnSelf RASMDrunk
-			ApplyImageSpaceModifier RASMDrunkSFX
+
+			set drunkFXTimer to (drunkFXTimer + 1)
+			if drunkFXTimer >= 20
+				if getRandomPercent >= 75
+					showMessage RASMPlayerDrunk
+				endif
+				; reapply affect
+				if playerREF.hasPerk RASMWinoForeverTrait == 1
+					playerREF.CastImmediateOnSelf RASMDrunkPro
+					ApplyImageSpaceModifier RASMDrunkProSFX
+				else
+					playerREF.CastImmediateOnSelf RASMDrunk
+					ApplyImageSpaceModifier RASMDrunkSFX
+					playerREF.addPerk RASMBlindOrDrunkChanceToHit
+				endif
+
+				set drunkFXTimer to 1
+			endif
+
+			; if getRandomPercent <= 5
+				; showMessage RASMPlayerDrunk
+				; reapply affect
+				; if playerREF.hasPerk RASMWinoForeverTrait == 1
+					; playerREF.CastImmediateOnSelf RASMDrunkPro
+					; ApplyImageSpaceModifier RASMDrunkProSFX
+				; else
+					; playerREF.CastImmediateOnSelf RASMDrunk
+					; ApplyImageSpaceModifier RASMDrunkSFX
+					; playerREF.addPerk RASMBlindOrDrunkChanceToHit
+				; endif
+			; endif
 
 			if getRandomPercent <= 5
-				playSound RASMMaleDrunk
+				if GetPCIsSex Male
+					playSound RASMMaleDrunk
+				else
+					playSound RASMFemaleDrunk
+				endif
 			endif
 			
-			if getRandomPercent >= 97
+			if getRandomPercent >= 98 && playerREF.hasPerk RASMWinoForeverTrait != 1
 				PlaySound NPCIdleVomit
 			endif
 
-			if getRandomPercent <= 5
+			if getRandomPercent <= 3 && playerREF.hasPerk RASMWinoForeverTrait != 1
+				; player stumbles and falls down.
+				playerREF.pushActorAway playerREF 0
+			endif
+
+			if getRandomPercent == 1 && playerREF.hasPerk RASMWinoForeverTrait == 1
 				; player stumbles and falls down.
 				playerREF.pushActorAway playerREF 0
 			endif
@@ -95,13 +157,19 @@ begin GameMode
 					elseif incrementBlackoutLocation == 6
 						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
 						set blackoutLocationRef to RASMBlackoutHostetlerREF
+					elseif incrementBlackoutLocation == 7
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMSewerBlackoutREF
+					elseif incrementBlackoutLocation == 8
+						set incrementBlackoutLocation to (incrementBlackoutLocation + 1)
+						set blackoutLocationRef to RASMClinicBlackoutREF
 					else
 						; reset to start over
 						set incrementBlackoutLocation to 0
 						set blackoutLocationRef to RASMBlackoutGoodspringsREF
 					endif
 
-					; stay down.
+					; stay down. RASMClinicBlackoutREF
 					player.pushActorAway player 0
 					player.removeScriptPackage
 
@@ -115,9 +183,8 @@ begin GameMode
 					player.pushActorAway player 0
 
 					RemoveImageSpaceModifier FadeToBlackISFX
-					RemoveImageSpaceModifier RASMDrunkSFX
-					playerREF.dispel RASMDrunk
-					playerREF.dispel RASMDrunk
+					RemoveImageSpaceModifier RASMDrunkProSFX
+					playerREF.dispel RASMDrunkPro
 
 					if playerHasBlackedOutBefore == 0
 						ShowMessage RASMPlayerBlackedOut
@@ -136,18 +203,27 @@ begin GameMode
 					set blackoutInit to 0
 					set triggerBlackoutTeleport to 1
 				else
-					; lazy way to set a variable timer
 					if getRandomPercent >= 99
-						set blackoutInit to 1
+						if getRandomPercent >= 90
+							set blackoutInit to 1
+						endif
 					endif
 				endif
 			endif
 		else
 			if playerWasDrunk == 1
 				set playerWasDrunk to 0
-				RemoveImageSpaceModifier RASMDrunkSFX
-				playerREF.dispel RASMDrunk
+				ApplyImageSpaceModifier FadeToBlackAndBackQuickHalfsISFX
+				if playerREF.hasPerk RASMWinoForeverTrait == 1
+					RemoveImageSpaceModifier RASMDrunkProSFX
+					playerREF.dispel RASMDrunkPro
+				else
+					RemoveImageSpaceModifier RASMDrunkSFX
+					playerREF.dispel RASMDrunk
+					playerREF.removePerk RASMBlindOrDrunkChanceToHit
+				endif
 				showMessage RASMPlayerSober
+				set drunkFXTimer to 0
 			endif
 		endif
 	endif

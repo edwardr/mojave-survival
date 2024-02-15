@@ -8,16 +8,14 @@ ref effectTarget
 begin ScriptEffectStart
 	set effectTarget to GetSelf
 	if effectTarget.GetIsReference player
-		set baseModifier to (PlayerREF.getav endurance * 3) + (PlayerREF.getav luck * 3) + (PlayerREF.getav survival / 2)
+		set baseModifier to (PlayerREF.getav endurance * 2) + (PlayerREF.getav luck * 2) + (PlayerREF.getav survival / 2)
 		set infectionRoll to GetRandomPercent
 		set effectRoll to GetRandomPercent
-		if effectRoll >= 50
-			if infectionRoll > baseModifier
+		if infectionRoll > baseModifier
+			if effectRoll >= 50
 				CastImmediateOnSelf RASMBacterialInfection
 				ShowMessage RASMInfectionBacterialMessage
-			endif
-		else
-			if infectionRoll > baseModifier
+			else
 				CastImmediateOnSelf RASMParasiticInfection
 				ShowMessage RASMInfectionParasiticMessage
 			endif

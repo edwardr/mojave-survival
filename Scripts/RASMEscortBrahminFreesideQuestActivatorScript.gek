@@ -19,9 +19,7 @@ begin OnTriggerEnter Player
 			if slotRef != 0
 				if slotRef.GetDead == 0
 					set checkDistance to player.GetDistance slotRef
-					print "distance:"
-					print $checkDistance
-					if player.GetDistance slotRef <= 4000
+					if player.GetDistance slotRef <= 5000
 						slotRef.cios RASMHerdFreeside
 						slotRef.dispel RASMHerdFollowSpell
 						slotRef.evp
@@ -37,7 +35,6 @@ begin OnTriggerEnter Player
 
 		; no living brahmins, kill the quest
 		if escortSuccess == 0
-			print "failed escort quest"
 			SetStage RASMEscortBrahminFreeside 100
 			StopQuest RASMEscortBrahminFreeside
 		else
@@ -47,6 +44,7 @@ begin OnTriggerEnter Player
 			CompleteQuest RASMEscortBrahminFreeside
 			StopQuest RASMEscortBrahminFreeside
 			RASMBrahminPilePlayerFarmFreesideREF.enable
+			RewardXP 50
 		endif
 
 		set escortSuccess to 0

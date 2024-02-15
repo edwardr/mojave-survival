@@ -27,16 +27,14 @@ int daysPassed
 
 begin GameMode
 	; runs on a 24-hr game time processing delay
-	print "Novac farming check runs"
+	;print "Novac farming check runs"
 
 	set daysPassed to GetGameDaysPassed
 	if lastRunTime == daysPassed
-		print "Novac already ran today"
 		return
 	endif
 
 	if player.getDistance RASMFarmingWaterReservoirNovacREF > 5000
-		print "Player too far"
 		return
 	endif
 
@@ -52,7 +50,6 @@ begin GameMode
 			; skip the first run
 			set lastRunTime to daysPassed
 			if slotsFirstRunComplete == 0
-				print "skipping slotsB first run"
 				set slotsFirstRunComplete to 1
 				break
 			endif
@@ -98,7 +95,7 @@ begin GameMode
 						RASMFertilizerStorageNovacREF.removeItem RASMFertilizer 1
 					endif
 				else
-					print "Novac plant #" + $slotIndex + " wants to grow but has no water or fert."
+					;print "Novac plant #" + $slotIndex + " wants to grow but has no water or fert."
 				endif
 			endif
 		endif

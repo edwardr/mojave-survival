@@ -15,6 +15,7 @@ float PushTimer	;timer var used to delay pushing until proper point in animation
 ; C. Player is undetected
 ;if the above are true, set Push and PushTimer vars
 
+
 Begin OnActivate
 if IsActionRef player == 1
 	Set Self to GetSelf	
@@ -36,6 +37,7 @@ else
 endif
 
 End
+
 
 ;If Push has been set to 1 (meaning a successful push took place)
 ;wait until timer runs out, then actually do the pushing and reset push to 0

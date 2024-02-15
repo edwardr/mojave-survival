@@ -16,7 +16,7 @@ begin OnHit
 		set randomFailureModifier to Rand 1.25, 3.0
 		targetRef.setScale randomFailureModifier 
 	else
-		set randomSuccessModifier to Rand 0.4, 0.75
+		set randomSuccessModifier to Rand 0.3, 0.75
 		targetRef.setScale randomSuccessModifier
 	endif
 end

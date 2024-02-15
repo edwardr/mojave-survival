@@ -21,7 +21,6 @@ begin ScriptEffectStart
 
 	set baseModifier to PlayerREF.getav endurance + PlayerREF.getav luck + (PlayerREF.getav survival / 2)
 	set baseModifier to (PlayerREF.getav endurance * 2) + (PlayerREF.getav luck * 2) + (PlayerREF.getav survival / 2)
-	PrintC "baseModifier: %g" baseModifier
 	set infectionRoll to GetRandomPercent
 	if infectionRoll < baseModifier
 		set hasImmunity to 1

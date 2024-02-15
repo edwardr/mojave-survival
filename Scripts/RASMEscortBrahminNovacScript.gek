@@ -36,7 +36,7 @@ begin GameMode
 
 	; no living brahmins, kill the quest
 	if foundLivingBrahmin == 0
-		print "failed escort quest"
+		;print "failed escort quest"
 		SetStage RASMEscortBrahminNovac 100
 		StopQuest RASMEscortBrahminNovac
 	endif

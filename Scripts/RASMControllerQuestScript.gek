@@ -71,20 +71,31 @@ int rexAtNovac
 
 short primmCompleted
 
+begin MenuMode 1004
+	call RASMCheckRequirementsUDF
+end
+
 Begin GameMode
-	if player.isHardcore == 0
-		playerREF.SetHardcore 1
+	if GetGameLoaded == 1
+		; TODO use NVSE 6.3.5 new DisablePlayerControlsAltEx (1 >> 14) here once it's been out for a bit
+		EnableFastTravel 0 1 1
+		if player.isHardcore == 0
+			playerREF.SetHardcore 1
+		endif
+
+		if playerREF.hasPerk RASMBalanceSkillPoints == 0
+			playerREF.addPerk RASMBalanceSkillPoints
+		endif
+
+		; calculates VATS hit chance based on Perception
+		if PlayerREF.hasPerk RASMPerceptionToVATS == 0
+			PlayerREF.addPerk RASMPerceptionToVATS
+		endif
 	endif
 
-	;if GetPCCanFastTravel == 1
-		;EnableFastTravel 0 1 1
-	;endif
-
-	EnableFastTravel 0 1 1
-
 	; oof, I cannot remember the purpose of this.
-	;print "Hunger Zero Count: " + $hungerZeroCount
 	if hungerZeroCount >= 3
+		;print "Hunger Zero Count: " + $hungerZeroCount
 		playerREF.SetHardcore 1
 		set hungerZeroCount to 0
 	endif
@@ -97,10 +108,6 @@ Begin GameMode
 	; amd this manages to get set back to original GS periodically somehow.
 	if playerREF.hasPerk EnhancedSensors == 0 && getGameSetting iHUDMaxCompassNPCTicks > 0
 		con_SetGameSetting iHUDMaxCompassNPCTicks 0
-	endif
-
-	if playerREF.hasPerk RASMBalanceSkillPoints == 0
-		playerREF.addPerk RASMBalanceSkillPoints
 	endif
 
 	; enables the water merchant network in Primm if town has sherrif
@@ -154,11 +161,7 @@ Begin GameMode
 		if headCrippledDuration == 1
 			; roll against blindness affliction
 			if (getRandomPercent + playerREF.getAv luck) < 50
-				print "failed blind check"
 				player.CastImmediateOnSelf RASMBlind
-			else
-				;print "passed blind check"
-				;player.CastImmediateOnSelf RASMBlind
 			endif
 		endif
 

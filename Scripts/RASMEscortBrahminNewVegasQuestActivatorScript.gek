@@ -16,15 +16,11 @@ begin OnTriggerEnter Player
 		foreach slot <- brahminSlots
 			let slotIndex := slot["key"]
 			let slotRef := slot["value"]
-			print "slotref"
-			print $slotRef
 
 			if slotRef != 0
 				if slotRef.GetDead == 0
 					set checkDistance to player.GetDistance slotRef
-					print "distance:"
-					print $checkDistance
-					if player.GetDistance slotRef <= 4000
+					if player.GetDistance slotRef <= 5000
 						slotRef.cios RASMHerdNewVegas
 						slotRef.dispel RASMHerdFollowSpell
 						slotRef.resetAi
@@ -39,13 +35,13 @@ begin OnTriggerEnter Player
 
 		; no living brahmins, kill the quest
 		if escortSuccess == 0
-			print "failed escort quest"
 			SetStage RASMEscortBrahminNewVegas 100
 			StopQuest RASMEscortBrahminNewVegas
 		else
 			SetObjectiveCompleted RASMEscortBrahminNewVegas 10 1
 			CompleteQuest RASMEscortBrahminNewVegas
 			StopQuest RASMEscortBrahminNewVegas
+			RewardXP 50
 		endif
 
 		set escortSuccess to 0
