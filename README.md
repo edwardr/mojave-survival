@@ -1,0 +1,1 @@
+**NOTE:** This repository is primarily to track development of the mod. If you are looking to install Mojave Survival, please see the [Nexus Mods page](https://www.nexusmods.com/newvegas/mods/81969?tab=description) for release downloads, requirements, and installation instructions.
