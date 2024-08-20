@@ -1,0 +1,24 @@
+SCN NVDLC04MQ01aSCRIPT
+
+
+; Script for NVDLC04MQ01a
+; TLS 01/25/2011
+; TLS 03/14/2011 - Script standards update, added security code objective
+
+
+Short bDoOnce;
+
+
+BEGIN GameMode
+
+	If (Player.GetInCell NVDLC04Silo01 == 1) && (bDoOnce == 0)
+		ForceActiveQuest NVDLC04MQ01a;
+		Set bDoOnce to 1;
+	EndIf
+
+	; Complete Acquire Launch Codes objective
+	If (GetHasNote NVDLC04Silo02LaunchCode >= 1) && (GetStage NVDLC04MQ01a < 50)
+		SetStage NVDLC04MQ01a 50;
+	EndIf
+
+END

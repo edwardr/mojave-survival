@@ -1,0 +1,21 @@
+scn NVDLC03RoboScorpionBurstSCRIPT
+
+
+; This script controls the robo scorpions self destructing.
+; CES 1/12/11
+; CES 2/2/11 - Updated excess kills to use Mobius ref since it's giving extra XP when assigned to player.
+
+
+BEGIN ScriptEffectStart
+
+	; Make RoboScorpion explode!
+	PlaceAtMe NVDLC03RoboScorpionBurstExplode;
+
+	Kill NVDLC03DoctorMobiusREF 0;
+	Kill NVDLC03DoctorMobiusREF 1;
+	Kill NVDLC03DoctorMobiusREF 3;
+	Kill NVDLC03DoctorMobiusREF 5;
+	Kill NVDLC03DoctorMobiusREF 7;
+	Kill NVDLC03DoctorMobiusREF 10;
+
+END

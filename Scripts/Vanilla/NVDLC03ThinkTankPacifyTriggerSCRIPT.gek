@@ -1,0 +1,29 @@
+scn NVDLC03ThinkTankPacifyTriggerSCRIPT
+
+
+; Prevents the player from drawing weapons in the Think Tank until he's got his real brain back (or had the Pacification Treatment removed).
+; JSH 01/12/11
+
+
+Short bShowExplanation			; 0 = Pacification Message not displayed, 1 = Pacification Message displayed
+
+
+BEGIN OnTrigger Player
+	
+	If ( bShowExplanation == 0 )
+		ShowMessage NVDLC03PacifyMsg;														; Let the player know he can't draw weapons in this area for some reason.
+		Set bShowExplanation to 1;
+		NVDLC03ThinkTankTalkingActivatorREF.SetDestroyed 1;							; Make Mobius Screen inaccessible to the player.
+	EndIf
+
+	; Player hasn't gotten the objective to confront the Think Tank yet.
+	If ( GetStageDone NVDLC03MQ05 50 == 0 )
+		DisablePlayerControls 0 0 1 0 0 0 0;														; Disable ability to draw a weapon only.
+		Return;
+	Else
+		ShowMessage NVDLC03FinaleWarningMsg;											; Warns the player that the end of the DLC is near.
+		Disable;																							; Turn off trigger forever since it's no longer needed.
+		NVDLC03ThinkTankLights.Disable;														; Turn off blue Think Tank lights.
+	EndIf
+
+END

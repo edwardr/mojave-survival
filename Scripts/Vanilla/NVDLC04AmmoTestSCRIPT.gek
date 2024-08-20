@@ -1,0 +1,8 @@
+SCN NVDLC04AmmoTestSCRIPT
+
+
+Begin ScriptEffectStart
+
+NVDLC04UlyssesREF.ResetHealth;
+
+End
