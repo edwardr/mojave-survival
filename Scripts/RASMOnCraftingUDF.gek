@@ -1,0 +1,15 @@
+scn	RASMOnCraftingUDF
+
+ref	rItemForm
+int	iQuantity
+
+begin Function {rItemForm, iQuantity}
+	
+	if rItemForm == WaterPurified
+		if (getRandomPercent + playerREF.getAv luck) <= 15
+			PlaySound WPNBreak
+			ShowMessage RASMBrokenWaterFilterMessage
+			player.removeItem RASMWaterFilter 1
+		endif
+	endif
+end

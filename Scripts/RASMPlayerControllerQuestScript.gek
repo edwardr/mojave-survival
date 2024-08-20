@@ -21,6 +21,7 @@ short sendPlayerSoberUp
 short sleepTimer
 int currentDayOfWeek
 int playerWasInCombat
+short checkedForSleepAmbush
 
 ; drunk blackout checking in RASMPlayerSobrietyTracking. Gets set when in "trapped" DLCs
 short playerStuckInDLC
@@ -192,9 +193,11 @@ begin MenuMode 1002
 	endif
 end
 
-; slows down hardcore needs during sleep
 begin MenuMode 1012
 	if IsPCSleeping == 1
+		set sleepTimer to (sleepTimer + 1)
+
+		; slows down hardcore needs during sleep
 		if sleepHardcoreVarSet == 0
 			; reset tied to playerHasSlept var
 			set baseDehydrationRate to GetGameSetting fHCDehydrationRate
@@ -202,24 +205,38 @@ begin MenuMode 1012
 			set sleepHardcoreVarSet to 1
 		endif
 
-		set sleepTimer to sleepTimer + 1
-
-		if sleepTimer > 10
-			set sendPlayerSoberUp to 1
-			set sleepTimer to 0
-			if GetQuestCompleted RASMQueenieEncounter == 0
-				;if player.IsInInterior == 0
-					if FiendCookCookRef.GetDead == 1 && QueenieRef.GetDead == 0
+		; Possible outdoor sleep ambush. Exclude trailer bed which is technically exterior.
+		if sleepTimer == 20
+			if checkedForSleepAmbush == 0
+				set checkedForSleepAmbush to 1
+				if (player.IsInInterior == 0) && (player.getDistance RASMLong15Bed1 > 500)
+					if (getRandomPercent + playerREF.getAv luck) <= 40
+						; spawn some mean baddies
+						call RASMSleepAmbushUDF
 						set sleepTimer to 0
-						SetStage RASMQueenieEncounter 100
 						WakeUpPC
 					endif
-				;endif
+				endif
+			endif
+		endif
+
+		; Special Queenie encounter
+		if sleepTimer > 30
+			set sendPlayerSoberUp to 1
+			if GetQuestCompleted RASMQueenieEncounter == 0
+				if FiendCookCookRef.GetDead == 1 && QueenieRef.GetDead == 0
+					set sleepTimer to 0
+					SetStage RASMQueenieEncounter 100
+					WakeUpPC
+				endif
 			endif
 		endif
 
 		SetNumericGameSetting fHCDehydrationRate 25.0
 		SetNumericGameSetting fHCStarvationrate 25.0
 		set playerHasSlept to 1
+		set checkedForSleepAmbush to 0
+	else
+		set sleepTimer to 0
 	endif
 end

@@ -1,0 +1,23 @@
+scn RASMSleepAmbushUDF
+int roll
+
+begin function {}
+	set roll to getRandomPercent
+	if roll < 10
+		player.PlaceAtMe RASMViperMeleeSleepAmbush 1 200 
+	elseif roll < 20
+		player.PlaceAtMe RASMSleepAmbushDog 2 200  
+	elseif roll < 30
+		player.PlaceAtMe RASMFeralGhoulSpawnSleepAmbush 1 200
+	elseif roll < 40
+		player.PlaceAtMe RASMFeralGhoulSpawnSleepAmbush 1 200
+	elseif roll < 50
+		player.PlaceAtMe RASMFiendSleepAmbushMeleeFemaleB 1 200	
+	elseif roll < 60
+		player.PlaceAtMe RASMSleepAmbushDog 1 200			
+	elseif roll < 70
+		player.PlaceAtMe RASMNVCCBunkerRadroach 2 200	
+	elseif roll < 80
+		player.PlaceAtMe RASMNVCCBunkerRadroach 1 200
+	endif
+end
