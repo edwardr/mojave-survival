@@ -91,6 +91,9 @@ Begin GameMode
 		if PlayerREF.hasPerk RASMPerceptionToVATS == 0
 			PlayerREF.addPerk RASMPerceptionToVATS
 		endif
+
+		; Setup event handlers 
+		SetOnCraftingEventHandler RASMOnCraftingUDF 1
 	endif
 
 	; oof, I cannot remember the purpose of this.

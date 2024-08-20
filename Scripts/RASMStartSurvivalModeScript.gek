@@ -27,6 +27,7 @@ BEGIN OnActivate
 		RASMMadBrahminREF6.enable
 		RASMFO1PosterREF.enable
 		RASMMiniatureGiantSpaceRatREF.enable
+		RASMNewVegasGameStaticWWREF.enable
 	endif
 
 	if GetHasNote RASMWastelandSurvivalGuide == 0
