@@ -7,13 +7,14 @@ ref travelMarkerRef
 begin Function { price, travelMarkerRef }
 	playerREF.removeItem Caps001 100
 	ApplyImageSpaceModifier FadeToBlackISFX
-	CallAfterSeconds 3 (begin function {}
-		set timePassed to (GetRandomInRange 20 80) * 0.10
-		playerREF.DamageAV dehydration (timePassed * 25.0)
-		playerREF.DamageAV SleepDeprevation (timePassed * 40.0)
-		playerREF.DamageAV hunger (timePassed * 25.0)
+	CallAfterSeconds 2 (begin function {}
+		set timePassed to (GetRandomInRange 20 60) * 0.10
+		playerREF.DamageAV dehydration (timePassed * 10.0)
+		playerREF.DamageAV SleepDeprevation (timePassed * 15.0)
+		playerREF.DamageAV hunger (timePassed * 10.0)
 
 		SetGameHour (GetCurrentTime + timePassed)
 		playerREF.moveTo travelMarkerRef
+		call RASMSpoilMeatUDF
 	end)
 end

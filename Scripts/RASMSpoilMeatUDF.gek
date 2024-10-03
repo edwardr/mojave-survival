@@ -1,4 +1,4 @@
-ScriptName RASMSpoilMeatUDF
+scn RASMSpoilMeatUDF
 
 int tempItemCount
 int randItemCount

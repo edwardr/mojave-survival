@@ -1,0 +1,263 @@
+scn RASMMotorcycleScript
+
+short button
+ref activeMenu
+ref travelMarkerREF
+ref playerTravelMarkerREF
+float timePassed
+
+begin OnActivate
+	if RASMControllerQuest.playerBoughtMotorcycle == 0
+		ShowMessage RASMMotorcycleMenuNotOwned
+		set activeMenu to 0
+		set travelMarkerREF to 0
+	else
+		if getStage RASMFetchFuelCellController == 20 || getStage RASMFetchFuelCellController == 10
+			ShowMessage RASMMotorcycleMenuFixMe
+			set activeMenu to RASMMotorcycleMenuFixMe
+			set travelMarkerREF to 0
+		endif
+
+		if getQuestCompleted RASMFetchFuelCellController == 1
+			ShowMessage RASMMotorcycleMenu
+			set activeMenu to RASMMotorcycleMenu
+			set travelMarkerREF to 0
+		endif
+	endif
+end
+
+begin GameMode
+	set button to GetButtonPressed
+
+	; repair menu
+	if activeMenu == RASMMotorcycleMenuFixMe
+		set travelMarkerREF to 0
+		set activeMenu to 0
+		if button == 0
+			; exit
+		elseif button == 1
+			; try to fix the motorcycle
+			if player.getItemCount RASMFuelCellController >= 1
+				player.removeItem RASMFuelCellController 1
+				SetObjectiveCompleted RASMFetchFuelCellController 20 1
+				; complete quest
+				setStage RASMFetchFuelCellController 30
+				completeQuest RASMFetchFuelCellController
+				StopQuest RASMFetchFuelCellController
+			else
+				showMessage RASMMotorcycleMenuMissingPart
+			endif
+		endif
+	endif
+
+	; Base menu
+	if activeMenu == RASMMotorcycleMenu
+		if button == 0
+			; exit
+			set travelMarkerREF to 0
+			set activeMenu to 0
+		elseif button == 1
+			; open saddlebags
+			set travelMarkerREF to 0
+			set activeMenu to 0
+			RASMMotorcycleContainerREF.Activate player
+		elseif button == 2
+			; refuel
+			set travelMarkerREF to 0
+			set activeMenu to 0
+			RASMMotorcycleFuelTankREF.Activate player
+		elseif button == 3
+			; fuel check / open travel menu
+			if RASMMotorcycleFuelTankREF.getItemCount AmmoMicroFusionCell >= 10
+				ShowMessage RASMMotorcycleMenuTravel1
+				set activeMenu to RASMMotorcycleMenuTravel1
+				set travelMarkerREF to 0
+			else
+				set travelMarkerREF to 0
+				set activeMenu to 0
+				ShowMessage RASMMotorcycleMenuMissingFuel
+			endif
+		endif
+
+	; Travel menu 1
+	elseif activeMenu == RASMMotorcycleMenuTravel1
+		if button == 0
+			; go back
+			ShowMessage RASMMotorcycleMenu
+			set travelMarkerREF to 0
+			set activeMenu to RASMMotorcycleMenu
+		elseif button == 1
+			; Freeside Apt
+			set travelMarkerREF to RASMFreesideApartmentMotorcycleMarkerREF
+			set playerTravelMarkerREF to RASMFreesideApartmentPlayerMotorcycleTravelREF
+			set activeMenu to 0
+		elseif button == 2
+			; Long 15
+			set travelMarkerREF to RASMLong15TrailerMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 3
+			; NV Home
+			set travelMarkerREF to RASMNewVegasHomeMotorcycleMarkerREF
+			set playerTravelMarkerREF to RASMNewVegasHomePlayerMotorcycleTravelREF
+			set activeMenu to 0
+		elseif button == 4
+			; Novac Shack
+			set travelMarkerREF to RASMNovacShackMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 5
+			; Westside home
+			set travelMarkerREF to RASMWestsideHomeMotorcycleMarkerREF
+			set playerTravelMarkerREF to RASMWestsidePlayerMotorcycleTravelREF
+			set activeMenu to 0
+		elseif button == 6
+			; 188
+			set travelMarkerREF to RASM188MotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 7
+			; Boulder City
+			set travelMarkerREF to RASMBoulderCityMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 8
+			; Cottonwood
+			set travelMarkerREF to RASMCottonwoodCoveMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 9
+			; more travel menu
+			ShowMessage RASMMotorcycleMenuTravel2
+			set activeMenu to RASMMotorcycleMenuTravel2
+			set travelMarkerREF to 0
+		endif
+
+		if travelMarkerREF != 0
+			playSound RASMMotorcycleStart
+			ApplyImageSpaceModifier FadeToBlackISFX
+			CallAfterSeconds 2 (begin function {}
+				call RASMMotorcycleTravelUDF playerTravelMarkerREF travelMarkerREF
+			end)
+		endif
+
+	; Travel menu 2
+	elseif activeMenu == RASMMotorcycleMenuTravel2
+		if button == 0
+			; go back
+			ShowMessage RASMMotorcycleMenuTravel1
+			set travelMarkerREF to 0
+			set activeMenu to RASMMotorcycleMenuTravel1
+		elseif button == 1
+			; Goodsprings
+			set travelMarkerREF to RASMGoodspringsMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 2
+			; Hidden valley
+			set travelMarkerREF to RASMHiddenValleyMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 3
+			; Hoover
+			set travelMarkerREF to RASMHooverDamMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 4
+			; Jacobstown
+			set travelMarkerREF to RASMJacobstownMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 5
+			; Lucky
+			set travelMarkerREF to RASMLucky38MotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 6
+			; Mccarron
+			set travelMarkerREF to RASMMcCarranMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 7
+			; Outpost
+			set travelMarkerREF to RASMMojaveOutpostMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 8
+			; Nellis
+			set travelMarkerREF to RASMNellisMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 9
+			; more travel menu
+			ShowMessage RASMMotorcycleMenuTravel3
+			set activeMenu to RASMMotorcycleMenuTravel3
+			set travelMarkerREF to 0
+		endif
+
+		if travelMarkerREF != 0
+			ApplyImageSpaceModifier FadeToBlackISFX
+			playSound RASMMotorcycleStart
+			ApplyImageSpaceModifier FadeToBlackISFX
+			CallAfterSeconds 2 (begin function {}
+				call RASMMotorcycleTravelUDF playerTravelMarkerREF travelMarkerREF
+			end)	
+		endif
+	; Travel menu 3
+	elseif activeMenu == RASMMotorcycleMenuTravel3
+		if button == 0
+			; go back
+			ShowMessage RASMMotorcycleMenuTravel2
+			set travelMarkerREF to 0
+			set activeMenu to RASMMotorcycleMenuTravel2
+		elseif button == 1
+			; NV
+			set travelMarkerREF to RASMNewVegasMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 2
+			; Nipton
+			set travelMarkerREF to RASMNiptonMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 3
+			; Novac
+			set travelMarkerREF to RASMNovacMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 4
+			; Primm
+			set travelMarkerREF to RASMPrimmMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 5
+			; Red Rock
+			set travelMarkerREF to RASMRedRockCanyonMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 6
+			; Sloan
+			set travelMarkerREF to RASMSloanMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 7
+			; Westside
+			set travelMarkerREF to RASMWestsideMotorcycleMarkerREF
+			set playerTravelMarkerREF to travelMarkerREF
+			set activeMenu to 0
+		elseif button == 8
+			; exit
+			set activeMenu to 0
+			set travelMarkerREF to 0
+		endif
+
+		if travelMarkerREF != 0
+			ApplyImageSpaceModifier FadeToBlackISFX
+			playSound RASMMotorcycleStart
+			ApplyImageSpaceModifier FadeToBlackISFX
+			CallAfterSeconds 2 (begin function {}
+				call RASMMotorcycleTravelUDF playerTravelMarkerREF travelMarkerREF
+			end)	
+		endif
+	endif
+end

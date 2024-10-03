@@ -1,0 +1,20 @@
+scn RASMFuelCellControllerActivatorScript
+
+int spawnCount
+int spawnCountAlt
+int lastSpawnDay
+int runOnce
+
+begin OnTriggerEnter player
+	if getQuestRunning RASMFetchFuelCellController == 0
+		return
+	endif
+
+	if getStage RASMFetchFuelCellController == 10 && runOnce == 0
+		RASMFuelCellControllerEnemySpawnREF.placeAtMe RASMFeralGhoulSpawn 1
+		RASMFuelCellControllerEnemySpawnREF.placeAtMe RASMFeralGhoulSpawn 2 50
+		RASMFuelCellControllerEnemySpawnREF.placeAtMe RASMFeralGhoulSpawn 2 100
+		RASMFuelCellControllerEnemySpawnREF2.placeAtMe RASMFeralGhoulSpawn 2 150
+		set runOnce to 1
+	endif
+end

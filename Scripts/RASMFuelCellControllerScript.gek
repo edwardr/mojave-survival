@@ -1,0 +1,12 @@
+scn RASMFuelCellControllerScript
+
+
+begin OnAdd player
+	if getQuestRunning RASMFetchFuelCellController == 0
+		return
+	endif
+
+	SetObjectiveCompleted RASMFetchFuelCellController 10 1
+	SetObjectiveDisplayed RASMFetchFuelCellController 20 1
+	setStage RASMFetchFuelCellController 20
+end

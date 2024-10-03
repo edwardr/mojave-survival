@@ -20,6 +20,7 @@ short openInventoryRunOnce
 short sendPlayerSoberUp
 short sleepTimer
 int currentDayOfWeek
+long currentDayOfWeekFloatTest
 int playerWasInCombat
 short checkedForSleepAmbush
 
@@ -156,6 +157,10 @@ begin GameMode
 
 	if playerHasSlept == 1
 		set currentDayOfWeek to GetDayOfWeek
+		set currentDayOfWeekFloatTest to GetDayOfWeek
+		print "Current day of week:"
+		print $currentDayOfWeek
+		print $currentDayOfWeekFloatTest
 		SetNumericGameSetting fHCDehydrationRate baseDehydrationRate
 		SetNumericGameSetting fHCStarvationrate baseStarvationRate
 		set playerHasSlept to 0
@@ -169,7 +174,7 @@ begin GameMode
 		if currentDayOfWeek != 0
 			; restocking is a problem due to the long, extended days
 			; so we reshuffle everyday. imerchantrespawnday1 restocks on 0/Sunday.
-			SetNumericGameSetting imerchantrespawnday2 currentDayOfWeek
+			SetNumericGameSetting imerchantrespawnday2 currentDayOfWeekFloatTest
 		endif
 
 		call RASMSpoilMeatUDF
@@ -211,10 +216,13 @@ begin MenuMode 1012
 				set checkedForSleepAmbush to 1
 				if (player.IsInInterior == 0) && (player.getDistance RASMLong15Bed1 > 500)
 					if (getRandomPercent + playerREF.getAv luck) <= 40
-						; spawn some mean baddies
-						call RASMSleepAmbushUDF
-						set sleepTimer to 0
-						WakeUpPC
+						; extra check if they have home on the range
+						if player.hasPerk NVDLC02HomeOnTheRange == 0
+							; spawn some mean baddies
+							call RASMSleepAmbushUDF
+							set sleepTimer to 0
+							WakeUpPC
+						endif
 					endif
 				endif
 			endif

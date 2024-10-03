@@ -20,6 +20,9 @@ int playerBoughtLong15Trailer
 
 int playerReceivedFarmingGuide
 
+; Motorcycle quest 
+int playerBoughtMotorcycle
+
 ; companions at player housing tracker. Here to avoid modifying vanilla Followers script.
 int booneAtFreeside  
 int booneAtNewVegas
